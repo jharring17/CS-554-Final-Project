@@ -1,0 +1,1 @@
+// register, login, delete, getFeed
