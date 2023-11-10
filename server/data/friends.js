@@ -1,1 +1,1 @@
-// sendFriendRequest, acceptFriend, removeFriend, blockUser, getPendingRequests, getIncomingRequests
+// sendFriendRequest(fromUserId, toUserId), acceptFriend(userId, userIdAccept), removeFriend(userId1, userId2), declineRequest(fromUserId, toUserId) getPendingRequests(userId), getIncomingRequests(userId), getAllFriends(userId)

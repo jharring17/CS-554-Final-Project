@@ -1,1 +1,1 @@
-// addGoal, delGoal, updateGoal, likeGoal
+// getGoalById, getGoalsByUserId, getAllGoals, addGoal, delGoal, updateGoal, likePost
