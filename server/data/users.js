@@ -1,1 +1,1 @@
-// register, login, delete, getFeed
+// register, login, delete, editUser, getFeed, getHistory
