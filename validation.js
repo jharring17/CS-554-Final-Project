@@ -8,7 +8,7 @@ export function stringChecker(string){
 }
 
 export function limitChecker(limit){
-    if(typeof limit != "float") throw `Limit must be a valid number`;
+    if(typeof limit != "number") throw `Limit must be a valid number`;
     if(limit <= 0) throw `Limit must be a valid number greater than 0`;
     return limit;
 }
@@ -63,4 +63,19 @@ export function goalDateChecker(date){
     if(year === goalYear && month === goalMonth && day > goalDay) throw `Goal Date must be a future date (invalid day)`
 
     return date;
+}
+
+export function isBoolean(bool){
+  if(typeof bool != "boolean") throw `Variale must be true or false`;
+  return bool;
+}
+
+export function isIdArray(arr){
+  for(let i = 0; i < arr.length; i++){
+    if(!ObjectId.isValid(arr[i])){
+      throw `Invalid ObjectId in array`
+    }
+  }
+
+  return arr;
 }
