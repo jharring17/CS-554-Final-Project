@@ -1,4 +1,5 @@
 import {users, goals} from '../config/mongoCollections.js';
+import {ObjectId} from 'mongodb';
 
 export function stringChecker(string){
     if(typeof string != 'string') throw `Input must be a string`;

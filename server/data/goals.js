@@ -54,9 +54,24 @@ const addGoal = async (
     if(!inserted.acknowledged || !inserted.insertedId){
         throw `Couldn't add goal: addGoal`;
     }
-    //convert it to a string
-    let idAsString = inserted.insertedId.toString();
-    newGoal._id = idAsString;
+
+    //now that we have a new goal, we want to add the id to the user
+    const userCollection = await users();
+    let user = userCollection.findOne({_id: userId});
+    let updated = {
+        displayName: user.displayName,
+        username: user.username,
+        password: user.password,
+        friends: user.friends,
+        pendingFriends: user.pendingFriends,
+        incomingFriends: user.incomingFriends,
+        history: user.history,
+        categories: user.categories,
+        goals: user.goals.push(newGoal._id)
+    }
+    const updatedUser = await userCollection.findOneAndUpdate({_id: new ObjectId(userId)}, {$set: updated}, {returnDocument: "after"});
+    if(updatedUser.lastErrorObject.n === 0) throw `User could not be updated`;
+
     return newGoal;
 };
 
@@ -70,6 +85,30 @@ const deleteGoal = async (id) => {
 
     //if it doesn't exist, throw an error
     if(deleted.lastErrorObject.n === 0) throw `Goal couldn't be deleted: deleteGoal`
+
+    //now that we have deleted a goal, we want to remove the id from the user
+    const userCollection = await users();
+    let index;
+    let user = userCollection.findOne({_id: deleted.userId});
+    for(let i = 0; i < user.goals.length; i++){
+        if(user.goals[i] === id){
+            index = i;
+        }
+    }
+    let temp = user.goals.splice(index);
+    let updated = {
+        displayName: user.displayName,
+        username: user.username,
+        password: user.password,
+        friends: user.friends,
+        pendingFriends: user.pendingFriends,
+        incomingFriends: user.incomingFriends,
+        history: user.history,
+        categories: user.categories,
+        goals: temp
+    }
+    const updatedUser = await userCollection.findOneAndUpdate({_id: new ObjectId(deleted.userId)}, {$set: updated}, {returnDocument: "after"});
+    if(updatedUser.lastErrorObject.n === 0) throw `User could not be updated`;
 
     //return the goal that was deleted
     return deleted;
@@ -148,7 +187,6 @@ const updateGoal = async (
     const goalCollection = await goals();
     const updatedGoal = await goalCollection.findOneAndUpdate({_id: new ObjectId(id)}, {$set: updated}, {returnDocument: "after"});
     if(updatedGoal.lastErrorObject.n === 0) throw `Goal could not be updated`;
-    updatedGoal.value._id = updatedGoal.value._id.toString();
     return updatedGoal.value;
 };
 
