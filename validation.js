@@ -129,3 +129,9 @@ export function dateWithin7Days(date){//todays date is false, since goal may not
     return true;
   }
 }
+
+export function isNumber(num){
+  if(!num) throw `Number is required`;
+  if(typeof num != "number") throw `Variale must be a number`;
+  return num;
+}
