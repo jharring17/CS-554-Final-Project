@@ -87,13 +87,24 @@ const getHistory = async (id) => {
     if(!id) throw `Id is required: getHistory`
     if(!ObjectId.isValid(id)) throw `Invalid id: getHistory`;
 
+    let userHistory = undefined;
     try {
         let user = await getUser(id);
-        return user.history;
+        userHistory = user.history;
     }
     catch (e)
     {
         throw "User not found: getHistory";
     }
+    let pastHistory = [];
+    for (let goal in userHistory)
+    {
+        //add to list iff goalDate is past
+        if (helper.dateWithin7Days(goal.goalDate))
+        {
+            pastHistory.push(goal);
+        }
+    }
+    return pastHistory;
 };
 export { register, getUser, getFeed, getHistory }
