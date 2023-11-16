@@ -150,3 +150,49 @@ export function dateWithin7Days(date){//todays date is false, since goal may not
     return true;
   }
 }
+
+export function dateIsInThePast(date){//todays date is false, goals with this date not in past
+  if(date[2] != '/' && date[5] != '/') throw `Release date needs to be in the format 'MM/DD/YYYY'`
+  let validMonths = ['01','02','03','04','05','06','07','08', '09', '10', '11', '12'];
+  let present = false;
+  //make sure the month matches 1 valid month
+  for(let i = 0; i < validMonths.length; i++){
+    if(validMonths[i] === date.substring(0,2)){
+      present = true;
+      break;
+    }
+  }
+  if(present === false) throw `Invalid month`;
+
+  //check to make sure the month lines up with dates
+  if(date.substring(0,2) === "04" || date.substring(0,2) === "06" || date.substring(0,2) === "09" || date.substring(0,2) === "11"){
+    if(parseInt(date.substring(3,5)) > 30 || parseInt(date.substring(3,5)) < 0) throw `Invalid day`;
+  }
+  else if(date.substring(0,2) === "01" || date.substring(0,2) === "03" || date.substring(0,2) === "05" || date.substring(0,2) === "07" || date.substring(0,2) === "08" || date.substring(0,2) === "10" || date.substring(0,2) === "12"){
+    if(parseInt(date.substring(3,5)) > 31 || parseInt(date.substring(3,5)) < 0) throw `Invalid day`;
+  }
+  else{
+    if(parseInt(date.substring(3,5)) > 28 || parseInt(date.substring(3,5)) < 0) throw `Invalid day`;
+  }
+  //used this link to get the current date: https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript
+  let currDate = new Date();
+  currDate.setHours(0, 0, 0, 0);
+  let month = date.substring(0,2);
+  let day = date.substring(3,5);
+  let year = date.substring(6,10);
+  
+  let sevenDaysAgo = new Date(currDate);
+  sevenDaysAgo.setHours(0, 0, 0, 0);
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+  const inputedDateObj = new Date(year, month - 1, day);
+
+  if (inputedDateObj < currDate)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
