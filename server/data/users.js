@@ -4,6 +4,10 @@ import { ObjectId } from 'mongodb';
 import { getGoalsByUserId } from './goals.js';
 import * as helper from "../../validation.js"
 
+const register = async () => {
+    
+}
+
 const getUser = async (id) => {
     if(!id) throw `Id is required: getUser`
     if(!ObjectId.isValid(id)) throw `Invalid id: getUser`;

@@ -1,0 +1,16 @@
+{
+	"name": "cs-554-final-project",
+	"version": "1.0.0",
+	"description": "Project with two servers for client and backend functions. Use this package to run the two servers at the same time.",
+	"main": "index.js",
+	"scripts": {
+		"start": "concurrently \"npm run backend\" \"npm run client\"",
+		"backend": "node ./server/index.js",
+		"client": "cd ./client && vite",
+		"dev": "concurrently \"npm run backend\" \"npm run client\""
+	},
+	"devDependencies": {
+		"concurrently": "^6.2.1",
+		"vite": "^4.4.5"
+	}
+}

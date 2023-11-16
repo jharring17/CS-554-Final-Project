@@ -1,5 +1,5 @@
 // getExpenseById, addExpense, delExpense, editExpense
-import { users, goals, expense } from '../config/mongoCollections.js';
+import { goals, expense } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import * as helper from '../../validation.js';
 
