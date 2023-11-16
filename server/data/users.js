@@ -3,6 +3,50 @@ import {users, goals} from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import { getGoalsByUserId } from './goals.js';
 import * as helper from "../../validation.js"
+import bcrypt from 'bcrypt';
+const saltRounds = 2;
+
+const register = async (displayName, username, password, age) => {
+
+    if (!displayName || !username || !password || !age) {
+      throw 'All input fields must be provided :: register';
+    }
+
+    if (age < 13) {
+        throw 'Too young to make account :: register';
+    }
+  
+    // firstName = checkName(firstName, "First name");
+    // lastName = checkName(lastName, "Last name");
+  
+    const userCollection = await users();
+    const user = await userCollection.findOne({username: username});
+    if (user != null) {
+      throw `User already exists with this username :: register`;
+    }
+  
+    password = helper.checkPassword(password);
+    const hash = await bcrypt.hash(password, saltRounds);
+  
+    //actually insert
+    let newUser = {
+        displayName,
+        username, 
+        password,
+        friends: [],
+        pendingFriends: [],
+        incomingFriends: [],
+        history: [],
+        categories: [],
+        goals: []
+
+    };
+    const insertInfo = await userCollection.insertOne(newUser); 
+    if (!insertInfo.acknowledged || !insertInfo.insertedId) {
+      throw 'Could not add user :: register';
+    }
+    return newUser;
+}
 
 const getUser = async (id) => {
     if(!id) throw `Id is required: getUser`
@@ -52,4 +96,4 @@ const getHistory = async (id) => {
         throw "User not found: getHistory";
     }
 };
-export { getUser, getFeed, getHistory }
+export { register, getUser, getFeed, getHistory }
