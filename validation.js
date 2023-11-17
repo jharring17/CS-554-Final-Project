@@ -42,9 +42,14 @@ export async function categoryChecker(userId, category){
     let result = await userCollection.findOne({_id: new ObjectId(userId)});
     let validCategories = result.categories;
 
+    let match = false
     for(let i = 0; i < validCategories.length; i++){
-        if(!validCategories[i].toLowerCase().equals(category)) throw `Category isn't valid for this user`
+      let temp = validCategories[i].toLowerCase();
+      if(temp === category){
+        match = true;
+      }
     }
+    if(match === false) throw `Category isn't valid for this user`
     return category;
 }
 

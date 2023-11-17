@@ -31,7 +31,7 @@ const addGoal = async (
     limit = helper.limitChecker(limit);
 
     //make sure that the category is a valid category for the user
-    category = helper.categoryChecker(userId, category)
+    category = await helper.categoryChecker(userId, category)
 
     //make sure date is in the format mm/dd/yyyy
     goalDate = helper.goalDateChecker(goalDate)
@@ -57,7 +57,8 @@ const addGoal = async (
 
     //now that we have a new goal, we want to add the id to the user
     const userCollection = await users();
-    let user = userCollection.findOne({_id: userId});
+    let user = await userCollection.findOne({_id: userId});
+
     let updated = {
         displayName: user.displayName,
         username: user.username,
@@ -67,10 +68,9 @@ const addGoal = async (
         incomingFriends: user.incomingFriends,
         history: user.history,
         categories: user.categories,
-        goals: user.goals.push(newGoal._id)
+        goals: (user.goals).push(newGoal._id)
     }
     const updatedUser = await userCollection.findOneAndUpdate({_id: new ObjectId(userId)}, {$set: updated}, {returnDocument: "after"});
-    if(updatedUser.lastErrorObject.n === 0) throw `User could not be updated`;
 
     return newGoal;
 };
@@ -83,19 +83,10 @@ const deleteGoal = async (id) => {
     const goalCollection = await goals();
     let deleted = await goalCollection.findOneAndDelete({_id: new ObjectId(id)});
 
-    //if it doesn't exist, throw an error
-    if(deleted.lastErrorObject.n === 0) throw `Goal couldn't be deleted: deleteGoal`
-
     //now that we have deleted a goal, we want to remove the id from the user
     const userCollection = await users();
     let index;
-    let user = userCollection.findOne({_id: deleted.userId});
-    for(let i = 0; i < user.goals.length; i++){
-        if(user.goals[i] === id){
-            index = i;
-        }
-    }
-    let temp = user.goals.splice(index);
+    let user = await userCollection.findOne({_id: deleted.userId});
     let updated = {
         displayName: user.displayName,
         username: user.username,
@@ -105,10 +96,9 @@ const deleteGoal = async (id) => {
         incomingFriends: user.incomingFriends,
         history: user.history,
         categories: user.categories,
-        goals: temp
+        goals: user.goals-1
     }
     const updatedUser = await userCollection.findOneAndUpdate({_id: new ObjectId(deleted.userId)}, {$set: updated}, {returnDocument: "after"});
-    if(updatedUser.lastErrorObject.n === 0) throw `User could not be updated`;
 
     //return the goal that was deleted
     return deleted;
@@ -221,14 +211,16 @@ const getGoalsByUserId = async (id) => {
     if(user === null) throw `No user exists: getGoalsByUserId`;
 
     //add the goal objects to a goal array
-    let goals = [];
-    let goalIds = user.goals;
-    for(let i = 0; i < goalIds.length; i++){
-        let temp = await getGoalById(goalIds[i]);
-        goals.push(temp);
-    }
-    return goals;
+    let goalsArr = [];
 
+    const goalCollection = await goals();
+    let allGoals = await goalCollection.find().toArray({});
+    for(let i = 0; i < allGoals.length; i++){
+        if((allGoals[i].userId).toString() === id.toString()){
+            goalsArr.push(allGoals[i])
+        }
+    }
+    return goalsArr;
 };
 
 const likePost = async (userId, goalId) => {
@@ -251,19 +243,19 @@ const likePost = async (userId, goalId) => {
     //now we see if the user has liked the goal or not 
     let liked = false;
     let index;
-    for(let i = 0; i < goal.liked.length; i++){
-        if(user._id === goal.liked[i]){
+
+    console.log(goal)
+    for(let i = 0; i < goal.likes.length; i++){
+        if((user._id).toString() === (goal.likes[i]).toString()){
             liked = true;
             break;
         }
     }
-
-    let temp;
     if(liked){
-        temp = goal.liked.splice(index);
+        goal.likes.splice(index);
         console.log("UserId removed");
     }else{
-        temp = goal.liked.push(userId);
+        goal.likes.push(userId);
         console.log("UserId added");
     }
     //now update the overall goal
@@ -276,12 +268,10 @@ const likePost = async (userId, goalId) => {
         goalDate: goal.goalDate,
         successful: goal.successful,
         expenses: goal.expenses,
-        likes: temp
+        likes: goal.likes
     }
     const updatedGoal = await goalCollection.findOneAndUpdate({_id: new ObjectId(goalId)}, {$set: updated}, {returnDocument: "after"});
-    if(updatedGoal.lastErrorObject.n === 0) throw `Goal could not be updated`;
-    updatedGoal.value._id = updatedGoal.value._id.toString();
-    return updatedGoal.value;
+    return updatedGoal;
 };
 
 export {addGoal, deleteGoal, updateGoal, getAllGoals, getGoalById, getGoalsByUserId, likePost}
