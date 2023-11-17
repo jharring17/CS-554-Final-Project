@@ -1,6 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {Navigate} from 'react-router-dom';
 import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
+// import {register} from '../../../server/data/users.js';
 import {AuthContext} from '../context/AuthContext';
 import SocialSignIn from './SocialSignIn';
 function SignUp() {

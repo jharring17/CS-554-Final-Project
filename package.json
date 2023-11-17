@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"description": "Project with two servers for client and backend functions. Use this package to run the two servers at the same time.",
 	"main": "index.js",
+	"type": "module",
 	"scripts": {
 		"start": "concurrently \"npm run backend\" \"npm run client\"",
 		"backend": "node ./server/index.js",
@@ -12,5 +13,8 @@
 	"devDependencies": {
 		"concurrently": "^6.2.1",
 		"vite": "^4.4.5"
+	},
+	"dependencies": {
+		"mongodb": "^6.3.0"
 	}
 }
