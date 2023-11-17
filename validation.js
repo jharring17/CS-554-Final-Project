@@ -1,4 +1,4 @@
-import {users, goals} from '../config/mongoCollections.js';
+import {users, goals} from './server/config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
 
 export function stringChecker(string){

@@ -1,6 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {Navigate} from 'react-router-dom';
 import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
+import {register} from '../../../server/data/users.js';
 import {AuthContext} from '../context/AuthContext';
 import SocialSignIn from './SocialSignIn';
 function SignUp() {
@@ -15,11 +16,8 @@ function SignUp() {
     }
 
     try {
-      await doCreateUserWithEmailAndPassword(
-        email.value,
-        passwordOne.value,
-        displayName.value
-      );
+      await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, displayName.value);
+      await register(displayName.value, "username", passwordOne.value, 21);
     } catch (error) {
       alert(error);
     }
