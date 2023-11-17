@@ -37,7 +37,7 @@ const register = async (displayName, username, password, age) => {
         pendingFriends: [],
         incomingFriends: [],
         history: [],
-        categories: [],
+        categories: ["food", "utilities", "entertainment"],
         goals: []
 
     };
