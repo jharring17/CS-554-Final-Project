@@ -1,6 +1,5 @@
-// console.log('Implement me!');
-import { register } from "../data/users.js";
-import {dbConnection, closeConnection} from '../config/mongoConnection.js';
+import { register } from "./data/users.js";
+import {dbConnection, closeConnection} from './config/mongoConnection';
 
 const db = await dbConnection();
 await db.dropDatabase();
@@ -13,6 +12,7 @@ try {
 } catch (e) {
     console.log(e);
 }
+
 
 // try {
 //     let check = await checkUser("IBellaROse1@gmAil.cOM   ", "Iii9iw*u");
