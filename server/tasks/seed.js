@@ -30,7 +30,7 @@ try{
     console.log(e);
 }
 try{
-    goal2 = await addGoal(user2._id, "Groceries", "I want to spend $100 a week on groceries", "food", 100, "11/20/2023");
+    goal2 = await addGoal(user2._id, "Groceries", "I want to spend $100 a week on groceries", "food", 100, "12/20/2023");
     console.log(goal2);
 }catch(e){
     console.log(e);
