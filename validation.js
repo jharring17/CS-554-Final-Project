@@ -202,3 +202,9 @@ export function dateIsInThePast(date){//todays date is false, goals with this da
     return false;
   }
 }
+
+export function validId(id){
+  id = id.trim();
+  if(!ObjectId.isValid(id)) throw 'Invalid user id';
+  return id;
+}
