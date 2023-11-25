@@ -1,6 +1,6 @@
 // console.log('Implement me!');
 import { register } from "../data/users.js";
-import { addGoal, deleteGoal, getAllGoals, getGoalById, getGoalsByUserId, likePost } from "../data/goals.js";
+import { addGoal, deleteGoal, getAllGoals, getGoalById, getGoalsByUserId, likePost, updateGoal } from "../data/goals.js";
 import {dbConnection, closeConnection} from '../config/mongoConnection.js';
 
 const db = await dbConnection();
@@ -82,6 +82,11 @@ try{
     console.log(e);
 }
 
+try{
+    console.log(await updateGoal(goal2._id, user2._id, "New Title", "This is new", goal2.category, goal2.limit, goal2.goalDate, goal2.successful, goal2.expenses, goal2.likes))
+}catch(e){
+    console.log(e)
+}
 // try {
 //     let check = await checkUser("IBellaROse1@gmAil.cOM   ", "Iii9iw*u");
 //     console.log(check);
