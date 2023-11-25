@@ -123,11 +123,11 @@ const updateGoal = async (
     if(!title) throw `Title is required: updateGoal`;
     if(!description) throw `Description is required: updateGoal`;
     if(!category) throw `Category is required: updateGoal`;
+    if(!limit) throw 'Limit is required: updateGoal';
     if(!goalDate) throw `UserId is required: updateGoal`;
-    if(!successful) throw `Successful is required: updateGoal`;
+    if(successful != true && successful != false) throw `Successful is required: updateGoal`;
     if(!expenses) throw `Expenses Array is required: updateGoal`;
     if(!likes) throw `Likes array is required: updateGoal`;
-
 
     //check to see that the id and userId is valid
     if(!ObjectId.isValid(id)) throw `Invalid Id: updateGoal`;
@@ -143,7 +143,7 @@ const updateGoal = async (
     limit = helper.limitChecker(limit);
 
     //make sure that the category is a valid category for the user
-    category = helper.categoryChecker(userId, category)
+    category = await helper.categoryChecker(userId, category)
 
     //make sure date is in the format mm/dd/yyyy
     goalDate = helper.goalDateChecker(goalDate)
@@ -157,10 +157,9 @@ const updateGoal = async (
 
     //make sure that at least one attribute has changed
     let curr = await getGoalById(id);
-    if(userId = curr.userId && title === curr.title && description === curr.description && category === curr.category && goalDate === curr.goalDate && successful === curr.successful && expenses === curr.expenses && likes === curr.likes){
+    if(userId === curr.userId && title === curr.title && description === curr.description && category === curr.category && goalDate === curr.goalDate && successful === curr.successful && expenses === curr.expenses && likes === curr.likes){
         throw `At least 1 input needs to be different when you update: updateGoal`;
     }
-
     //now we can replace the goal
     let updated = {
         userId,
@@ -176,8 +175,7 @@ const updateGoal = async (
 
     const goalCollection = await goals();
     const updatedGoal = await goalCollection.findOneAndUpdate({_id: new ObjectId(id)}, {$set: updated}, {returnDocument: "after"});
-    if(updatedGoal.lastErrorObject.n === 0) throw `Goal could not be updated`;
-    return updatedGoal.value;
+    return updatedGoal;
 };
 
 const getAllGoals = async () => {

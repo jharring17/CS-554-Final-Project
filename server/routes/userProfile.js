@@ -115,7 +115,7 @@ router
         if(req.body.category){
             try{
                 req.body.category = validate.stringChecker(req.body.category);
-                req.body.category = validate.categoryChecker(req.body.category);            
+                req.body.category = await validate.categoryChecker(req.body.category);            
             }catch(e){
                 return res.status(400).json({error: e})
             }
