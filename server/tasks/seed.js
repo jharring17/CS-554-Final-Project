@@ -1,5 +1,5 @@
 // console.log('Implement me!');
-import { register, login } from "../data/users.js";
+import { register, login, editUserInfo } from "../data/users.js";
 import { addGoal, deleteGoal, getAllGoals, getGoalById, getGoalsByUserId, likePost, updateGoal } from "../data/goals.js";
 import {dbConnection, closeConnection} from '../config/mongoConnection.js';
 
@@ -28,6 +28,12 @@ try {
     let failedSignIn  = await login("iblarose1", "Password123!"); //wrong username
 } catch (e) {
     console.log("successfully FAILED to sign in user 1");
+}
+try {
+    user1 = await editUserInfo("BellaStone", "ibellarose1", "Password123!", 21); //can't edit username
+    console.log(user1);
+} catch (e) {
+    console.log(e);
 }
 try {
     user2 = await register("MeganSanford", "megxxsan", "Abc123!!", 21);
