@@ -84,7 +84,7 @@ router
             return res.status(400).json({error: e})
         }
         //check to make sure at least 1 field is supplied
-        if(!req.body.title && !req.body.description && !req.body.category && !req.body.limit && !req.body.goalDate && !req.body.successful && !req.body.expenses && !likes){
+        if(!req.body.title && !req.body.description && !req.body.category && !req.body.limit && !req.body.goalDate && !req.body.successful && !req.body.expenses && !req.body.likes){
                 return res.status(400).json({error: "At least one field must be updated"})
         }
         let user;
@@ -174,5 +174,24 @@ router
             return res.status(200).json(updated)
         }catch(e){
             return res.status(500).json({error: e})
+        }
+    })
+router
+    .route("/:userId/history")
+    .get(async (req, res) => {
+        //validate the id
+        let id = req.params.userId;
+        try{
+            id = validate.validId(id);
+        }catch(e){
+            return res.status(400).json({error: e})
+        }
+        try{
+            let history = await users.getHistory(id);
+            return res.status(200).json({history: history});
+        }
+        catch (e)
+        {
+            return res.status(404).json({error: e})
         }
     })
