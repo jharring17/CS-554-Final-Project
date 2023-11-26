@@ -1,4 +1,4 @@
-// register, login, delete, editUser, getUser, getFeed, getHistory
+// register, login, editUser, getUser, getFeed, getHistory
 import {users, goals} from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import { getGoalsByUserId } from './goals.js';
@@ -7,7 +7,6 @@ import bcrypt from 'bcrypt';
 const saltRounds = 2;
 
 const register = async (displayName, username, password, age) => {
-
     if (!displayName || !username || !password || !age) {
       throw 'All input fields must be provided :: register';
     }
@@ -16,23 +15,23 @@ const register = async (displayName, username, password, age) => {
         throw 'Too young to make account :: register';
     }
   
-    // firstName = checkName(firstName, "First name");
-    // lastName = checkName(lastName, "Last name");
-  
+    displayName = helper.checkName(displayName, "display name");
+    username = helper.checkName(username, "username");
+    password = helper.checkPassword(password);
+
     const userCollection = await users();
     const user = await userCollection.findOne({username: username});
     if (user != null) {
       throw `User already exists with this username :: register`;
     }
   
-    password = helper.checkPassword(password);
     const hash = await bcrypt.hash(password, saltRounds);
   
     //actually insert
     let newUser = {
         displayName,
         username, 
-        password,
+        password: hash,
         friends: [],
         pendingFriends: [],
         incomingFriends: [],
@@ -46,6 +45,34 @@ const register = async (displayName, username, password, age) => {
       throw 'Could not add user :: register';
     }
     return newUser;
+}
+
+const login = async (username, password) => {
+    if (!username || !password) {
+        throw 'All input fields must be provided :: login';
+    }
+
+    username = helper.checkName(username, "username");
+    password = helper.checkPassword(password);
+
+    const userCollection = await users();
+    const user = await userCollection.findOne({username: username});
+    if (user === null) {
+        throw `Either the username or password is invalid :: login`;
+    }
+    else {
+        let same = await bcrypt.compare(password, user.password);
+        if (same) {
+            return user;
+        }
+        else {
+            throw `Either the email address or password is invalid :: login`;
+        }
+    }
+}
+
+const editUserInfo = async (username, password) => {
+   
 }
 
 const getUser = async (id) => {
@@ -107,4 +134,4 @@ const getHistory = async (id) => {
     }
     return pastHistory;
 };
-export { register, getUser, getFeed, getHistory }
+export { register, login, editUserInfo, getUser, getFeed, getHistory }
