@@ -1,4 +1,4 @@
-// register, login, delete, editUser, getUser, getFeed, getHistory
+// register, login, editUser, getUser, getFeed, getHistory
 import {users, goals} from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import { getGoalsByUserId } from './goals.js';
@@ -7,45 +7,108 @@ import bcrypt from 'bcrypt';
 const saltRounds = 2;
 
 const register = async (displayName, username, password, age) => {
-
     if (!displayName || !username || !password || !age) {
       throw 'All input fields must be provided :: register';
     }
 
-    if (age < 13) {
+    if (Number.isNaN(age) || age < 13) {
         throw 'Too young to make account :: register';
     }
   
-    // firstName = checkName(firstName, "First name");
-    // lastName = checkName(lastName, "Last name");
-  
+    displayName = helper.checkName(displayName, "display name");
+    username = helper.checkName(username, "username");
+    password = helper.checkPassword(password);
+
     const userCollection = await users();
     const user = await userCollection.findOne({username: username});
     if (user != null) {
       throw `User already exists with this username :: register`;
     }
   
-    password = helper.checkPassword(password);
     const hash = await bcrypt.hash(password, saltRounds);
   
     //actually insert
     let newUser = {
         displayName,
         username, 
-        password,
+        password: hash,
         friends: [],
         pendingFriends: [],
         incomingFriends: [],
         history: [],
         categories: ["food", "utilities", "entertainment"],
         goals: []
-
     };
     const insertInfo = await userCollection.insertOne(newUser); 
     if (!insertInfo.acknowledged || !insertInfo.insertedId) {
       throw 'Could not add user :: register';
     }
     return newUser;
+}
+
+const login = async (username, password) => {
+    if (!username || !password) {
+        throw 'All input fields must be provided :: login';
+    }
+
+    username = helper.checkName(username, "username");
+    password = helper.checkPassword(password);
+
+    const userCollection = await users();
+    const user = await userCollection.findOne({username: username});
+    if (user === null) {
+        throw `Either the username or password is invalid :: login`;
+    }
+    else {
+        let same = await bcrypt.compare(password, user.password);
+        if (same) {
+            return user;
+        }
+        else {
+            throw `Either the email address or password is invalid :: login`;
+        }
+    }
+}
+
+const editUserInfo = async (displayName, username, password, age) => {
+    if (!displayName || !username || !password || !age) {
+        throw 'All input fields must be provided :: editUserInfo';
+    }
+    
+    if (Number.isNaN(age) || age < 13) {
+        throw 'Too young to make account :: editUserInfo';
+    }
+  
+    displayName = helper.checkName(displayName, "display name");
+    username = helper.checkName(username, "username");
+    password = helper.checkPassword(password);
+    const hash = await bcrypt.hash(password, saltRounds);
+
+    const userCollection = await users();
+    const currentUser = await userCollection.findOne({username: username});
+    console.log(currentUser)
+    //now do the update
+    const updatedUser = {
+        displayName,
+        username, 
+        password: hash,
+        friends: currentUser.friends,
+        pendingFriends: currentUser.pendingFriends,
+        incomingFriends: currentUser.incomingFriends,
+        history: currentUser.history,
+        categories: currentUser.categories,
+        goals: currentUser.goals
+    };
+    
+    const updatedInfo = await userCollection.findOneAndUpdate(
+        {username: username},
+        {$set: updatedUser},
+        {returnDocument: 'after'}
+    );
+    if (updatedInfo === null) {
+        throw 'Could not update user successfully :: editUserInfo';
+    }
+    return updatedInfo;
 }
 
 const getUser = async (id) => {
@@ -107,4 +170,4 @@ const getHistory = async (id) => {
     }
     return pastHistory;
 };
-export { register, getUser, getFeed, getHistory }
+export { register, login, editUserInfo, getUser, getFeed, getHistory }

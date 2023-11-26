@@ -1,5 +1,5 @@
 // console.log('Implement me!');
-import { register } from "../data/users.js";
+import { register, login, editUserInfo } from "../data/users.js";
 import { addGoal, deleteGoal, getAllGoals, getGoalById, getGoalsByUserId, likePost, updateGoal } from "../data/goals.js";
 import {dbConnection, closeConnection} from '../config/mongoConnection.js';
 
@@ -12,13 +12,31 @@ let goal1 = undefined;
 let goal2 = undefined;
 
 try {
-    user1 = await register("Isabella Stone", "ibellarose1", "Password123!", 21);
+    user1 = await register("IsabellaStone", "ibellarose1", "Password123!", 21);
     console.log(user1);
 } catch (e) {
     console.log(e);
 }
 try {
-    user2 = await register("Megan Sanford", "megxsan", "Abc123!!", 21);
+    let signedIn = await login("ibelLArose1 ", "Password123!");
+    console.log("succesfully logged in user 1");
+} catch (e) {
+    console.log(e);
+}
+try {
+    // let failedSignIn  = await login("ibellarose1", "Paord123!"); //wrong password
+    let failedSignIn  = await login("iblarose1", "Password123!"); //wrong username
+} catch (e) {
+    console.log("successfully FAILED to sign in user 1");
+}
+try {
+    user1 = await editUserInfo("BellaStone", "ibellarose1", "Password123!", 21); //can't edit username
+    console.log(user1);
+} catch (e) {
+    console.log(e);
+}
+try {
+    user2 = await register("MeganSanford", "megxxsan", "Abc123!!", 21);
     console.log(user2);
 } catch (e) {
     console.log(e);

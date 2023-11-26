@@ -16,11 +16,8 @@ function SignUp() {
     }
 
     try {
-      await doCreateUserWithEmailAndPassword(
-        email.value,
-        passwordOne.value,
-        displayName.value
-      );
+      await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, displayName.value);
+      // await register(displayName.value, "username", passwordOne.value, 21);
     } catch (error) {
       alert(error);
     }
