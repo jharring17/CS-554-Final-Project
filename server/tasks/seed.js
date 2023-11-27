@@ -1,5 +1,5 @@
 // console.log('Implement me!');
-import { register, login, editUserInfo } from "../data/users.js";
+import { register, login, editUserInfo, getUser, getFeed, getHistory } from "../data/users.js";
 import { addGoal, deleteGoal, getAllGoals, getGoalById, getGoalsByUserId, likePost, updateGoal } from "../data/goals.js";
 import {dbConnection, closeConnection} from '../config/mongoConnection.js';
 
