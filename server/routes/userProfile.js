@@ -16,7 +16,8 @@ router
         }
         //get all of the goals for the user
         try{
-            let allGoals = goals.getGoalsByUserId(id);
+            let allGoals = await goals.getGoalsByUserId(id);
+            console.log(allGoals)
             return res.json(allGoals);
         }catch(e){
             return res.status(404).json({error: e})
@@ -118,9 +119,9 @@ router
         if(!req.body.title && !req.body.description && !req.body.category && !req.body.limit && !req.body.goalDate && !req.body.successful && !req.body.expenses && !req.body.likes){
                 return res.status(400).json({error: "At least one field must be updated"})
         }
-        let user;
+        let goal;
         try{
-            user = await users.getUser(id);
+            goal = await goals.getGoalById(goalId);
         }catch(e){
             return res.status(404).json({error: e})
         }
@@ -132,7 +133,7 @@ router
                 return res.status(400).json({error: e})
             }
         }else{
-            req.body.title = user.title;
+            req.body.title = goal.title;
         }
         if(req.body.description){
             try{
@@ -141,7 +142,7 @@ router
                 return res.status(400).json({error: e})
             }
         }else{
-            req.body.description = user.description;
+            req.body.description = goal.description;
         }
         if(req.body.category){
             try{
@@ -151,7 +152,7 @@ router
                 return res.status(400).json({error: e})
             }
         }else{
-            req.body.category = user.category;
+            req.body.category = goal.category;
         }
         if(req.body.limit){
             try{
@@ -160,7 +161,7 @@ router
                 return res.status(400).json({error: e})
             }
         }else{
-            req.body.limit = user.limit;
+            req.body.limit = goal.limit;
         }
         if(req.body.goalDate){
             try{
@@ -170,7 +171,7 @@ router
                 return res.status(400).json({error: e})
             }
         }else{
-            req.body.goalDate = user.goalDate;
+            req.body.goalDate = goal.goalDate;
         }
         if(req.body.successful){
             try{
@@ -179,7 +180,7 @@ router
                 return res.status(400).json({error: e})
             }
         }else{
-            req.body.successful = user.successful;
+            req.body.successful = goal.successful;
         }
         if(req.body.expenses){
             try{
@@ -188,7 +189,7 @@ router
                 return res.status(400).json({error: e})
             }
         }else{
-            req.body.expenses = user.expenses;
+            req.body.expenses = goal.expenses;
         }
         if(req.body.likes){
             try{
@@ -197,7 +198,7 @@ router
                 return res.status(400).json({error: e})
             }
         }else{
-            req.body.likes = user.likes;
+            req.body.likes = goal.likes;
         }
         //now update the goal
         try{
