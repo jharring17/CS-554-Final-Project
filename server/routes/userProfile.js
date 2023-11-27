@@ -25,15 +25,15 @@ router
 
 router 
     .route("/:userId/editProfile")
-    .get(async (req, res) => {
-        return res.status(200).json({message: "working!"});
-    })
     .post(async (req, res) => {
         let displayName = req.body.displayName;
         let username = req.body.username;
         let password = req.body.password;
+        let age = req.body.age;
 
-        let user = goals.getGoalsByUserId(req.params.userId);
+        console.log(req.params.userId)
+        let user = await goals.getGoalsByUserId(req.params.userId);
+        console.log(user)
 
         //if they didn't supply these vars to change, set them to what they already are
         if (!displayName) {
@@ -45,11 +45,19 @@ router
         if (!password) {
             password = user.password; //does this work ok - does it just resave the hashed pass?
         }
+        if (!age) {
+            age = user.age;
+        }
 
         try {
+            console.log(displayName)
+            console.log(username)
+            console.log(password)
+            console.log(age)
             await users.editUserInfo(displayName, username, password, age);
         }
-        catch {
+        catch (e) {
+            console.log(e);
             return res.status(500).json({error: e})
         }
     })
