@@ -57,8 +57,7 @@ const addGoal = async (
 
     //now that we have a new goal, we want to add the id to the user
     const userCollection = await users();
-    let user = await userCollection.findOne({_id: userId});
-
+    let user = await userCollection.findOne({_id: new ObjectId(userId)});
     let updated = {
         displayName: user.displayName,
         username: user.username,
@@ -68,7 +67,8 @@ const addGoal = async (
         incomingFriends: user.incomingFriends,
         history: user.history,
         categories: user.categories,
-        goals: (user.goals).push(newGoal._id)
+        // goals: (user.goals).push(newGoal._id)
+        goals: (user.goals + 1)
     }
     const updatedUser = await userCollection.findOneAndUpdate({_id: new ObjectId(userId)}, {$set: updated}, {returnDocument: "after"});
 
