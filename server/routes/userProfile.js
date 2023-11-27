@@ -24,6 +24,37 @@ router
     });
 
 router 
+    .route("/:userId/editProfile")
+    .get(async (req, res) => {
+        return res.status(200).json({message: "working!"});
+    })
+    .post(async (req, res) => {
+        let displayName = req.body.displayName;
+        let username = req.body.username;
+        let password = req.body.password;
+
+        let user = goals.getGoalsByUserId(req.params.userId);
+
+        //if they didn't supply these vars to change, set them to what they already are
+        if (!displayName) {
+            displayName = user.displayName;
+        }
+        if (!username) {
+            username = user.username;
+        }
+        if (!password) {
+            password = user.password; //does this work ok - does it just resave the hashed pass?
+        }
+
+        try {
+            await users.editUserInfo(displayName, username, password, age);
+        }
+        catch {
+            return res.status(500).json({error: e})
+        }
+    })
+
+router 
     .route("/:userId/newGoal")
     .get(async (req, res) => {
         //validate the id
@@ -195,3 +226,5 @@ router
             return res.status(404).json({error: e})
         }
     })
+
+export default router;
