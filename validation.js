@@ -2,11 +2,22 @@
 import {users, goals} from './server/config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
 
-export function stringChecker(string){
+export function stringChecker(string) {
     if(typeof string != 'string') throw `Input must be a string`;
     string = string.trim();
     if(string.length === 0) throw `String cannot be empty`;
     return string;
+}
+
+export function checkName(name, stringName) {
+    name = stringChecker(name);
+    if (stringName.toLowerCase().trim() === "username") {
+      name = name.toLowerCase();
+    }
+    if (!(/^[a-zA-Z0-9]+$/.test(name)) || name.length < 8 || name.length > 20) {
+      throw `${stringName} is invalid :: checkName`;
+    }
+    return name;
 }
 
 export function limitChecker(limit){
@@ -16,7 +27,7 @@ export function limitChecker(limit){
 }
 
 export const checkPassword = (password) => {
-  password = stringChecker(password);
+  // password = stringChecker(password);
 
   if (password.split(" ").length > 1) {
       throw `Error: Password cannot contain spaces`;
