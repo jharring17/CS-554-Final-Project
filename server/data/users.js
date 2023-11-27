@@ -116,9 +116,12 @@ const getUser = async (id) => {
     if(!ObjectId.isValid(id)) throw `Invalid id: getUser`;
 
     const userCollection = await users();
-    let user = userCollection.findOne({_id: new ObjectId(id)});
+    let user = await userCollection.findOne({_id: new ObjectId(id)});
     if (user)
+    {
+        user._id = user._id.toString();
         return user;
+    }
     else
         throw "User not found: getUser";
 };
