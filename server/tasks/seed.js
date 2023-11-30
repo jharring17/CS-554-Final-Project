@@ -45,8 +45,8 @@ try {
 	console.log('successfully FAILED to sign in user 1');
 }
 try {
-	user1 = await editUserInfo('BellaStone', 'ibellarose1', 'Password123!', 21); //can't edit username
-	console.log(user1);
+    let newUser1 = await editUserInfo(user1._id, "BellaStone", "ibellarose1", "Password123!", 21); //can't edit username
+    console.log(newUser1);
 } catch (e) {
 	console.log(e);
 }

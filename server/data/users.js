@@ -70,14 +70,14 @@ const login = async (username, password) => {
     }
 }
 
-const editUserInfo = async (displayName, username, password, age) => {
-    if (!displayName || !username || !password || !age) {
+const editUserInfo = async (userId, displayName, username, password) => {
+    if (!displayName || !username || !password) {
         throw 'All input fields must be provided :: editUserInfo';
     }
     
-    if (Number.isNaN(age) || age < 13) {
-        throw 'Too young to make account :: editUserInfo';
-    }
+    // if (Number.isNaN(age) || age < 13) {
+    //     throw 'Too young to make account :: editUserInfo';
+    // }
   
     displayName = helper.checkName(displayName, "display name");
     username = helper.checkName(username, "username");
@@ -85,8 +85,8 @@ const editUserInfo = async (displayName, username, password, age) => {
     const hash = await bcrypt.hash(password, saltRounds);
 
     const userCollection = await users();
-    const currentUser = await userCollection.findOne({username: username});
-    console.log(currentUser)
+    const currentUser = await userCollection.findOne({_id: new ObjectId(userId)});
+    // console.log(currentUser)
     //now do the update
     const updatedUser = {
         displayName,
@@ -100,11 +100,13 @@ const editUserInfo = async (displayName, username, password, age) => {
         goals: currentUser.goals
     };
     
+    // console.log(userId)
     const updatedInfo = await userCollection.findOneAndUpdate(
-        {username: username},
+        {_id: new ObjectId(userId)},
         {$set: updatedUser},
         {returnDocument: 'after'}
     );
+    // console.log(updatedInfo)
     if (updatedInfo === null) {
         throw 'Could not update user successfully :: editUserInfo';
     }

@@ -26,15 +26,12 @@ router
 
 router 
     .route("/:userId/editProfile")
-    .get(async (req, res) => {
-        return res.status(200).json({message: "working!"});
-    })
     .post(async (req, res) => {
         let displayName = req.body.displayName;
         let username = req.body.username;
         let password = req.body.password;
 
-        let user = goals.getGoalsByUserId(req.params.userId);
+        let user = await users.getUser(req.params.userId);
 
         //if they didn't supply these vars to change, set them to what they already are
         if (!displayName) {
@@ -48,9 +45,11 @@ router
         }
 
         try {
-            await users.editUserInfo(displayName, username, password, age);
+            let newUser = await users.editUserInfo(req.params.userId, displayName, username, password);
+            return res.status(200).json(newUser)
         }
-        catch {
+        catch (e) {
+            console.log(e);
             return res.status(500).json({error: e})
         }
     })
@@ -225,6 +224,18 @@ router
         catch (e)
         {
             return res.status(404).json({error: e})
+        }
+    })
+
+router
+    .route("/:userId/friends")
+    .get(async (req, res) => {
+        try {
+            // let friends = friends.getALlFriends(req.params.userId);
+            return res.status(200).json(friends);
+        }
+        catch (e) {
+            return res.status(500).json({error: e})
         }
     })
 
