@@ -1,5 +1,5 @@
 // getExpenseById, addExpense, delExpense, editExpense
-import { goals, expense } from '../config/mongoCollections.js';
+import { goals, expenses } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import * as helper from '../../validation.js';
 
@@ -10,7 +10,7 @@ const getExpenseById = async (expenseId) => {
 	if (!ObjectId.isValid(expenseId)) throw `Invalid id: getExpenseById`;
 
 	// Get the expense from expense collection.
-	const expenseCollection = await expense();
+	const expenseCollection = await expenses();
 	let expense = expenseCollection.findOne({ _id: new ObjectId(expenseId) });
 
 	// Check if an expense was found.
@@ -33,6 +33,7 @@ const getExpensesByGoalId = async (goalId) => {
 	else throw 'Goal not found: getExpensesByGoalId';
 };
 
+//? TEST: update date if needed.
 // Add an expense to the database.
 const addExpense = async (goalId, description, amount, date) => {
 	// Validate the user ID.
@@ -43,22 +44,29 @@ const addExpense = async (goalId, description, amount, date) => {
 	description = helper.stringChecker(description);
 
 	// Validate the amount.
-	amount = helper.amountChecker(amount);
+	amount = helper.limitChecker(amount);
 
-	// TODO: Validate the date.
+	// Validate the date.
+	date = helper.goalDateChecker(date);
+	let goalCollection = await goals();
+	let goal = await goalCollection.findOne({ _id: new ObjectId(goalId) });
+	console.log(goal);
+	let goalDate = Date.parse(goal.goalDate);
+	let expenseDate = Date.parse(date);
+	if (expenseDate > goalDate) throw `Invalid date entered for expense: addExpense`;
 
 	// Create the expense object.
 	let expense = {
+		goalId: goalId,
 		description: description,
 		amount: amount,
 		date: date,
 	};
-	let expenseCollection = await expense();
+	let expenseCollection = await expenses();
 	let insertInfo = await expenseCollection.insertOne(expense);
 	if (insertInfo.insertedCount === 0) throw 'Could not add expense: addExpense';
 
 	// Add the expenseId to the goal with corresponding goalId.
-	let goalCollection = await goals();
 	let updateInfo = await goalCollection.updateOne(
 		{ _id: new ObjectId(goalId) },
 		{ $push: { expenses: insertInfo.insertedId } }
@@ -69,6 +77,7 @@ const addExpense = async (goalId, description, amount, date) => {
 	return await getExpenseById(insertInfo.insertedId);
 };
 
+//? TEST
 // Delete an expense from the database.
 const delExpense = async (expenseId) => {
 	// Validate the expense ID.
@@ -76,9 +85,9 @@ const delExpense = async (expenseId) => {
 	if (!ObjectId.isValid(expenseId)) throw `Invalid Expense ID: delExpense`;
 
 	// Delete the expense from expense collection.
-	const expenseCollection = await expense();
+	const expenseCollection = await expenses();
 	let deletedExpense = await getExpenseById(expenseId);
-	let deleteInfo = await expenseCollection.removeOne({ _id: new ObjectId(expenseId) });
+	let deleteInfo = await expenseCollection.deleteOne({ _id: new ObjectId(expenseId) });
 	if (deleteInfo.deletedCount === 0) throw 'Could not delete expense: delExpense';
 
 	// Delete the expenseId from the goal with corresponding goalId.
@@ -92,6 +101,7 @@ const delExpense = async (expenseId) => {
 	return deletedExpense;
 };
 
+//? TEST: update date if needed
 // Edit an expense in the database.
 const editExpense = async (expenseId, description, amount, date) => {
 	// Validate the expense ID.
@@ -102,12 +112,19 @@ const editExpense = async (expenseId, description, amount, date) => {
 	description = helper.stringChecker(description);
 
 	// Validate the amount.
-	amount = helper.amountChecker(amount);
+	amount = helper.limitChecker(amount);
 
-	// TODO: Validate the date.
+	// Validate the date.
+	date = helper.goalDateChecker(date);
+	const expenseCollection = await expenses();
+	const goalCollection = await goals();
+	let expense = await expenseCollection.findOne({ _id: new ObjectId(expenseId) });
+	let goal = await goalCollection.findOne({ _id: new ObjectId(expense.goalId) });
+	let expenseDate = Date.parse(date);
+	let goalDate = Date.parse(goal.goalDate);
+	if (expenseDate > goalDate) throw `Invalid date entered for expense: editExpense`;
 
 	// Update the expense in expense collection.
-	const expenseCollection = await expense();
 	let updateInfo = await expenseCollection.updateOne(
 		{ _id: new ObjectId(expenseId) },
 		{ $set: { description: description, amount: amount, date: date } },

@@ -1,18 +1,18 @@
-import { dbConnection } from "./mongoConnection.js";
+import { dbConnection } from './mongoConnection.js';
 
 const getCollectionFn = (collection) => {
-  let _col = undefined;
+	let _col = undefined;
 
-  return async () => {
-    if (!_col) {
-      const db = await dbConnection();
-      _col = await db.collection(collection);
-    }
+	return async () => {
+		if (!_col) {
+			const db = await dbConnection();
+			_col = await db.collection(collection);
+		}
 
-    return _col;
-  };
+		return _col;
+	};
 };
 
-export const users = getCollectionFn("users");
-export const goals = getCollectionFn("goals");
-export const expense = getCollectionFn("expense");
+export const users = getCollectionFn('users');
+export const goals = getCollectionFn('goals');
+export const expenses = getCollectionFn('expenses');
