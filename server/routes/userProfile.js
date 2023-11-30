@@ -1,6 +1,7 @@
 import * as goals from "../data/goals.js";
 import * as users from "../data/users.js"
 import * as validate from "../../validation.js";
+import * as friends from "../data/friends.js";
 import { Router } from "express";
 const router = Router();
 
@@ -86,6 +87,39 @@ router
             let added = await goals.addGoal(id, req.body.title, req.body.description, req.body.category, req.body.limit, req.body.goalDate);
             return res.status(200).json(added)
         }catch(e){
+            return res.status(500).json({error: e})
+        }
+    })
+
+router
+    .route("/:userId/history")
+    .get(async (req, res) => {
+        //validate the id
+        let id = req.params.userId;
+        try{
+            id = validate.validId(id);
+        }catch(e){
+            return res.status(400).json({error: e})
+        }
+        try{
+            let history = await users.getHistory(id);
+            return res.status(200).json({history: history});
+        }
+        catch (e)
+        {
+            return res.status(404).json({error: e})
+        }
+    })
+
+router
+    .route("/:userId/friends")
+    .get(async (req, res) => {
+        try {
+            let friendList = await friends.getAllFriends(req.params.userId);
+            return res.status(200).json(friendList);
+        }
+        catch (e) {
+            console.log(e)
             return res.status(500).json({error: e})
         }
     })
@@ -204,37 +238,6 @@ router
             let updated = await goals.updateGoal(goalId, id, req.body.title, req.body.description, req.body.category, req.body.limit, req.body.goalDate, req.body.successful, req.body.expenses, req.body.likes);
             return res.status(200).json(updated)
         }catch(e){
-            return res.status(500).json({error: e})
-        }
-    })
-router
-    .route("/:userId/history")
-    .get(async (req, res) => {
-        //validate the id
-        let id = req.params.userId;
-        try{
-            id = validate.validId(id);
-        }catch(e){
-            return res.status(400).json({error: e})
-        }
-        try{
-            let history = await users.getHistory(id);
-            return res.status(200).json({history: history});
-        }
-        catch (e)
-        {
-            return res.status(404).json({error: e})
-        }
-    })
-
-router
-    .route("/:userId/friends")
-    .get(async (req, res) => {
-        try {
-            // let friends = friends.getALlFriends(req.params.userId);
-            return res.status(200).json(friends);
-        }
-        catch (e) {
             return res.status(500).json({error: e})
         }
     })

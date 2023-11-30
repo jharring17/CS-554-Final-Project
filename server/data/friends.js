@@ -1,4 +1,4 @@
-import { users } from "../config/mongoCollections";
+import { users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 
 const sendFriendRequest = async (fromUserId, toUserId) => {
