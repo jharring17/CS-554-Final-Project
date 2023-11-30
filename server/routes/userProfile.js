@@ -30,11 +30,8 @@ router
         let displayName = req.body.displayName;
         let username = req.body.username;
         let password = req.body.password;
-        let age = req.body.age;
 
-        console.log(req.params.userId)
-        let user = await goals.getGoalsByUserId(req.params.userId);
-        console.log(user)
+        let user = await users.getUser(req.params.userId);
 
         //if they didn't supply these vars to change, set them to what they already are
         if (!displayName) {
@@ -46,16 +43,10 @@ router
         if (!password) {
             password = user.password; //does this work ok - does it just resave the hashed pass?
         }
-        if (!age) {
-            age = user.age;
-        }
 
         try {
-            console.log(displayName)
-            console.log(username)
-            console.log(password)
-            console.log(age)
-            await users.editUserInfo(displayName, username, password, age);
+            let newUser = await users.editUserInfo(req.params.userId, displayName, username, password);
+            return res.status(200).json(newUser)
         }
         catch (e) {
             console.log(e);
@@ -233,6 +224,18 @@ router
         catch (e)
         {
             return res.status(404).json({error: e})
+        }
+    })
+
+router
+    .route("/:userId/friends")
+    .get(async (req, res) => {
+        try {
+            // let friends = friends.getALlFriends(req.params.userId);
+            return res.status(200).json(friends);
+        }
+        catch (e) {
+            return res.status(500).json({error: e})
         }
     })
 
