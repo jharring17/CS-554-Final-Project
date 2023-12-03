@@ -255,24 +255,24 @@ try {
     console.log(e);
 }
 
-// try {
-// 	let sent1, received1;
-// 	if (user1 && user2)
-// 	{
-// 		sent1 = await sendFriendRequest(user1._id.toString(),user2._id.toString());
-// 		console.log(sent1);
-// 		received1 = await acceptRequest(user2._id.toString(),user1._id.toString());
-// 		console.log(received1);
-// 	}
-// }
-// catch (e)
-// {
-// 	console.log(e);
-// }
+try {
+	let sent1, received1;
+	if (user1 && user2)
+	{
+		sent1 = await sendFriendRequest(user1._id.toString(),user2._id.toString());
+		console.log(sent1);
+		received1 = await acceptRequest(user2._id.toString(),user1._id.toString());
+		console.log(received1);
+	}
+}
+catch (e)
+{
+	console.log(e);
+}
 
 try {
-	// let feed1 = await getFeed(user2._id.toString());
-    // console.log(feed1);
+	let feed1 = await getFeed(user2._id.toString());
+    console.log(feed1);
 } catch (e) {
     console.log(e);
 }
