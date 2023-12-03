@@ -8,7 +8,8 @@ const addGoal = async (
     description,
     category,
     limit,
-    goalDate
+    goalDate,
+    seedingBool //optional: true for seeding past dates (needed for history/feed), false or undefined otherwise
 ) => {
 
     //check that all inputs are provided
@@ -34,7 +35,10 @@ const addGoal = async (
     category = await helper.categoryChecker(userId, category)
 
     //make sure date is in the format mm/dd/yyyy
-    goalDate = helper.goalDateChecker(goalDate)
+    if (!seedingBool)
+    {
+        goalDate = helper.goalDateChecker(goalDate)
+    }
 
     let newGoal = {
         userId: userId,

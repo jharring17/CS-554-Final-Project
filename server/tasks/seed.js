@@ -1,5 +1,5 @@
 // console.log('Implement me!');
-import { register, login, editUserInfo, getUser, getFeed, getHistory } from '../data/users.js';
+import { register, login, editUserInfo, getUser, getFeed, getHistory, updateHistory } from '../data/users.js';
 import {
 	addGoal,
 	deleteGoal,
@@ -16,6 +16,16 @@ import {
 	delExpense,
 	editExpense,
 } from '../data/expenses.js';
+import {
+	sendFriendRequest, 
+	acceptRequest, 
+	declineRequest, 
+	cancelRequest, 
+	removeFriend, 
+	getPendingRequests, 
+	getIncomingRequests, 
+	getAllFriends} from '../data/friends.js';
+
 import { dbConnection, closeConnection } from '../config/mongoConnection.js';
 
 const db = await dbConnection();
@@ -163,6 +173,38 @@ try {
 	console.log(e);
 }
 
+let goal4 = undefined;
+try {
+	goal4 = await addGoal(
+		user1._id,
+		'Movie Limitation',
+		'I want to spend $25 a week on movies',
+		'entertainment',
+		25,
+		'11/30/2023',
+		true
+	);
+	console.log(goal4);
+} catch (e) {
+	console.log(e);
+}
+
+let goal5 = undefined;
+try {
+	goal5 = await addGoal(
+		user2._id,
+		'Bar Hopping',
+		'I want to spend $40 a week when going to bars',
+		'entertainment',
+		40,
+		'11/25/2023',
+		true
+	);
+	console.log(goal4);
+} catch (e) {
+	console.log(e);
+}
+
 let expense1 = undefined;
 try {
 	expense1 = await addExpense(goal3._id, 'I bought a sandwich', 5.0, '12/18/2023');
@@ -191,6 +233,49 @@ try {
 // } catch (e) {
 //     console.log(e);
 // }
+
+try {
+	let hist1;
+	if (user1)
+	{
+		hist1 = await getHistory(user1._id.toString());
+	}
+    console.log(hist1);
+} catch (e) {
+    console.log(e);
+}
+try {
+	let hist2;
+	if (user2)
+	{
+		hist2 = await getHistory(user2._id.toString());
+	}
+    console.log(hist2);
+} catch (e) {
+    console.log(e);
+}
+
+// try {
+// 	let sent1, received1;
+// 	if (user1 && user2)
+// 	{
+// 		sent1 = await sendFriendRequest(user1._id.toString(),user2._id.toString());
+// 		console.log(sent1);
+// 		received1 = await acceptRequest(user2._id.toString(),user1._id.toString());
+// 		console.log(received1);
+// 	}
+// }
+// catch (e)
+// {
+// 	console.log(e);
+// }
+
+try {
+	// let feed1 = await getFeed(user2._id.toString());
+    // console.log(feed1);
+} catch (e) {
+    console.log(e);
+}
 
 await closeConnection();
 console.log('\nDone seeding!');
