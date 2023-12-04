@@ -128,13 +128,13 @@ try {
 
 try {
 	console.log('likes should be 1');
-	console.log(await likePost(user1._id, goal2._id));
+	console.log(await likePost(user1._id.toString(), goal2._id.toString()));
 } catch (e) {
 	console.log(e);
 }
 try {
 	console.log('likes should be 0');
-	console.log(await likePost(user1._id, goal2._id));
+	console.log(await likePost(user1._id.toString(), goal2._id.toString()));
 } catch (e) {
 	console.log(e);
 }
@@ -270,6 +270,25 @@ catch (e)
 	console.log(e);
 }
 
+try {
+	console.log(
+		await updateGoal(
+			goal4._id.toString(),
+			user1._id.toString(),
+			'Now Successful 2',
+			'This is new 2',
+			goal4.category,
+			goal4.limit,
+			goal4.goalDate,
+			true,
+			goal4.expenses,
+			goal4.likes,
+			true
+		)
+	);
+} catch (e) {
+	console.log(e);
+}
 try {
 	let feed1 = await getFeed(user2._id.toString());
     console.log(feed1);

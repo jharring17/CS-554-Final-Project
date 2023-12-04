@@ -129,19 +129,20 @@ const getUser = async (id) => {
         throw "User not found: getUser";
 };
 const getFeed = async (id) => {
-    //validations 
+    //validations
     if(!id) throw `Id is required: getFeed`
     if(!ObjectId.isValid(id)) throw `Invalid id: getFeed`;
     //get friends list
     let friends = await getAllFriends(id);//expects list of friends' IDs
     //iterate and get each friend object
     let goalListFeed = [];
-    for (let friendId in friends)
+    for (let i=0;i<friends.length;i++)
     {
-        //gets goals of a user
+        let friendId = friends[i];
         let goals = await getGoalsByUserId(friendId);
-        for (let goal in goals)
+        for (let j=0;j<goals.length;j++)
         {
+            let goal = goals[j];
             //add to list iff goal is successful and goalDate within 7 days
             if (goal.successful == true && helper.dateWithin7Days(goal.goalDate))
             {
