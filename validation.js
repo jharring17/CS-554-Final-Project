@@ -154,9 +154,6 @@ export function dateWithin7Days(date){//todays date is false, since goal may not
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
   const inputedDateObj = new Date(year, month - 1, day);
-  console.log(currDate);
-  console.log(inputedDateObj);
-  console.log(sevenDaysAgo);
 
   if (inputedDateObj < sevenDaysAgo || inputedDateObj >= currDate)
   {
