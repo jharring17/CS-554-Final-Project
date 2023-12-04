@@ -43,17 +43,29 @@ router.route('/:userId/:goalId/like').post(async (req, res) => {
 
 // GET: get a single expense by expenseId.
 router.route('/:userId/:goalId/:expenseId').get(async (req, res) => {
-	// Validate the ids.
+	// Get the values from the URL.
 	let userId = req.params.userId;
 	let goalId = req.params.goalId;
 	let expenseId = req.params.expenseId;
 	try {
+		// Validate the ID parameters.
 		userId = validate.validId(userId);
 		goalId = validate.validId(goalId);
 		expenseId = validate.validId(expenseId);
+
+		// Check that the user owns the goal.
+		let goal = await goals.getGoalById(goalId);
+		if (goal.userId.toString() !== userId.toString())
+			throw `Error: User does not own this goal.`;
+
+		// Check that the expense is within the goal.
+		let expense = await expenses.getExpenseById(expenseId);
+		if (expense.goalId.toString() !== goalId.toString())
+			throw `Error: Expense is not within the goal.`;
 	} catch (e) {
 		return res.status(400).json({ error: e });
 	}
+	// Get the expense.
 	try {
 		let expense = await expenses.getExpenseById(expenseId);
 		return res.status(200).json({ expense: expense });
@@ -63,16 +75,22 @@ router.route('/:userId/:goalId/:expenseId').get(async (req, res) => {
 });
 
 // GET: get all expenses for a given goalId.
-router.route('/:userId/:goalId/expense').get(async (req, res) => {
-	// Validate the ids.
+router.route('/:userId/:goalId').get(async (req, res) => {
+	// Get values from the URL.
 	let userId = req.params.userId;
 	let goalId = req.params.goalId;
 	try {
+		// Validate the ID parameters.
 		userId = validate.validId(userId);
 		goalId = validate.validId(goalId);
+
+		// Check that the user owns the goal.
+		let goal = await goals.getGoalById(goalId);
+		if (goal.userId != userId) throw `User does not own this goal.`;
 	} catch (e) {
 		return res.status(400).json({ error: e });
 	}
+	// Get the expenses.
 	try {
 		let expensesArray = await expenses.getExpensesByGoalId(goalId);
 		return res.status(200).json({ expenses: expensesArray });
@@ -82,22 +100,29 @@ router.route('/:userId/:goalId/expense').get(async (req, res) => {
 });
 
 // POST: create a new expense for a goal.
-router.route('/:userId/:goalId/expense').post(async (req, res) => {
-	// Validate the ids.
+router.route('/:userId/:goalId').post(async (req, res) => {
+	// Gather the input parameters.
 	let userId = req.params.userId;
 	let goalId = req.params.goalId;
 	let description = req.body.description;
 	let amount = req.body.amount;
 	let date = req.body.date;
 	try {
+		// Validate the input parameters.
 		userId = validate.validId(userId);
 		goalId = validate.validId(goalId);
 		description = validate.stringChecker(description);
 		amount = validate.limitChecker(amount);
 		date = validate.goalDateChecker(date);
+
+		// Check that the user owns the goal.
+		let goal = await goals.getGoalById(goalId);
+		if (goal.userId.toString() !== userId.toString())
+			throw `Error: User does not own this goal.`;
 	} catch (e) {
 		return res.status(400).json({ error: e });
 	}
+	// Create the expense.
 	try {
 		let expense = await expenses.addExpense(goalId, description, amount, date);
 		return res.status(200).json({ expense: expense });
@@ -106,9 +131,37 @@ router.route('/:userId/:goalId/expense').post(async (req, res) => {
 	}
 });
 
+// DELETE: delete an expense.
+router.route('/:userId/:goalId/:expenseId').delete(async (req, res) => {
+	// Gather the input parameters.
+	let userId = req.params.userId;
+	let goalId = req.params.goalId;
+	let expenseId = req.params.expenseId;
+	try {
+		// Validate the input parameters.
+		userId = validate.validId(userId);
+		goalId = validate.validId(goalId);
+		expenseId = validate.validId(expenseId);
+
+		// Check that the user owns the goal.
+		let goal = await goals.getGoalById(goalId);
+		if (goal.userId.toString() !== userId.toString())
+			throw `Error: User does not own this goal.`;
+	} catch (e) {
+		return res.status(400).json({ error: e });
+	}
+	// Delete the expense.
+	try {
+		let expense = await expenses.delExpense(expenseId);
+		return res.status(200).json({ expense: expense });
+	} catch (e) {
+		return res.status(404).json({ error: e });
+	}
+});
+
 // PUT: update an expense.
 router.route('/:userId/:goalId/:expenseId').put(async (req, res) => {
-	// Validate the ids.
+	// Gather the input parameters.
 	let userId = req.params.userId;
 	let goalId = req.params.goalId;
 	let expenseId = req.params.expenseId;
@@ -116,15 +169,27 @@ router.route('/:userId/:goalId/:expenseId').put(async (req, res) => {
 	let amount = req.body.amount;
 	let date = req.body.date;
 	try {
+		// Validate the input parameters.
 		userId = validate.validId(userId);
 		goalId = validate.validId(goalId);
 		expenseId = validate.validId(expenseId);
 		description = validate.stringChecker(description);
 		amount = validate.limitChecker(amount);
 		date = validate.goalDateChecker(date);
+
+		// Check that the user owns the goal.
+		let goal = await goals.getGoalById(goalId);
+		if (goal.userId.toString() !== userId.toString())
+			throw `Error: User does not own this goal.`;
+
+		// Check that the expense is within the goal.
+		let expense = await expenses.getExpenseById(expenseId);
+		if (expense.goalId.toString() !== goalId.toString())
+			throw `Error: Expense is not within the goal.`;
 	} catch (e) {
 		return res.status(400).json({ error: e });
 	}
+	// Update the expense.
 	try {
 		let expense = await expenses.editExpense(expenseId, description, amount, date);
 		return res.status(200).json({ expense: expense });
