@@ -7,7 +7,7 @@ import * as helper from "../../validation.js"
 import bcrypt from 'bcrypt';
 const saltRounds = 2;
 
-const register = async (displayName, username, password, age) => {
+const register = async (fire_id, displayName, username, password, age) => {
     if (!displayName || !username || !password || !age) {
       throw 'All input fields must be provided :: register';
     }
@@ -30,6 +30,7 @@ const register = async (displayName, username, password, age) => {
   
     //actually insert
     let newUser = {
+        fire_id,
         displayName,
         username, 
         password: hash,

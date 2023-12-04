@@ -37,7 +37,7 @@ let goal1 = undefined;
 let goal2 = undefined;
 
 try {
-	user1 = await register('IsabellaStone', 'ibellarose1', 'Password123!', 21);
+	user1 = await register('9MporPAh6yMXcgEWaR8u1e5qfxx1', 'IsabellaStone', 'ibellarose1', 'Password123!', 21);
 	console.log(user1);
 } catch (e) {
 	console.log(e);
@@ -61,7 +61,7 @@ try {
 	console.log(e);
 }
 try {
-	user2 = await register('MeganSanford', 'megxxsan', 'Abc123!!', 21);
+	user2 = await register('H2L2xyEKplg0K5ice7MtY7oUeWY2','MeganSanford', 'megxxsan', 'Abc123!!', 21);
 	console.log(user2);
 } catch (e) {
 	console.log(e);
