@@ -2,11 +2,12 @@
 import {users, goals} from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import { getGoalsByUserId } from './goals.js';
+import {getAllFriends} from './friends.js';
 import * as helper from "../../validation.js"
 import bcrypt from 'bcrypt';
 const saltRounds = 2;
 
-const register = async (displayName, username, password, age) => {
+const register = async (fire_id, displayName, username, password, age) => {
     if (!displayName || !username || !password || !age) {
       throw 'All input fields must be provided :: register';
     }
@@ -29,6 +30,7 @@ const register = async (displayName, username, password, age) => {
   
     //actually insert
     let newUser = {
+        fire_id,
         displayName,
         username, 
         password: hash,
@@ -128,20 +130,20 @@ const getUser = async (id) => {
         throw "User not found: getUser";
 };
 const getFeed = async (id) => {
-    //validations 
+    //validations
     if(!id) throw `Id is required: getFeed`
     if(!ObjectId.isValid(id)) throw `Invalid id: getFeed`;
     //get friends list
     let friends = await getAllFriends(id);//expects list of friends' IDs
-
     //iterate and get each friend object
     let goalListFeed = [];
-    for (let friendId in friends)
+    for (let i=0;i<friends.length;i++)
     {
-        //gets goals of a user
+        let friendId = friends[i];
         let goals = await getGoalsByUserId(friendId);
-        for (let goal in goals)
+        for (let j=0;j<goals.length;j++)
         {
+            let goal = goals[j];
             //add to list iff goal is successful and goalDate within 7 days
             if (goal.successful == true && helper.dateWithin7Days(goal.goalDate))
             {
@@ -152,6 +154,10 @@ const getFeed = async (id) => {
     return goalListFeed;
 };
 const getHistory = async (id) => {
+    //currently calls updateHistory which returns latest data
+    let updatedHistory = await updateHistory(id);
+    return updatedHistory;
+    /*
     if(!id) throw `Id is required: getHistory`
     if(!ObjectId.isValid(id)) throw `Invalid id: getHistory`;
 
@@ -168,11 +174,43 @@ const getHistory = async (id) => {
     for (let goal in userHistory)
     {
         //add to list iff goalDate is past
-        if (helper.dateWithin7Days(goal.goalDate))
+        if (helper.dateIsInThePast(goal.goalDate))
         {
             pastHistory.push(goal);
         }
     }
     return pastHistory;
+    */
 };
-export { register, login, editUserInfo, getUser, getFeed, getHistory }
+const updateHistory = async (id) => {
+    //basically getGoalsByUserId but the goals date is past, then updates the user's history field
+
+    //check to see that the id is valid
+    if(!id) throw `Id is required: updateHistory`
+    if(!ObjectId.isValid(id)) throw `Invalid GoalId: updateHistory`;
+
+    //get the user
+    const userCollection = await users();
+    let user = await userCollection.findOne({_id: new ObjectId(id)});
+    if(user === null) throw `No user exists: updateHistory`;
+
+    //add the goal objects to a goal array
+    let pastGoalsArr = [];
+
+    const goalCollection = await goals();
+    let allGoals = await goalCollection.find().toArray({});
+    for(let i = 0; i < allGoals.length; i++){
+        if((allGoals[i].userId).toString() === id.toString() && helper.dateIsInThePast(allGoals[i].goalDate)){
+            pastGoalsArr.push(allGoals[i])
+        }
+    }
+    let updateInfo = await userCollection.updateOne(
+		{ _id: new ObjectId(id) },
+		{ $set: { history: pastGoalsArr } },
+		{ returnDocument: 'after' }
+	);
+	if (updateInfo.modifiedCount === 0) throw 'Couldn\'t update history: updateHistory';
+
+    return pastGoalsArr;
+};
+export { register, login, editUserInfo, getUser, getFeed, getHistory, updateHistory }

@@ -15,8 +15,8 @@ router
             return res.status(400).json({error: e})
         }
         try{
-            let history = await users.getFeed(id);
-            return res.status(200).json({history: history});
+            let feed = await users.getFeed(id);
+            return res.status(200).json({feed: feed});
         }
         catch (e)
         {
