@@ -69,7 +69,7 @@ try {
 
 try {
 	goal1 = await addGoal(
-		user1._id,
+		user1.fire_id,
 		'Rent',
 		'I want to pay $2000 a month for rent',
 		'utilities',
@@ -82,7 +82,7 @@ try {
 }
 try {
 	goal2 = await addGoal(
-		user2._id,
+		user2.fire_id,
 		'Groceries',
 		'I want to spend $100 a week on groceries',
 		'food',
@@ -115,26 +115,26 @@ try {
 
 try {
 	console.log("Getting Isabella's Goals");
-	console.log(await getGoalsByUserId(user1._id));
+	console.log(await getGoalsByUserId(user1.fire_id));
 } catch (e) {
 	console.log(e);
 }
 try {
 	console.log("Getting Megan's Goals");
-	console.log(await getGoalsByUserId(user2._id));
+	console.log(await getGoalsByUserId(user2.fire_id));
 } catch (e) {
 	console.log(e);
 }
 
 try {
 	console.log('likes should be 1');
-	console.log(await likePost(user1._id.toString(), goal2._id.toString()));
+	console.log(await likePost(user1.fire_id, goal2._id));
 } catch (e) {
 	console.log(e);
 }
 try {
 	console.log('likes should be 0');
-	console.log(await likePost(user1._id.toString(), goal2._id.toString()));
+	console.log(await likePost(user1.fire_id, goal2._id));
 } catch (e) {
 	console.log(e);
 }
@@ -143,7 +143,7 @@ try {
 	console.log(
 		await updateGoal(
 			goal2._id,
-			user2._id,
+			user2.fire_id,
 			'New Title',
 			'This is new',
 			goal2.category,
@@ -161,7 +161,7 @@ try {
 let goal3 = undefined;
 try {
 	goal3 = await addGoal(
-		user1._id,
+		user1.fire_id,
 		'Groceries',
 		'I want to spend $100 a week on groceries',
 		'food',
@@ -176,12 +176,12 @@ try {
 let goal4 = undefined;
 try {
 	goal4 = await addGoal(
-		user1._id,
+		user1.fire_id,
 		'Movie Limitation',
 		'I want to spend $25 a week on movies',
 		'entertainment',
 		25,
-		'11/30/2023',
+		'01/30/2024',
 		true
 	);
 	console.log(goal4);
@@ -192,12 +192,12 @@ try {
 let goal5 = undefined;
 try {
 	goal5 = await addGoal(
-		user2._id,
+		user2.fire_id,
 		'Bar Hopping',
 		'I want to spend $40 a week when going to bars',
 		'entertainment',
 		40,
-		'11/25/2023',
+		'02/25/2024',
 		true
 	);
 	console.log(goal4);
@@ -273,8 +273,8 @@ catch (e)
 try {
 	console.log(
 		await updateGoal(
-			goal4._id.toString(),
-			user1._id.toString(),
+			goal4._id,
+			user1.fire_id,
 			'Now Successful 2',
 			'This is new 2',
 			goal4.category,
@@ -290,7 +290,9 @@ try {
 	console.log(e);
 }
 try {
-	let feed1 = await getFeed(user2._id.toString());
+	// let feed1 = await getFeed(user2._id.toString());
+	let feed1 = await getFeed(user2.fire_id)
+
     console.log(feed1);
 } catch (e) {
     console.log(e);
