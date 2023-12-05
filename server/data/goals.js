@@ -8,8 +8,7 @@ const addGoal = async (
     description,
     category,
     limit,
-    goalDate,
-    seedingBool //optional: true for seeding past dates (needed for history/feed), false or undefined otherwise
+    goalDate
 ) => {
 
     //check that all inputs are provided
@@ -36,10 +35,7 @@ const addGoal = async (
     category = await helper.categoryChecker(userId, category)
 
     //make sure date is in the format mm/dd/yyyy
-    if (!seedingBool)
-    {
-        goalDate = helper.goalDateChecker(goalDate)
-    }
+    goalDate = helper.goalDateChecker(goalDate)
 
     let newGoal = {
         userId: userId,
@@ -121,8 +117,7 @@ const updateGoal = async (
     goalDate,
     successful,
     expenses, 
-    likes,
-    seedingBool //optional: true for seeding past dates (needed for history/feed), false or undefined otherwise
+    likes
 ) => {
 
     //check that all inputs are provided
@@ -155,10 +150,7 @@ const updateGoal = async (
     category = await helper.categoryChecker(userId, category)
 
     //make sure date is in the format mm/dd/yyyy
-    if (!seedingBool)
-    {
-        goalDate = helper.goalDateChecker(goalDate)
-    }
+    goalDate = helper.goalDateChecker(goalDate)
 
     //check to make sure successful is a boolean
     successful = helper.isBoolean(successful);
@@ -248,16 +240,13 @@ const likePost = async (userId, goalId) => {
 
     //check to make sure that the user and the goal exist 
     let goalCollection = await goals();
-    let goal = await goalCollection.findOne({_id: new ObjectId(goalId)});
+    let goal = await goalCollection.findOne({_id: goalId});
     if(goal === null) throw `Goal does not exist: likePost`
     let userCollection = await users();
-    let user = await userCollection.findOne({_id: userId});
+    // let user = await userCollection.findOne({_id: userId});
+    let user = await userCollection.findOne({fire_id: userId});
     if(user === null) throw `User does not exist: likePost`;
 
-    if (goal.userId.toString() === userId.toString())
-    {
-        throw `User cannot like their own post: likePost`
-    }
     //now we see if the user has liked the goal or not 
     let liked = false;
     let index;
