@@ -20,7 +20,7 @@ const addGoal = async (
 
     //check to see that the userId is valid
     //NEED TO FIGURE OUT HOW TO VALIDATE THE USERID
-    if(!ObjectId.isValid(userId)) throw `Invalid UserId: addGoal`;
+    // if(!ObjectId.isValid(userId)) throw `Invalid UserId: addGoal`;
 
     //check to see that inputs are valid strings
     title = helper.stringChecker(title);
@@ -101,7 +101,7 @@ const deleteGoal = async (id) => {
         categories: user.categories,
         goals: user.goals-1
     }
-    const updatedUser = await userCollection.findOneAndUpdate({_id: new ObjectId(deleted.userId)}, {$set: updated}, {returnDocument: "after"});
+    const updatedUser = await userCollection.findOneAndUpdate({fire_id: deleted.userId}, {$set: updated}, {returnDocument: "after"});
 
     //return the goal that was deleted
     return deleted;
