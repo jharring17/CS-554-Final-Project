@@ -59,7 +59,7 @@ try {
 
 try {
 	goal1 = await addGoal(
-		user1._id,
+		user1.fire_id,
 		'Rent',
 		'I want to pay $2000 a month for rent',
 		'utilities',
@@ -72,7 +72,7 @@ try {
 }
 try {
 	goal2 = await addGoal(
-		user2._id,
+		user2.fire_id,
 		'Groceries',
 		'I want to spend $100 a week on groceries',
 		'food',
@@ -105,26 +105,26 @@ try {
 
 try {
 	console.log("Getting Isabella's Goals");
-	console.log(await getGoalsByUserId(user1._id));
+	console.log(await getGoalsByUserId(user1.fire_id));
 } catch (e) {
 	console.log(e);
 }
 try {
 	console.log("Getting Megan's Goals");
-	console.log(await getGoalsByUserId(user2._id));
+	console.log(await getGoalsByUserId(user2.fire_id));
 } catch (e) {
 	console.log(e);
 }
 
 try {
 	console.log('likes should be 1');
-	console.log(await likePost(user1._id, goal2._id));
+	console.log(await likePost(user1.fire_id, goal2._id));
 } catch (e) {
 	console.log(e);
 }
 try {
 	console.log('likes should be 0');
-	console.log(await likePost(user1._id, goal2._id));
+	console.log(await likePost(user1.fire_id, goal2._id));
 } catch (e) {
 	console.log(e);
 }
@@ -133,7 +133,7 @@ try {
 	console.log(
 		await updateGoal(
 			goal2._id,
-			user2._id,
+			user2.fire_id,
 			'New Title',
 			'This is new',
 			goal2.category,
@@ -151,7 +151,7 @@ try {
 let goal3 = undefined;
 try {
 	goal3 = await addGoal(
-		user1._id,
+		user1.fire_id,
 		'Groceries',
 		'I want to spend $100 a week on groceries',
 		'food',

@@ -50,7 +50,8 @@ export const checkPassword = (password) => {
 export async function categoryChecker(userId, category){
     category = category.toLowerCase();
     const userCollection = await users();
-    let result = await userCollection.findOne({_id: new ObjectId(userId)});
+    // let result = await userCollection.findOne({_id: new ObjectId(userId)});
+    let result = await userCollection.findOne({fire_id: userId})
     let validCategories = result.categories;
 
     let match = false
