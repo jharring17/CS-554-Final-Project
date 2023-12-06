@@ -129,6 +129,35 @@ const getUser = async (id) => {
     else
         throw "User not found: getUser";
 };
+
+const getUserByFireId = async (fire_id) => {
+    if(!fire_id) throw `fireId is required: getUser`
+
+    const userCollection = await users();
+    let user = await userCollection.findOne({fire_id: fire_id});
+    if (user)
+    {
+        user._id = user._id.toString();
+        return user;
+    }
+    else
+        throw "User not found: getUser";
+}
+
+const getUserByUsername = async (username) => {
+    if(!username) throw `username is required: getUser`
+
+    const userCollection = await users();
+    let user = await userCollection.findOne({username: username});
+    if (user)
+    {
+        user._id = user._id.toString();
+        return user;
+    }
+    else
+        throw "User not found: getUser";
+}
+
 const getFeed = async (id) => {
     //validations
     if(!id) throw `Id is required: getFeed`
@@ -213,4 +242,4 @@ const updateHistory = async (id) => {
 
     return pastGoalsArr;
 };
-export { register, login, editUserInfo, getUser, getFeed, getHistory, updateHistory }
+export { register, login, editUserInfo, getUser, getFeed, getHistory, updateHistory, getUserByFireId, getUserByUsername }
