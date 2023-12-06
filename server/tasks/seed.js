@@ -33,6 +33,7 @@ await db.dropDatabase();
 
 let user1 = undefined;
 let user2 = undefined;
+let user3 = undefined;
 let goal1 = undefined;
 let goal2 = undefined;
 
@@ -63,6 +64,12 @@ try {
 try {
 	user2 = await register('H2L2xyEKplg0K5ice7MtY7oUeWY2','MeganSanford', 'megxxsan', 'Abc123!!', 21);
 	console.log(user2);
+} catch (e) {
+	console.log(e);
+}
+try {
+	user3 = await register('NDq0DvRO1cXAw4Qwv8AOQtUSvd73','JacobRose', 'jrose0116', 'Password1!', 21);
+	console.log(user3);
 } catch (e) {
 	console.log(e);
 }
@@ -263,6 +270,21 @@ try {
 		console.log(sent1);
 		received1 = await acceptRequest(user2._id.toString(),user1._id.toString());
 		console.log(received1);
+	}
+}
+catch (e)
+{
+	console.log(e);
+}
+
+try {
+	let sent2, incoming2;
+	if (user1 && user2 && user3)
+	{
+		sent2 = await sendFriendRequest(user3._id.toString(),user1._id.toString());
+		console.log(sent2);
+		incoming2 = await sendFriendRequest(user2._id.toString(),user3._id.toString());
+		console.log(incoming2);
 	}
 }
 catch (e)
