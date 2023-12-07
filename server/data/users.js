@@ -16,6 +16,7 @@ const register = async (fire_id, displayName, username, password, age) => {
         throw 'Too young to make account :: register';
     }
   
+    fire_id = helper.checkFireId(fire_id);
     displayName = helper.checkName(displayName, "display name");
     username = helper.checkName(username, "username");
     password = helper.checkPassword(password);
@@ -72,22 +73,19 @@ const login = async (username, password) => {
     }
 }
 
-const editUserInfo = async (userId, displayName, username, password) => {
+const editUserInfo = async (fire_id, displayName, username, password) => {
     if (!displayName || !username || !password) {
         throw 'All input fields must be provided :: editUserInfo';
     }
-    
-    // if (Number.isNaN(age) || age < 13) {
-    //     throw 'Too young to make account :: editUserInfo';
-    // }
   
+    fire_id = helper.checkFireId(fire_id);
     displayName = helper.checkName(displayName, "display name");
     username = helper.checkName(username, "username");
     password = helper.checkPassword(password);
     const hash = await bcrypt.hash(password, saltRounds);
 
     const userCollection = await users();
-    const currentUser = await userCollection.findOne({fire_id: userId});
+    const currentUser = await userCollection.findOne({fire_id: fire_id});
     // console.log(currentUser)
     //now do the update
     const updatedUser = {
@@ -104,7 +102,7 @@ const editUserInfo = async (userId, displayName, username, password) => {
     
     // console.log(userId)
     const updatedInfo = await userCollection.findOneAndUpdate(
-        {fire_id: userId},
+        {fire_id: fire_id},
         {$set: updatedUser},
         {returnDocument: 'after'}
     );
@@ -115,12 +113,12 @@ const editUserInfo = async (userId, displayName, username, password) => {
     return updatedInfo;
 }
 
-const getUser = async (id) => {
-    if(!id) throw `Id is required: getUser`
-    // if(!ObjectId.isValid(id)) throw `Invalid id: getUser`;
+const getUser = async (fire_id) => {
+    if(!fire_id) throw `Id is required: getUser`
+    fire_id = helper.checkFireId(fire_id);
 
     const userCollection = await users();
-    let user = await userCollection.findOne({fire_id: id});
+    let user = await userCollection.findOne({fire_id: fire_id});
     if (user)
     {
         user._id = user._id.toString();
@@ -129,12 +127,12 @@ const getUser = async (id) => {
     else
         throw "User not found: getUser";
 };
-const getFeed = async (id) => {
+const getFeed = async (fire_id) => {
     //validations
-    if(!id) throw `Id is required: getFeed`
-    if(!ObjectId.isValid(id)) throw `Invalid id: getFeed`;
+    if(!fire_id) throw `Id is required: getFeed`
+    fire_id = helper.checkFireId(fire_id);
     //get friends list
-    let friends = await getAllFriends(id);//expects list of friends' IDs
+    let friends = await getAllFriends(fire_id);//expects list of friends' IDs
     //iterate and get each friend object
     let goalListFeed = [];
     for (let i=0;i<friends.length;i++)
@@ -153,9 +151,10 @@ const getFeed = async (id) => {
     }
     return goalListFeed;
 };
-const getHistory = async (id) => {
+const getHistory = async (fire_id) => {
     //currently calls updateHistory which returns latest data
-    let updatedHistory = await updateHistory(id);
+    fire_id = helper.checkFireId(fire_id);
+    let updatedHistory = await updateHistory(fire_id);
     return updatedHistory;
     /*
     if(!id) throw `Id is required: getHistory`
