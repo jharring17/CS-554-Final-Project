@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Navigate} from 'react-router-dom';
+import {Navigate, Link} from 'react-router-dom';
 import {AuthContext} from '../context/AuthContext';
 import {
   doSignInWithEmailAndPassword,
@@ -32,7 +32,7 @@ function SignIn() {
     }
   };
   if (currentUser) {
-    return <Navigate to='/home' />;
+    return <Navigate to='/feed' />;
   }
   return (
     <div>
@@ -76,6 +76,10 @@ function SignIn() {
             Forgot Password
           </button>
         </form>
+
+        <Link className='forgotPassword' to='/signup'>
+            Don't have an account? Sign-up
+        </Link>
 
         <br />
       </div>

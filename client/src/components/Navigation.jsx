@@ -13,11 +13,11 @@ const NavigationAuth = () => {
   return (
     <nav className='navigation'>
       <ul>
-        <li>
+        {/* <li>
           <NavLink to='/'>Landing</NavLink>
-        </li>
+        </li> */}
         <li>
-          <NavLink to='/home'>Home</NavLink>
+          <NavLink to='/feed'>Feed</NavLink>
         </li>
         <li>
           <NavLink to='/account'>Account</NavLink>
@@ -32,20 +32,21 @@ const NavigationAuth = () => {
 
 const NavigationNonAuth = () => {
   return (
-    <nav className='navigation'>
-      <ul>
-        <li>
-          <NavLink to='/'>Landing</NavLink>
-        </li>
-        <li>
-          <NavLink to='/signup'>Sign-up</NavLink>
-        </li>
+    <></>
+    // <nav className='navigation'>
+    //   <ul>
+    //     <li>
+    //       <NavLink to='/'>Sign-In</NavLink>
+    //     </li>
+    //     <li>
+    //       <NavLink to='/signup'>Sign-up</NavLink>
+    //     </li>
 
-        <li>
-          <NavLink to='/signin'>Sign-In</NavLink>
-        </li>
-      </ul>
-    </nav>
+    //     <li>
+    //       <NavLink to='/signin'>Sign-In</NavLink>
+    //     </li>
+    //    </ul>
+    //  </nav>
   );
 };
 
