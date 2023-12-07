@@ -260,6 +260,7 @@ const likePost = async (userId, goalId) => {
     let user = await userCollection.findOne({fire_id: userId});
     if(user === null) throw `User does not exist: likePost`;
 
+    if (userId.toString() == goal.userId.toString()) throw `User cannot like their own post: likePost`;
     //now we see if the user has liked the goal or not 
     let liked = false;
     let index;
