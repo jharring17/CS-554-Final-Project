@@ -9,7 +9,7 @@ function Home() {
     <div className='card'>
       <h2>
         Hello {currentUser && currentUser.displayName}, this is the Protected
-        Home page
+        Home page used to show your feed
       </h2>
     </div>
   );

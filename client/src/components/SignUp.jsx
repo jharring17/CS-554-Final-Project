@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {Navigate} from 'react-router-dom';
+import {Navigate, Link} from 'react-router-dom';
 import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
 import {AuthContext} from '../context/AuthContext';
 import axios from 'axios';
@@ -131,6 +131,9 @@ function SignUp() {
           Sign Up
         </button>
       </form>
+      <Link className='forgotPassword' to='/'>
+           Have an account? Sign-in
+      </Link>
       <br />
     </div>
   );
