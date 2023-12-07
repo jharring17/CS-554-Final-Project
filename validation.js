@@ -9,11 +9,17 @@ export function stringChecker(string) {
     return string;
 }
 
-export function checkFireId (id) {
-
+export function checkFireId(id) {
+    let isFireId = /^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*$/.test(id);
+    if (isFireId) {
+      return id;
+    }
+    else {
+      throw 'Not valid fire_id';
+    }
 }
 
-export function checkAge (age) {
+export function checkAge(age) {
   if (Number.isNaN(age) || typeof age != 'number' || age < 13) {
     throw 'Invalid age :: checkAge()';
   }
