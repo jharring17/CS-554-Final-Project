@@ -180,16 +180,17 @@ const getHistory = async (fire_id) => {
     return pastHistory;
     */
 };
-const updateHistory = async (id) => {
+const updateHistory = async (fire_id) => {
     //basically getGoalsByUserId but the goals date is past, then updates the user's history field
 
+    fire_id = helper.checkFireId(fire_id);
     //check to see that the id is valid
-    if(!id) throw `Id is required: updateHistory`
-    if(!ObjectId.isValid(id)) throw `Invalid GoalId: updateHistory`;
+    if(!fire_id) throw `Id is required: updateHistory`
+    // if(!ObjectId.isValid(fire_id)) throw `Invalid GoalId: updateHistory`;
 
     //get the user
     const userCollection = await users();
-    let user = await userCollection.findOne({_id: new ObjectId(id)});
+    let user = await userCollection.findOne({fire_id: fire_id});
     if(user === null) throw `No user exists: updateHistory`;
 
     //add the goal objects to a goal array
@@ -198,16 +199,17 @@ const updateHistory = async (id) => {
     const goalCollection = await goals();
     let allGoals = await goalCollection.find().toArray({});
     for(let i = 0; i < allGoals.length; i++){
-        if((allGoals[i].userId).toString() === id.toString() && helper.dateIsInThePast(allGoals[i].goalDate)){
+        if((allGoals[i].userId).toString() === fire_id.toString() && helper.dateIsInThePast(allGoals[i].goalDate)){
             pastGoalsArr.push(allGoals[i])
         }
     }
     let updateInfo = await userCollection.updateOne(
-		{ _id: new ObjectId(id) },
+		{ fire_id: fire_id },
 		{ $set: { history: pastGoalsArr } },
 		{ returnDocument: 'after' }
 	);
-	if (updateInfo.modifiedCount === 0) throw 'Couldn\'t update history: updateHistory';
+	if (updateInfo.modifiedCount === 0 && updateInfo.matchedCount === 0) throw 'Couldn\'t update history: updateHistory';
+	if (updateInfo.modifiedCount === 0 && updateInfo.matchedCount === 1) console.log("History up-to-date: updateHistory");
 
     return pastGoalsArr;
 };

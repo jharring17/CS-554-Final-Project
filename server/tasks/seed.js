@@ -37,7 +37,7 @@ let goal1 = undefined;
 let goal2 = undefined;
 
 try {
-	user1 = await register('9MporPAh6yMXcgEWaR8u1e5qfxx1', 'IsabellaStone', 'ibellarose1', 'Password123!', 21);
+	user1 = await register('9MporPAh6yMXcgEWaR8u1e5qfxx1', 'IsabellaStone', 'ibellarose1', 'ibellarose1@outlook.com', 'Password123!', 21);
 	console.log(user1);
 } catch (e) {
 	console.log(e);
@@ -61,7 +61,7 @@ try {
 	console.log(e);
 }
 try {
-	user2 = await register('H2L2xyEKplg0K5ice7MtY7oUeWY2','MeganSanford', 'megxxsan', 'Abc123!!', 21);
+	user2 = await register('H2L2xyEKplg0K5ice7MtY7oUeWY2','MeganSanford', 'megxxsan', 'megxxsan@outlook.com', 'Abc123!!', 21);
 	console.log(user2);
 } catch (e) {
 	console.log(e);
@@ -248,7 +248,7 @@ try {
 	let hist2;
 	if (user2)
 	{
-		hist2 = await getHistory(user2._id.toString());
+		hist2 = await getHistory(user2.fire_id.toString());
 	}
     console.log(hist2);
 } catch (e) {
@@ -279,7 +279,7 @@ try {
 			'This is new 2',
 			goal4.category,
 			goal4.limit,
-			goal4.goalDate,
+			"12/3/2023",// past date needed for history
 			true,
 			goal4.expenses,
 			goal4.likes,
@@ -290,9 +290,16 @@ try {
 	console.log(e);
 }
 try {
-	// let feed1 = await getFeed(user2._id.toString());
-	let feed1 = await getFeed(user2.fire_id)
+	let hist2 = await getHistory(user2.fire_id)
 
+    console.log(hist2);
+} catch (e) {
+    console.log(e);
+}
+
+try {
+	console.log("getFeed: ")
+	let feed1 = await getFeed(user2.fire_id.toString());
     console.log(feed1);
 } catch (e) {
     console.log(e);
