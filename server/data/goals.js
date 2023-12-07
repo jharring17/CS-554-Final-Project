@@ -64,7 +64,8 @@ const addGoal = async (
     const userCollection = await users();
     // let user = await userCollection.findOne({_id: new ObjectId(userId)});
     let user = await userCollection.findOne({fire_id: userId});
-    console.log(user)
+    let goalsList = user.goals;
+    goalsList.push(inserted.insertedId.toString());
     let updated = {
         displayName: user.displayName,
         username: user.username,
@@ -74,7 +75,7 @@ const addGoal = async (
         incomingFriends: user.incomingFriends,
         history: user.history,
         categories: user.categories,
-        goals: (user.goals + 1)
+        goals: goalsList
     }
     // const updatedUser = await userCollection.findOneAndUpdate({_id: new ObjectId(userId)}, {$set: updated}, {returnDocument: "after"});
     const updatedUser = await userCollection.findOneAndUpdate({fire_id: userId}, {$set: updated}, {returnDocument: "after"});
@@ -92,8 +93,12 @@ const deleteGoal = async (id) => {
 
     //now that we have deleted a goal, we want to remove the id from the user
     const userCollection = await users();
-    let index;
     let user = await userCollection.findOne({fire_id: deleted.userId});
+    let goalsList = user.goals;
+    var index = goalsList.indexOf(deleted._id.toString());
+    if (index > -1) {
+        goalsList.splice(index, 1);
+    }
     let updated = {
         displayName: user.displayName,
         username: user.username,
@@ -103,7 +108,7 @@ const deleteGoal = async (id) => {
         incomingFriends: user.incomingFriends,
         history: user.history,
         categories: user.categories,
-        goals: user.goals-1
+        goals: goalsList
     }
     const updatedUser = await userCollection.findOneAndUpdate({fire_id: deleted.userId}, {$set: updated}, {returnDocument: "after"});
 
