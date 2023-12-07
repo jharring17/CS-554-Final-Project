@@ -34,6 +34,7 @@ const register = async (fire_id, displayName, username, email, password, age) =>
         username, 
         email,
         password: hash,
+        age: age,
         friends: [],
         pendingFriends: [],
         incomingFriends: [],

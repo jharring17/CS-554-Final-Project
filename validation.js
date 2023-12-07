@@ -23,7 +23,7 @@ export function checkAge(age) {
   if (Number.isNaN(Number(age)) || age < 13) {
     throw 'Invalid age :: checkAge()';
   }
-  return age;
+  return parseInt(age);
 }
 
 export function checkEmail(email) {

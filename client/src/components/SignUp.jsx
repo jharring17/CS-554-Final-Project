@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {Navigate, Link} from 'react-router-dom';
-import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
+import {doGetUID, doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
 import {AuthContext} from '../context/AuthContext';
 import axios from 'axios';
 
@@ -14,19 +14,18 @@ function SignUp() {
       setPwMatch('Passwords do not match');
       return false;
     }
-
     try {
-      await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, displayName.value)
-            .then(
-              await axios.post(`http://localhost:3000/user/register`, 
-                      // {fire_id: currentUser.uid,
-                      {fire_id: "abcdefgdkdkdkdkdkdkdkdkdkdkd",
+      await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, displayName.value);
+      const fire_id = doGetUID();
+      
+      await axios.post(`http://localhost:3000/user/register`, 
+                      {fire_id: fire_id,
+                      // {fire_id: "abcdefgdkdkdkdkdkdkdkdkdkdkd",
                       displayName: displayName.value,
                       username: username.value,
                       password: passwordOne.value,
                       email: email.value,
                       age: age.value})
-            )  
     } 
     catch (error) {
       console.log(error);
