@@ -9,6 +9,10 @@ export function stringChecker(string) {
     return string;
 }
 
+export function checkFireId (id) {
+
+}
+
 export function checkAge (age) {
   if (Number.isNaN(age) || typeof age != 'number' || age < 13) {
     throw 'Invalid age :: checkAge()';
@@ -35,22 +39,27 @@ export function limitChecker(limit){
 }
 
 export const checkPassword = (password) => {
-  // password = stringChecker(password);
-
+  console.log(password)
+  if (typeof password != 'string') {
+    throw `Password must be a string`;
+  }
+  if (password.length === 0) {
+    throw `Password cannot be empty`;
+  }
   if (password.split(" ").length > 1) {
-      throw `Error: Password cannot contain spaces`;
+      throw `Password cannot contain spaces`;
   }
   if (password.length < 8) {
-      throw `Error: Password length must be at least 8`;
+      throw `Password length must be at least 8`;
   }
   if (!/[A-Z]/.test(password)) {
-      throw `Error: Password must contain at least one uppercase character`;
+      throw `Password must contain at least one uppercase character`;
   }
   if (!/\d/.test(password)) {
-      throw `Error: Password must contain at least one number`;
+      throw `Password must contain at least one number`;
   }
   if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      throw `Error: Password must contain at least one special character`;
+      throw `Password must contain at least one special character`;
   }
   return password;
 }

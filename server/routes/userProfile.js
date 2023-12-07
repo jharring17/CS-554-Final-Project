@@ -31,6 +31,7 @@ router
         let displayName = req.body.displayName;
         let username = req.body.username;
         let password = req.body.password;
+        let useOldPass = false;
 
         let user = await users.getUser(req.params.userId);
 
@@ -42,7 +43,20 @@ router
             username = user.username;
         }
         if (!password) {
+            useOldPass = true;
             password = user.password; //does this work ok - does it just resave the hashed pass?
+        }
+
+        //error check
+        try {
+            displayName = validate.checkName(displayName, "displayName");
+            username = validate.checkName(username, "username");
+            if (!useOldPass) {
+                password = validate.checkPassword(password);
+            }
+        }
+        catch (e) {
+            return res.status(400).json({error: e})
         }
 
         try {
@@ -50,7 +64,6 @@ router
             return res.status(200).json(newUser)
         }
         catch (e) {
-            console.log(e);
             return res.status(500).json({error: e})
         }
     })

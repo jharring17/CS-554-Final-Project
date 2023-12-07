@@ -87,7 +87,7 @@ const editUserInfo = async (userId, displayName, username, password) => {
     const hash = await bcrypt.hash(password, saltRounds);
 
     const userCollection = await users();
-    const currentUser = await userCollection.findOne({_id: new ObjectId(userId)});
+    const currentUser = await userCollection.findOne({fire_id: userId});
     // console.log(currentUser)
     //now do the update
     const updatedUser = {
@@ -104,7 +104,7 @@ const editUserInfo = async (userId, displayName, username, password) => {
     
     // console.log(userId)
     const updatedInfo = await userCollection.findOneAndUpdate(
-        {_id: new ObjectId(userId)},
+        {fire_id: userId},
         {$set: updatedUser},
         {returnDocument: 'after'}
     );
@@ -117,10 +117,10 @@ const editUserInfo = async (userId, displayName, username, password) => {
 
 const getUser = async (id) => {
     if(!id) throw `Id is required: getUser`
-    if(!ObjectId.isValid(id)) throw `Invalid id: getUser`;
+    // if(!ObjectId.isValid(id)) throw `Invalid id: getUser`;
 
     const userCollection = await users();
-    let user = await userCollection.findOne({_id: new ObjectId(id)});
+    let user = await userCollection.findOne({fire_id: id});
     if (user)
     {
         user._id = user._id.toString();
