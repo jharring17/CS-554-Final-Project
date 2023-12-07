@@ -20,7 +20,7 @@ router
             age = validate.checkAge(age);
         }
         catch (e) {
-            return res.status(e.response.status).json({error: e})
+            return res.status(400).json({error: e})
         }
 
         try {
