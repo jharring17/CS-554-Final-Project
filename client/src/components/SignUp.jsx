@@ -16,22 +16,26 @@ function SignUp() {
     }
 
     try {
-      await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, displayName.value);
-      await axios.post(`http://localhost:3000/user/register`, 
-                      {fire_id: 'abdhdheyetfgtdtdtcvgywueytgf', //need to get from firebase
+      await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, displayName.value)
+            .then(
+              await axios.post(`http://localhost:3000/user/register`, 
+                      // {fire_id: currentUser.uid,
+                      {fire_id: "abcdefgdkdkdkdkdkdkdkdkdkdkd",
                       displayName: displayName.value,
                       username: username.value,
                       password: passwordOne.value,
                       email: email.value,
-                      age: age.value});
-    } catch (error) {
+                      age: age.value})
+            )  
+    } 
+    catch (error) {
       console.log(error);
       alert(error);
     }
   };
 
   if (currentUser) {
-    return <Navigate to='/home' />;
+    return <Navigate to='/feed' />;
   }
 
   return (
