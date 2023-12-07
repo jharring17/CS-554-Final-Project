@@ -9,6 +9,14 @@ export function stringChecker(string) {
     return string;
 }
 
+export function checkAge (age) {
+  if (Number.isNaN(age) || typeof age != 'number' || age < 13) {
+    throw 'Invalid age :: checkAge()';
+  }
+  return age;
+}
+
+//can be used for displayName and userName
 export function checkName(name, stringName) {
     name = stringChecker(name);
     if (stringName.toLowerCase().trim() === "username") {
