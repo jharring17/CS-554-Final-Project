@@ -7,24 +7,22 @@ import * as helper from "../../validation.js"
 import bcrypt from 'bcrypt';
 const saltRounds = 2;
 
-const register = async (fire_id, displayName, username, password, age) => {
-    if (!displayName || !username || !password || !age) {
+const register = async (fire_id, displayName, username, email, password, age) => {
+    if (!displayName || !username || !email || !password || !age) {
       throw 'All input fields must be provided :: register';
-    }
-
-    if (Number.isNaN(age) || age < 13) {
-        throw 'Too young to make account :: register';
     }
   
     fire_id = helper.checkFireId(fire_id);
     displayName = helper.checkName(displayName, "display name");
     username = helper.checkName(username, "username");
+    email = helper.checkEmail(email);
     password = helper.checkPassword(password);
+    age = helper.checkAge(age);
 
     const userCollection = await users();
-    const user = await userCollection.findOne({username: username});
+    const user = await userCollection.findOne({email: email});
     if (user != null) {
-      throw `User already exists with this username :: register`;
+      throw `User already exists with this email :: register`;
     }
   
     const hash = await bcrypt.hash(password, saltRounds);
@@ -34,6 +32,7 @@ const register = async (fire_id, displayName, username, password, age) => {
         fire_id,
         displayName,
         username, 
+        email,
         password: hash,
         friends: [],
         pendingFriends: [],
@@ -49,18 +48,18 @@ const register = async (fire_id, displayName, username, password, age) => {
     return newUser;
 }
 
-const login = async (username, password) => {
-    if (!username || !password) {
+const login = async (email, password) => {
+    if (!email || !password) {
         throw 'All input fields must be provided :: login';
     }
 
-    username = helper.checkName(username, "username");
+    email = helper.checkEmail(email);
     password = helper.checkPassword(password);
 
     const userCollection = await users();
-    const user = await userCollection.findOne({username: username});
+    const user = await userCollection.findOne({email: email});
     if (user === null) {
-        throw `Either the username or password is invalid :: login`;
+        throw `Either the email or password is invalid :: login`;
     }
     else {
         let same = await bcrypt.compare(password, user.password);

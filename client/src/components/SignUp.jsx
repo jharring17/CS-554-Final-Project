@@ -1,15 +1,15 @@
 import React, {useContext, useState} from 'react';
 import {Navigate} from 'react-router-dom';
 import {doCreateUserWithEmailAndPassword} from '../firebase/FirebaseFunctions';
-// import {register} from '../../../server/data/users.js';
 import {AuthContext} from '../context/AuthContext';
-import SocialSignIn from './SocialSignIn';
+import axios from 'axios';
+
 function SignUp() {
   const {currentUser} = useContext(AuthContext);
   const [pwMatch, setPwMatch] = useState('');
   const handleSignUp = async (e) => {
     e.preventDefault();
-    const {displayName, email, passwordOne, passwordTwo} = e.target.elements;
+    const {displayName, email, username, passwordOne, passwordTwo, age} = e.target.elements;
     if (passwordOne.value !== passwordTwo.value) {
       setPwMatch('Passwords do not match');
       return false;
@@ -17,8 +17,15 @@ function SignUp() {
 
     try {
       await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, displayName.value);
-      // await register(displayName.value, "username", passwordOne.value, 21);
+      await axios.post(`http://localhost:3000/user/register`, 
+                      {fire_id: 'abdhdheyetfgtdtdtcvgywueytgf', //need to get from firebase
+                      displayName: displayName.value,
+                      username: username.value,
+                      password: passwordOne.value,
+                      email: email.value,
+                      age: age.value});
     } catch (error) {
+      console.log(error);
       alert(error);
     }
   };
@@ -34,7 +41,7 @@ function SignUp() {
       <form onSubmit={handleSignUp}>
         <div className='form-group'>
           <label>
-            Name:
+            Display name:
             <br />
             <input
               className='form-control'
@@ -56,6 +63,19 @@ function SignUp() {
               name='email'
               type='email'
               placeholder='Email'
+            />
+          </label>
+        </div>
+        <div className='form-group'>
+          <label>
+            Username:
+            <br />
+            <input
+              className='form-control'
+              required
+              name='username'
+              type='text'
+              placeholder='Username'
             />
           </label>
         </div>
@@ -88,6 +108,20 @@ function SignUp() {
             />
           </label>
         </div>
+        <div className='form-group'>
+          <label>
+            Age:
+            <br />
+            <input
+              className='form-control'
+              name='age'
+              type='number'
+              placeholder='Age'
+              autoComplete='off'
+              required
+            />
+          </label>
+        </div>
         <button
           className='button'
           id='submitButton'
@@ -98,7 +132,6 @@ function SignUp() {
         </button>
       </form>
       <br />
-      {/* <SocialSignIn /> */}
     </div>
   );
 }
