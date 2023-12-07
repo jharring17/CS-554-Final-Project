@@ -20,11 +20,20 @@ export function checkFireId(id) {
 }
 
 export function checkAge(age) {
-  if (Number.isNaN(age) || typeof age != 'number' || age < 13) {
+  if (Number.isNaN(Number(age)) || age < 13) {
     throw 'Invalid age :: checkAge()';
   }
   return age;
 }
+
+export function checkEmail(email) {
+  email = stringChecker(email);
+  let isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!isValid) {
+    throw "Invalid email address";
+  }
+  return email;
+};
 
 //can be used for displayName and userName
 export function checkName(name, stringName) {
@@ -45,7 +54,6 @@ export function limitChecker(limit){
 }
 
 export const checkPassword = (password) => {
-  console.log(password)
   if (typeof password != 'string') {
     throw `Password must be a string`;
   }

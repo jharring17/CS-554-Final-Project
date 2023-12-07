@@ -5,26 +5,30 @@ import { Router } from "express";
 const router = Router();
 
 router
-    .route("/:userId/register")
+    .route("/register")
     .post(async (req, res) => {
+        let fire_id = req.body.fire_id;
         let displayName = req.body.displayName;
         let username = req.body.username;
+        let email = req.body.email;
         let password = req.body.password;
         let age = req.body.age;
 
         //error check inputs
         try {
-            userId = validate.validId(userId);
+            fire_id = validate.checkFireId(fire_id);
             username = validate.checkName(username, "username");
             password = validate.checkPassword(password);
+            email = validate.checkEmail(email);
             age = validate.checkAge(age);
         }
         catch (e) {
-            return res.status(400).json({error: e})
+            console.log(e);
+            return res.status(401).json({error: e})
         }
 
         try {
-            let newUser = await users.register(req.params.userId, displayName, username, password, age);
+            let newUser = await users.register(fire_id, displayName, username, email, password, age);
             return res.status(200).json(newUser)
         }
         catch (e) {
