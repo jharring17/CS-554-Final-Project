@@ -1,5 +1,13 @@
 // console.log('Implement me!');
-import { register, login, editUserInfo, getUser, getFeed, getHistory, updateHistory } from '../data/users.js';
+import {
+	register,
+	login,
+	editUserInfo,
+	getUser,
+	getFeed,
+	getHistory,
+	updateHistory,
+} from '../data/users.js';
 import {
 	addGoal,
 	deleteGoal,
@@ -17,14 +25,15 @@ import {
 	editExpense,
 } from '../data/expenses.js';
 import {
-	sendFriendRequest, 
-	acceptRequest, 
-	declineRequest, 
-	cancelRequest, 
-	removeFriend, 
-	getPendingRequests, 
-	getIncomingRequests, 
-	getAllFriends} from '../data/friends.js';
+	sendFriendRequest,
+	acceptRequest,
+	declineRequest,
+	cancelRequest,
+	removeFriend,
+	getPendingRequests,
+	getIncomingRequests,
+	getAllFriends,
+} from '../data/friends.js';
 
 import { dbConnection, closeConnection } from '../config/mongoConnection.js';
 
@@ -56,8 +65,8 @@ try {
 	console.log('successfully FAILED to sign in user 1');
 }
 try {
-    let newUser1 = await editUserInfo(user1._id, "BellaStone", "ibellarose1", "Password123!", 21); //can't edit username
-    console.log(newUser1);
+	let newUser1 = await editUserInfo(user1._id, 'BellaStone', 'ibellarose1', 'Password123!', 21); //can't edit username
+	console.log(newUser1);
 } catch (e) {
 	console.log(e);
 }
@@ -220,6 +229,14 @@ try {
 	console.log(e);
 }
 
+let expense2 = undefined;
+try {
+	expense2 = await addExpense(goal3._id, 'I bought another sandwich', 5.0, '12/18/2023');
+	console.log(expense2);
+} catch (e) {
+	console.log(e);
+}
+
 // let delExpense1 = undefined;
 // try {
 // 	delExpense1 = await delExpense(expense1._id);
@@ -234,6 +251,25 @@ try {
 	console.log(e);
 }
 
+// Get an expense by its ID.
+try {
+	let expenseById = await getExpenseById(expense1._id);
+	console.log('----------------HERE-----------------');
+	console.log(expenseById);
+} catch (e) {
+	console.log(e);
+}
+
+// Get all expenses by goal Id
+try {
+	let expensesByGoalId = await getExpensesByGoalId(goal3._id);
+	console.log('----------------EXPESNSE BY GOAL ID-----------------');
+	console.log(expensesByGoalId);
+	console.log('---------------------------------');
+} catch (e) {
+	console.log(e);
+}
+
 // try {
 //     let check = await checkUser("IBellaROse1@gmAil.cOM   ", "Iii9iw*u");
 //     console.log(check);
@@ -243,13 +279,12 @@ try {
 
 try {
 	let hist1;
-	if (user1)
-	{
+	if (user1) {
 		hist1 = await getHistory(user1._id.toString());
 	}
-    console.log(hist1);
+	console.log(hist1);
 } catch (e) {
-    console.log(e);
+	console.log(e);
 }
 try {
 	let hist2;
@@ -257,9 +292,9 @@ try {
 	{
 		hist2 = await getHistory(user2.fire_id.toString());
 	}
-    console.log(hist2);
+	console.log(hist2);
 } catch (e) {
-    console.log(e);
+	console.log(e);
 }
 
 try {
@@ -324,7 +359,7 @@ try {
 	let feed1 = await getFeed(user2.fire_id.toString());
     console.log(feed1);
 } catch (e) {
-    console.log(e);
+	console.log(e);
 }
 
 await closeConnection();
