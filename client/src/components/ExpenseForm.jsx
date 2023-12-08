@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import '../App.css';
 import axios from 'axios';
 import * as firebase from '../firebase/FirebaseFunctions.js';
@@ -23,11 +22,13 @@ function ExpenseForm() {
 
 		// Call the route to add an expense with the form data.
 		try {
-			await axios.post(`localhost:3000/${userId}/${goalId}`, {
+			let expense = await axios.post(`localhost:3000/${userId}/${goalId}`, {
+				goalId: goalId,
 				description: description,
 				amount: amount,
 				date: date,
 			});
+			console.log('Posted expense: ', expense);
 		} catch (e) {
 			console.log(e);
 		}
