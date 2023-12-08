@@ -18,9 +18,9 @@ function App() {
           <Navigation />
         </header>
         <Routes>
-          <Route path='/' element={<Landing />} />
-          <Route path='/home' element={<PrivateRoute />}>
-            <Route path='/home' element={<Home />} />
+          <Route path='/' element={<SignIn />} />
+          <Route path='/feed' element={<PrivateRoute />}>
+            <Route path='/feed' element={<Home />} />
           </Route>
           <Route path='/account' element={<PrivateRoute />}>
             <Route path='/account' element={<Account />} />
@@ -32,7 +32,7 @@ function App() {
             <Route path='/loggedOut' element={<LogOut />} />
           </Route> */}
 
-          <Route path='/signin' element={<SignIn />} />
+          {/* <Route path='/signin' element={<SignIn />} /> */}
           <Route path='/signup' element={<SignUp />} />
         </Routes>
       </div>

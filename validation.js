@@ -9,6 +9,33 @@ export function stringChecker(string) {
     return string;
 }
 
+export function checkFireId(id) {
+    let isFireId = /^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*$/.test(id);
+    if (isFireId) {
+      return id;
+    }
+    else {
+      throw 'Not valid fire_id';
+    }
+}
+
+export function checkAge(age) {
+  if (Number.isNaN(Number(age)) || age < 13) {
+    throw 'Invalid age :: checkAge()';
+  }
+  return parseInt(age);
+}
+
+export function checkEmail(email) {
+  email = stringChecker(email);
+  let isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!isValid) {
+    throw "Invalid email address";
+  }
+  return email;
+};
+
+//can be used for displayName and userName
 export function checkName(name, stringName) {
     name = stringChecker(name);
     if (stringName.toLowerCase().trim() === "username") {
@@ -27,22 +54,26 @@ export function limitChecker(limit){
 }
 
 export const checkPassword = (password) => {
-  // password = stringChecker(password);
-
+  if (typeof password != 'string') {
+    throw `Password must be a string`;
+  }
+  if (password.length === 0) {
+    throw `Password cannot be empty`;
+  }
   if (password.split(" ").length > 1) {
-      throw `Error: Password cannot contain spaces`;
+      throw `Password cannot contain spaces`;
   }
   if (password.length < 8) {
-      throw `Error: Password length must be at least 8`;
+      throw `Password length must be at least 8`;
   }
   if (!/[A-Z]/.test(password)) {
-      throw `Error: Password must contain at least one uppercase character`;
+      throw `Password must contain at least one uppercase character`;
   }
   if (!/\d/.test(password)) {
-      throw `Error: Password must contain at least one number`;
+      throw `Password must contain at least one number`;
   }
   if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      throw `Error: Password must contain at least one special character`;
+      throw `Password must contain at least one special character`;
   }
   return password;
 }
@@ -50,7 +81,8 @@ export const checkPassword = (password) => {
 export async function categoryChecker(userId, category){
     category = category.toLowerCase();
     const userCollection = await users();
-    let result = await userCollection.findOne({_id: new ObjectId(userId)});
+    // let result = await userCollection.findOne({_id: new ObjectId(userId)});
+    let result = await userCollection.findOne({fire_id: userId})
     let validCategories = result.categories;
 
     let match = false

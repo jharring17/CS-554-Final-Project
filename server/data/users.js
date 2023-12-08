@@ -7,32 +7,34 @@ import * as helper from "../../validation.js"
 import bcrypt from 'bcrypt';
 const saltRounds = 2;
 
-const register = async (displayName, username, password, age) => {
-    if (!displayName || !username || !password || !age) {
+const register = async (fire_id, displayName, username, email, password, age) => {
+    if (!displayName || !username || !email || !password || !age) {
       throw 'All input fields must be provided :: register';
     }
-
-    if (Number.isNaN(age) || age < 13) {
-        throw 'Too young to make account :: register';
-    }
   
+    fire_id = helper.checkFireId(fire_id);
     displayName = helper.checkName(displayName, "display name");
     username = helper.checkName(username, "username");
+    email = helper.checkEmail(email);
     password = helper.checkPassword(password);
+    age = helper.checkAge(age);
 
     const userCollection = await users();
-    const user = await userCollection.findOne({username: username});
+    const user = await userCollection.findOne({email: email});
     if (user != null) {
-      throw `User already exists with this username :: register`;
+      throw `User already exists with this email :: register`;
     }
   
     const hash = await bcrypt.hash(password, saltRounds);
   
     //actually insert
     let newUser = {
+        fire_id,
         displayName,
         username, 
+        email,
         password: hash,
+        age: age,
         friends: [],
         pendingFriends: [],
         incomingFriends: [],
@@ -47,18 +49,18 @@ const register = async (displayName, username, password, age) => {
     return newUser;
 }
 
-const login = async (username, password) => {
-    if (!username || !password) {
+const login = async (email, password) => {
+    if (!email || !password) {
         throw 'All input fields must be provided :: login';
     }
 
-    username = helper.checkName(username, "username");
+    email = helper.checkEmail(email);
     password = helper.checkPassword(password);
 
     const userCollection = await users();
-    const user = await userCollection.findOne({username: username});
+    const user = await userCollection.findOne({email: email});
     if (user === null) {
-        throw `Either the username or password is invalid :: login`;
+        throw `Either the email or password is invalid :: login`;
     }
     else {
         let same = await bcrypt.compare(password, user.password);
@@ -71,22 +73,19 @@ const login = async (username, password) => {
     }
 }
 
-const editUserInfo = async (userId, displayName, username, password) => {
+const editUserInfo = async (fire_id, displayName, username, password) => {
     if (!displayName || !username || !password) {
         throw 'All input fields must be provided :: editUserInfo';
     }
-    
-    // if (Number.isNaN(age) || age < 13) {
-    //     throw 'Too young to make account :: editUserInfo';
-    // }
   
+    fire_id = helper.checkFireId(fire_id);
     displayName = helper.checkName(displayName, "display name");
     username = helper.checkName(username, "username");
     password = helper.checkPassword(password);
     const hash = await bcrypt.hash(password, saltRounds);
 
     const userCollection = await users();
-    const currentUser = await userCollection.findOne({_id: new ObjectId(userId)});
+    const currentUser = await userCollection.findOne({fire_id: fire_id});
     // console.log(currentUser)
     //now do the update
     const updatedUser = {
@@ -103,7 +102,7 @@ const editUserInfo = async (userId, displayName, username, password) => {
     
     // console.log(userId)
     const updatedInfo = await userCollection.findOneAndUpdate(
-        {_id: new ObjectId(userId)},
+        {fire_id: fire_id},
         {$set: updatedUser},
         {returnDocument: 'after'}
     );
@@ -114,9 +113,23 @@ const editUserInfo = async (userId, displayName, username, password) => {
     return updatedInfo;
 }
 
-const getUser = async (id) => {
-    if(!id) throw `Id is required: getUser`
-    if(!ObjectId.isValid(id)) throw `Invalid id: getUser`;
+const getUser = async (fire_id) => {
+    if(!fire_id) throw `Id is required: getUser`
+    fire_id = helper.checkFireId(fire_id);
+
+    const userCollection = await users();
+    let user = await userCollection.findOne({fire_id: fire_id});
+    if (user)
+    {
+        user._id = user._id.toString();
+        return user;
+    }
+    else
+        throw "User not found: getUser";
+};
+
+const getUserByMongoId = async (id) => {
+    if(!id) throw `fireId is required: getUserByMongoId`
 
     const userCollection = await users();
     let user = await userCollection.findOne({_id: new ObjectId(id)});
@@ -126,14 +139,29 @@ const getUser = async (id) => {
         return user;
     }
     else
-        throw "User not found: getUser";
-};
+        throw "User not found: getUserByMongoId";
+}
+
+const getUserByUsername = async (username) => {
+    if(!username) throw `username is required: getUserByUsername`
+
+    const userCollection = await users();
+    let user = await userCollection.findOne({username: username});
+    if (user)
+    {
+        user._id = user._id.toString();
+        return user;
+    }
+    else
+        throw "User not found: getUserByUsername";
+}
+
 const getFeed = async (id) => {
     //validations
-    if(!id) throw `Id is required: getFeed`
-    if(!ObjectId.isValid(id)) throw `Invalid id: getFeed`;
+    if(!fire_id) throw `Id is required: getFeed`
+    fire_id = helper.checkFireId(fire_id);
     //get friends list
-    let friends = await getAllFriends(id);//expects list of friends' IDs
+    let friends = await getAllFriends(fire_id);//expects list of friends' IDs
     //iterate and get each friend object
     let goalListFeed = [];
     for (let i=0;i<friends.length;i++)
@@ -152,9 +180,10 @@ const getFeed = async (id) => {
     }
     return goalListFeed;
 };
-const getHistory = async (id) => {
+const getHistory = async (fire_id) => {
     //currently calls updateHistory which returns latest data
-    let updatedHistory = await updateHistory(id);
+    fire_id = helper.checkFireId(fire_id);
+    let updatedHistory = await updateHistory(fire_id);
     return updatedHistory;
     /*
     if(!id) throw `Id is required: getHistory`
@@ -181,16 +210,17 @@ const getHistory = async (id) => {
     return pastHistory;
     */
 };
-const updateHistory = async (id) => {
+const updateHistory = async (fire_id) => {
     //basically getGoalsByUserId but the goals date is past, then updates the user's history field
 
+    fire_id = helper.checkFireId(fire_id);
     //check to see that the id is valid
-    if(!id) throw `Id is required: updateHistory`
-    if(!ObjectId.isValid(id)) throw `Invalid GoalId: updateHistory`;
+    if(!fire_id) throw `Id is required: updateHistory`
+    // if(!ObjectId.isValid(fire_id)) throw `Invalid GoalId: updateHistory`;
 
     //get the user
     const userCollection = await users();
-    let user = await userCollection.findOne({_id: new ObjectId(id)});
+    let user = await userCollection.findOne({fire_id: fire_id});
     if(user === null) throw `No user exists: updateHistory`;
 
     //add the goal objects to a goal array
@@ -199,17 +229,18 @@ const updateHistory = async (id) => {
     const goalCollection = await goals();
     let allGoals = await goalCollection.find().toArray({});
     for(let i = 0; i < allGoals.length; i++){
-        if((allGoals[i].userId).toString() === id.toString() && helper.dateIsInThePast(allGoals[i].goalDate)){
+        if((allGoals[i].userId).toString() === fire_id.toString() && helper.dateIsInThePast(allGoals[i].goalDate)){
             pastGoalsArr.push(allGoals[i])
         }
     }
     let updateInfo = await userCollection.updateOne(
-		{ _id: new ObjectId(id) },
+		{ fire_id: fire_id },
 		{ $set: { history: pastGoalsArr } },
 		{ returnDocument: 'after' }
 	);
-	if (updateInfo.modifiedCount === 0) throw 'Couldn\'t update history: updateHistory';
+	if (updateInfo.modifiedCount === 0 && updateInfo.matchedCount === 0) throw 'Couldn\'t update history: updateHistory';
+	if (updateInfo.modifiedCount === 0 && updateInfo.matchedCount === 1) console.log("History up-to-date: updateHistory");
 
     return pastGoalsArr;
 };
-export { register, login, editUserInfo, getUser, getFeed, getHistory, updateHistory }
+export { register, login, editUserInfo, getUser, getFeed, getHistory, updateHistory, getUserByMongoId, getUserByUsername }

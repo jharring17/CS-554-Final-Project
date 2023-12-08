@@ -20,7 +20,8 @@ const addGoal = async (
     if(!goalDate) throw `UserId is required: addGoal`;
 
     //check to see that the userId is valid
-    if(!ObjectId.isValid(userId)) throw `Invalid UserId: addGoal`;
+    //NEED TO FIGURE OUT HOW TO VALIDATE THE USERID
+    // if(!ObjectId.isValid(userId)) throw `Invalid UserId: addGoal`;
 
     //check to see that inputs are valid strings
     title = helper.stringChecker(title);
@@ -61,7 +62,10 @@ const addGoal = async (
 
     //now that we have a new goal, we want to add the id to the user
     const userCollection = await users();
-    let user = await userCollection.findOne({_id: new ObjectId(userId)});
+    // let user = await userCollection.findOne({_id: new ObjectId(userId)});
+    let user = await userCollection.findOne({fire_id: userId});
+    let goalsList = user.goals;
+    goalsList.push(inserted.insertedId.toString());
     let updated = {
         displayName: user.displayName,
         username: user.username,
@@ -71,10 +75,10 @@ const addGoal = async (
         incomingFriends: user.incomingFriends,
         history: user.history,
         categories: user.categories,
-        // goals: (user.goals).push(newGoal._id)
-        goals: (user.goals + 1)
+        goals: goalsList
     }
-    const updatedUser = await userCollection.findOneAndUpdate({_id: new ObjectId(userId)}, {$set: updated}, {returnDocument: "after"});
+    // const updatedUser = await userCollection.findOneAndUpdate({_id: new ObjectId(userId)}, {$set: updated}, {returnDocument: "after"});
+    const updatedUser = await userCollection.findOneAndUpdate({fire_id: userId}, {$set: updated}, {returnDocument: "after"});
 
     return newGoal;
 };
@@ -89,8 +93,12 @@ const deleteGoal = async (id) => {
 
     //now that we have deleted a goal, we want to remove the id from the user
     const userCollection = await users();
-    let index;
-    let user = await userCollection.findOne({_id: deleted.userId});
+    let user = await userCollection.findOne({fire_id: deleted.userId});
+    let goalsList = user.goals;
+    var index = goalsList.indexOf(deleted._id.toString());
+    if (index > -1) {
+        goalsList.splice(index, 1);
+    }
     let updated = {
         displayName: user.displayName,
         username: user.username,
@@ -100,9 +108,9 @@ const deleteGoal = async (id) => {
         incomingFriends: user.incomingFriends,
         history: user.history,
         categories: user.categories,
-        goals: user.goals-1
+        goals: goalsList
     }
-    const updatedUser = await userCollection.findOneAndUpdate({_id: new ObjectId(deleted.userId)}, {$set: updated}, {returnDocument: "after"});
+    const updatedUser = await userCollection.findOneAndUpdate({fire_id: deleted.userId}, {$set: updated}, {returnDocument: "after"});
 
     //return the goal that was deleted
     return deleted;
@@ -136,7 +144,8 @@ const updateGoal = async (
 
     //check to see that the id and userId is valid
     if(!ObjectId.isValid(id)) throw `Invalid Id: updateGoal`;
-    if(!ObjectId.isValid(userId)) throw `Invalid UserId: updateGoal`;
+    // if(!ObjectId.isValid(userId)) throw `Invalid UserId: updateGoal`;
+    //NEED A WAY TO VALIDATE THE FIRE_ID
 
     //check to see that inputs are valid strings
     title = helper.stringChecker(title);
@@ -209,11 +218,14 @@ const getGoalById = async (id) => {
 const getGoalsByUserId = async (id) => {
     //check to see that the id is valid
     if(!id) throw `Id is required: getGoalsByUserId`
-    if(!ObjectId.isValid(id)) throw `Invalid GoalId: getGoalsByUserId`;
+    // if(!ObjectId.isValid(id)) throw `Invalid GoalId: getGoalsByUserId`;
+    //NEED A WAY TO VALIDATE FIRE_ID
 
     //get the user
     const userCollection = await users();
-    let user = await userCollection.findOne({_id: new ObjectId(id)});
+    // let user = await userCollection.findOne({_id: new ObjectId(id)});
+    let user = await userCollection.findOne({fire_id: id});
+
     if(user === null) throw `No user exists: getGoalsByUserId`;
 
     //add the goal objects to a goal array
@@ -235,28 +247,27 @@ const likePost = async (userId, goalId) => {
     //check to make sure that the ids are valid
     if(!userId) throw `UserId is required: likePost`
     if(!goalId) throw `GoalId is required: likePost`
-    if(!ObjectId.isValid(userId)) throw `Invalid UserId: likePostGoal`;
+    // if(!ObjectId.isValid(userId)) throw `Invalid UserId: likePostGoal`;
+    //NEED TO FIND A WAY TO VALIDATE THE FIRE_ID
     if(!ObjectId.isValid(goalId)) throw `Invalid GoalId: likePostGoal`;
 
     //check to make sure that the user and the goal exist 
     let goalCollection = await goals();
-    let goal = await goalCollection.findOne({_id: new ObjectId(goalId)});
+    let goal = await goalCollection.findOne({_id: goalId});
     if(goal === null) throw `Goal does not exist: likePost`
     let userCollection = await users();
-    let user = await userCollection.findOne({_id: new ObjectId(userId)});
+    // let user = await userCollection.findOne({_id: userId});
+    let user = await userCollection.findOne({fire_id: userId});
     if(user === null) throw `User does not exist: likePost`;
 
-    if (goal.userId.toString() === userId.toString())
-    {
-        throw `User cannot like their own post: likePost`
-    }
+    if (userId.toString() == goal.userId.toString()) throw `User cannot like their own post: likePost`;
     //now we see if the user has liked the goal or not 
     let liked = false;
     let index;
 
     console.log(goal)
     for(let i = 0; i < goal.likes.length; i++){
-        if((user._id).toString() === (goal.likes[i]).toString()){
+        if((user.fire_id).toString() === (goal.likes[i]).toString()){
             liked = true;
             break;
         }

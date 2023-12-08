@@ -42,11 +42,12 @@ await db.dropDatabase();
 
 let user1 = undefined;
 let user2 = undefined;
+let user3 = undefined;
 let goal1 = undefined;
 let goal2 = undefined;
 
 try {
-	user1 = await register('IsabellaStone', 'ibellarose1', 'Password123!', 21);
+	user1 = await register('9MporPAh6yMXcgEWaR8u1e5qfxx1', 'IsabellaStone', 'ibellarose1', 'ibellarose1@outlook.com', 'Password123!', 21);
 	console.log(user1);
 } catch (e) {
 	console.log(e);
@@ -70,15 +71,21 @@ try {
 	console.log(e);
 }
 try {
-	user2 = await register('MeganSanford', 'megxxsan', 'Abc123!!', 21);
+	user2 = await register('H2L2xyEKplg0K5ice7MtY7oUeWY2','MeganSanford', 'megxxsan', 'megxxsan@outlook.com', 'Abc123!!', 21);
 	console.log(user2);
+} catch (e) {
+	console.log(e);
+}
+try {
+	user3 = await register('NDq0DvRO1cXAw4Qwv8AOQtUSvd73','JacobRose', 'jrose0116', 'Password1!', 21);
+	console.log(user3);
 } catch (e) {
 	console.log(e);
 }
 
 try {
 	goal1 = await addGoal(
-		user1._id,
+		user1.fire_id,
 		'Rent',
 		'I want to pay $2000 a month for rent',
 		'utilities',
@@ -91,7 +98,7 @@ try {
 }
 try {
 	goal2 = await addGoal(
-		user2._id,
+		user2.fire_id,
 		'Groceries',
 		'I want to spend $100 a week on groceries',
 		'food',
@@ -124,26 +131,26 @@ try {
 
 try {
 	console.log("Getting Isabella's Goals");
-	console.log(await getGoalsByUserId(user1._id));
+	console.log(await getGoalsByUserId(user1.fire_id));
 } catch (e) {
 	console.log(e);
 }
 try {
 	console.log("Getting Megan's Goals");
-	console.log(await getGoalsByUserId(user2._id));
+	console.log(await getGoalsByUserId(user2.fire_id));
 } catch (e) {
 	console.log(e);
 }
 
 try {
 	console.log('likes should be 1');
-	console.log(await likePost(user1._id.toString(), goal2._id.toString()));
+	console.log(await likePost(user1.fire_id, goal2._id));
 } catch (e) {
 	console.log(e);
 }
 try {
 	console.log('likes should be 0');
-	console.log(await likePost(user1._id.toString(), goal2._id.toString()));
+	console.log(await likePost(user1.fire_id, goal2._id));
 } catch (e) {
 	console.log(e);
 }
@@ -152,7 +159,7 @@ try {
 	console.log(
 		await updateGoal(
 			goal2._id,
-			user2._id,
+			user2.fire_id,
 			'New Title',
 			'This is new',
 			goal2.category,
@@ -170,7 +177,7 @@ try {
 let goal3 = undefined;
 try {
 	goal3 = await addGoal(
-		user1._id,
+		user1.fire_id,
 		'Groceries',
 		'I want to spend $100 a week on groceries',
 		'food',
@@ -185,12 +192,12 @@ try {
 let goal4 = undefined;
 try {
 	goal4 = await addGoal(
-		user1._id,
+		user1.fire_id,
 		'Movie Limitation',
 		'I want to spend $25 a week on movies',
 		'entertainment',
 		25,
-		'11/30/2023',
+		'01/30/2024',
 		true
 	);
 	console.log(goal4);
@@ -201,12 +208,12 @@ try {
 let goal5 = undefined;
 try {
 	goal5 = await addGoal(
-		user2._id,
+		user2.fire_id,
 		'Bar Hopping',
 		'I want to spend $40 a week when going to bars',
 		'entertainment',
 		40,
-		'11/25/2023',
+		'02/25/2024',
 		true
 	);
 	console.log(goal4);
@@ -281,8 +288,9 @@ try {
 }
 try {
 	let hist2;
-	if (user2) {
-		hist2 = await getHistory(user2._id.toString());
+	if (user2)
+	{
+		hist2 = await getHistory(user2.fire_id.toString());
 	}
 	console.log(hist2);
 } catch (e) {
@@ -297,20 +305,37 @@ try {
 		received1 = await acceptRequest(user2._id.toString(), user1._id.toString());
 		console.log(received1);
 	}
-} catch (e) {
+}
+catch (e)
+{
+	console.log(e);
+}
+
+try {
+	let sent2, incoming2;
+	if (user1 && user2 && user3)
+	{
+		sent2 = await sendFriendRequest(user3._id.toString(),user1._id.toString());
+		console.log(sent2);
+		incoming2 = await sendFriendRequest(user2._id.toString(),user3._id.toString());
+		console.log(incoming2);
+	}
+}
+catch (e)
+{
 	console.log(e);
 }
 
 try {
 	console.log(
 		await updateGoal(
-			goal4._id.toString(),
-			user1._id.toString(),
+			goal4._id,
+			user1.fire_id,
 			'Now Successful 2',
 			'This is new 2',
 			goal4.category,
 			goal4.limit,
-			goal4.goalDate,
+			"12/3/2023",// past date needed for history
 			true,
 			goal4.expenses,
 			goal4.likes,
@@ -321,8 +346,17 @@ try {
 	console.log(e);
 }
 try {
-	let feed1 = await getFeed(user2._id.toString());
-	console.log(feed1);
+	let hist2 = await getHistory(user2.fire_id)
+
+    console.log(hist2);
+} catch (e) {
+    console.log(e);
+}
+
+try {
+	console.log("getFeed: ")
+	let feed1 = await getFeed(user2.fire_id.toString());
+    console.log(feed1);
 } catch (e) {
 	console.log(e);
 }
