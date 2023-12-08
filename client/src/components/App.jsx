@@ -4,8 +4,6 @@ import {Route, Routes} from 'react-router-dom';
 import Account from './Account';
 import CategoryForm from './CategoryForm.jsx';
 import Home from './Home';
-import Landing from './Landing';
-import Navigation from './Navigation';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import {AuthProvider} from '../context/AuthContext';
@@ -17,7 +15,6 @@ function App() {
     <AuthProvider>
       <div className='App'>
         <header className='App-header card'>
-          <Navigation />
         </header>
         <Routes>
           <Route path='/' element={<SignIn />} />
