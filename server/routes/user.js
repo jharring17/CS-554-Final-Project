@@ -77,7 +77,7 @@ router.route('/:userId/:goalId/:expenseId').get(async (req, res) => {
 	let goalId = req.params.goalId;
 	let expenseId = req.params.expenseId;
 	try {
-		userId = validate.validId(userId);
+		userId = validate.checkFireId(userId);
 		goalId = validate.validId(goalId);
 		expenseId = validate.validId(expenseId);
 	} catch (e) {
@@ -92,12 +92,12 @@ router.route('/:userId/:goalId/:expenseId').get(async (req, res) => {
 });
 
 // GET: get all expenses for a given goalId.
-router.route('/:userId/:goalId/expense').get(async (req, res) => {
+router.route('/:userId/:goalId').get(async (req, res) => {
 	// Validate the ids.
 	let userId = req.params.userId;
 	let goalId = req.params.goalId;
 	try {
-		userId = validate.validId(userId);
+		userId = validate.checkFireId(userId);
 		goalId = validate.validId(goalId);
 	} catch (e) {
 		return res.status(400).json({ error: e });
@@ -111,7 +111,7 @@ router.route('/:userId/:goalId/expense').get(async (req, res) => {
 });
 
 // POST: create a new expense for a goal.
-router.route('/:userId/:goalId/expense').post(async (req, res) => {
+router.route('/:userId/:goalId').post(async (req, res) => {
 	// Validate the ids.
 	let userId = req.params.userId;
 	let goalId = req.params.goalId;
@@ -119,7 +119,7 @@ router.route('/:userId/:goalId/expense').post(async (req, res) => {
 	let amount = req.body.amount;
 	let date = req.body.date;
 	try {
-		userId = validate.validId(userId);
+		userId = validate.checkFireId(userId);
 		goalId = validate.validId(goalId);
 		description = validate.stringChecker(description);
 		amount = validate.limitChecker(amount);
@@ -145,7 +145,7 @@ router.route('/:userId/:goalId/:expenseId').put(async (req, res) => {
 	let amount = req.body.amount;
 	let date = req.body.date;
 	try {
-		userId = validate.validId(userId);
+		userId = validate.checkFireId(userId);
 		goalId = validate.validId(goalId);
 		expenseId = validate.validId(expenseId);
 		description = validate.stringChecker(description);
@@ -170,7 +170,7 @@ router.route('/:userId/:goalId/:expenseId').delete(async (req, res) => {
 	let expenseId = req.params.expenseId;
 	try {
 		// Validate the input parameters.
-		userId = validate.validId(userId);
+		userId = validate.checkFireId(userId);
 		goalId = validate.validId(goalId);
 		expenseId = validate.validId(expenseId);
 
@@ -201,7 +201,7 @@ router.route('/:userId/:goalId/:expenseId').put(async (req, res) => {
 	let date = req.body.date;
 	try {
 		// Validate the input parameters.
-		userId = validate.validId(userId);
+		userId = validate.checkFireId(userId);
 		goalId = validate.validId(goalId);
 		expenseId = validate.validId(expenseId);
 		description = validate.stringChecker(description);
@@ -229,39 +229,33 @@ router.route('/:userId/:goalId/:expenseId').put(async (req, res) => {
 	}
 });
 
-router
-    .route("/:userId/addCategory")
-    .post(async (req, res) => {
-        //validate the ids
-        let fire_id = req.body.fire_id;
-        let category = req.body.category;
-        try {
-            fire_id = validate.checkFireId(fire_id);
-        }
-        catch(e) {
-            return res.status(400).json({error: e})
-        }
-        try {
-            let updatedCategories = await users.addCategory(fire_id, category);
-            return res.status(200).json(updatedCategories);
-        }
-        catch (e) {
-            console.log(e)
-            return res.status(500).json({error: e})
-        }
-    })
+router.route('/:userId/addCategory').post(async (req, res) => {
+	//validate the ids
+	let fire_id = req.body.fire_id;
+	let category = req.body.category;
+	try {
+		fire_id = validate.checkFireId(fire_id);
+	} catch (e) {
+		return res.status(400).json({ error: e });
+	}
+	try {
+		let updatedCategories = await users.addCategory(fire_id, category);
+		return res.status(200).json(updatedCategories);
+	} catch (e) {
+		console.log(e);
+		return res.status(500).json({ error: e });
+	}
+});
 
-	router
-		.route('/:userId/getUserInfo')
-		.get(async (req, res) => {
-			//validate the id
-			let id = req.params.userId;
-			try {
-				let data = await users.getUser(id)
-				return res.status(200).json(data);
-			} catch (e) {
-				return res.status(404).json({ error: e });
-			}
-		});
+router.route('/:userId/getUserInfo').get(async (req, res) => {
+	//validate the id
+	let id = req.params.userId;
+	try {
+		let data = await users.getUser(id);
+		return res.status(200).json(data);
+	} catch (e) {
+		return res.status(404).json({ error: e });
+	}
+});
 
 export default router;

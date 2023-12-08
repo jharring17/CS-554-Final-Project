@@ -1,61 +1,112 @@
+import { useState } from 'react';
 import '../App.css';
 import axios from 'axios';
 import * as firebase from '../firebase/FirebaseFunctions.js';
 import { useNavigate } from 'react-router-dom';
 
 // TODO: Make this pass props, so we can pass the goalId.
-const goalId = '656e160b398f8720a830e799';
+const goalId = '657390b89464c281f8f0763c';
 function ExpenseForm() {
 	// Define navigate for page redirection.
 	const navigate = useNavigate();
+	let [errors, setErrors] = useState([]);
 
 	const handleSubmit = async (e) => {
 		// Prevent default action.
 		e.preventDefault();
+
+		let errors = [];
 
 		// Get the values from the form.
 		let userId = firebase.doGetUID();
 		let description = document.getElementById('description').value;
 		let amount = document.getElementById('amount').value;
 		let date = document.getElementById('date').value;
-		console.log('Form submitted & values retrieved.');
 
-		// Call the route to add an expense with the form data.
-		try {
-			let expense = await axios.post(`localhost:3000/${userId}/${goalId}`, {
-				goalId: goalId,
-				description: description,
-				amount: amount,
-				date: date,
-			});
-			console.log('Posted expense: ', expense);
-		} catch (e) {
-			console.log(e);
+		// Check that form values are not empty.
+		if (description.trim() == '') {
+			errors.push('Description is required.');
+		}
+		if (amount.trim() == '') {
+			errors.push('Amount is required.');
+		}
+		if (date.trim() == '') {
+			errors.push('Date is required.');
 		}
 
-		// Redirect the user to the account.
-		navigate('/account');
+		// Format the amount value from form for submission.
+		const isValidAmount = /^\$?[0-9]+(\.[0-9]{0,2})/.test(amount);
+		if (!isValidAmount) {
+			errors.push('Invalid amount formatting.');
+		}
+
+		// Check that the amount is a valid number with up to two decimal places.
+		if (amount.includes('.')) {
+			let splitAmount = amount.split('.');
+			if (splitAmount[1].length > 2) {
+				errors.push('Amount must be a valid number with up to two decimal places.');
+			}
+		}
+
+		// Remove the dollar sign from the amount.
+		if (amount.includes('$')) amount = amount.replaceAll('$', '');
+
+		setErrors(errors);
+
+		// If there are no errors, perform the request.
+		if (errors.length === 0) {
+			// Format date value from form for submission
+			date = date.split('-');
+			date = date[1] + '/' + date[2] + '/' + date[0];
+
+			// Format the amount value from form for submission.
+			amount = parseFloat(amount);
+			console.log('Amount: ', amount);
+
+			// Call the route to add an expense with the form data.
+			try {
+				let expense = await axios.post(`http://localhost:3000/user/${userId}/${goalId}`, {
+					description: description,
+					amount: amount,
+					date: date,
+				});
+				console.log('Posted expense: ', expense);
+			} catch (e) {
+				console.log(e);
+			}
+
+			// Redirect the user to the account.
+			navigate('/account');
+		}
 	};
 
 	// Return the form.
 	return (
 		<div className="expenseForm">
+			<h1>Track an Expense</h1>
+			{errors.map((error, index) => {
+				return (
+					<p key={index} className="error">
+						{error}
+					</p>
+				);
+			})}
 			<form>
 				<label>
 					Description
-					<input id="description" />
+					<input id="description" placeholder="I bought..." />
 				</label>
 				<br />
 				<br />
 				<label>
 					Amount
-					<input id="amount" />
+					<input id="amount" placeholder="$$$" />
 				</label>
 				<br />
 				<br />
 				<label>
 					Date
-					<input id="date" type="date" />
+					<input type="date" id="date" />
 				</label>
 				<br />
 				<br />
