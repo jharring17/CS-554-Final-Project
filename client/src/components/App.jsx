@@ -2,6 +2,7 @@ import React from 'react';
 import '../App.css';
 import {Route, Routes} from 'react-router-dom';
 import Account from './Account';
+import CategoryForm from './CategoryForm.jsx';
 import Home from './Home';
 import Landing from './Landing';
 import Navigation from './Navigation';
@@ -28,6 +29,10 @@ function App() {
           </Route>
           <Route path='/makeGoal' element={<PrivateRoute />}>
             <Route path='/makeGoal' element={<AddGoalForm />} />
+              
+          <Route path='/createCategory' element={<PrivateRoute />}>
+            <Route path='/createCategory' element={<CategoryForm />} />
+              
           </Route>
           {/* <Route path='/friends' element={<PrivateRoute />}>
             <Route path='/friends' element={<Friends />} />

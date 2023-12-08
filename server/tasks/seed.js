@@ -1,5 +1,13 @@
 // console.log('Implement me!');
-import { register, login, editUserInfo, getUser, getFeed, getHistory, updateHistory } from '../data/users.js';
+import {
+	register,
+	login,
+	editUserInfo,
+	getUser,
+	getFeed,
+	getHistory,
+	updateHistory,
+} from '../data/users.js';
 import {
 	addGoal,
 	deleteGoal,
@@ -17,14 +25,15 @@ import {
 	editExpense,
 } from '../data/expenses.js';
 import {
-	sendFriendRequest, 
-	acceptRequest, 
-	declineRequest, 
-	cancelRequest, 
-	removeFriend, 
-	getPendingRequests, 
-	getIncomingRequests, 
-	getAllFriends} from '../data/friends.js';
+	sendFriendRequest,
+	acceptRequest,
+	declineRequest,
+	cancelRequest,
+	removeFriend,
+	getPendingRequests,
+	getIncomingRequests,
+	getAllFriends,
+} from '../data/friends.js';
 
 import { dbConnection, closeConnection } from '../config/mongoConnection.js';
 
@@ -56,8 +65,8 @@ try {
 	console.log('successfully FAILED to sign in user 1');
 }
 try {
-    let newUser1 = await editUserInfo(user1._id, "BellaStone", "ibellarose1", "Password123!", 21); //can't edit username
-    console.log(newUser1);
+	let newUser1 = await editUserInfo(user1._id, 'BellaStone', 'ibellarose1', 'Password123!', 21); //can't edit username
+	console.log(newUser1);
 } catch (e) {
 	console.log(e);
 }
@@ -68,7 +77,7 @@ try {
 	console.log(e);
 }
 try {
-	user3 = await register('NDq0DvRO1cXAw4Qwv8AOQtUSvd73','JacobRose', 'jrose0116', 'Password1!', 21);
+	user3 = await register('NDq0DvRO1cXAw4Qwv8AOQtUSvd73','JacobRose', 'jrose0116', 'jrose0116@gmail.com', 'Password1!', 21);
 	console.log(user3);
 } catch (e) {
 	console.log(e);
@@ -220,6 +229,14 @@ try {
 	console.log(e);
 }
 
+let expense2 = undefined;
+try {
+	expense2 = await addExpense(goal3._id, 'I bought another sandwich', 5.0, '12/18/2023');
+	console.log(expense2);
+} catch (e) {
+	console.log(e);
+}
+
 // let delExpense1 = undefined;
 // try {
 // 	delExpense1 = await delExpense(expense1._id);
@@ -234,6 +251,25 @@ try {
 	console.log(e);
 }
 
+// Get an expense by its ID.
+try {
+	let expenseById = await getExpenseById(expense1._id);
+	console.log('----------------HERE-----------------');
+	console.log(expenseById);
+} catch (e) {
+	console.log(e);
+}
+
+// Get all expenses by goal Id
+try {
+	let expensesByGoalId = await getExpensesByGoalId(goal3._id);
+	console.log('----------------EXPESNSE BY GOAL ID-----------------');
+	console.log(expensesByGoalId);
+	console.log('---------------------------------');
+} catch (e) {
+	console.log(e);
+}
+
 // try {
 //     let check = await checkUser("IBellaROse1@gmAil.cOM   ", "Iii9iw*u");
 //     console.log(check);
@@ -243,13 +279,12 @@ try {
 
 try {
 	let hist1;
-	if (user1)
-	{
+	if (user1) {
 		hist1 = await getHistory(user1._id.toString());
 	}
-    console.log(hist1);
+	console.log(hist1);
 } catch (e) {
-    console.log(e);
+	console.log(e);
 }
 try {
 	let hist2;
@@ -257,18 +292,18 @@ try {
 	{
 		hist2 = await getHistory(user2.fire_id.toString());
 	}
-    console.log(hist2);
+	console.log(hist2);
 } catch (e) {
-    console.log(e);
+	console.log(e);
 }
 
 try {
 	let sent1, received1;
 	if (user1 && user2)
 	{
-		sent1 = await sendFriendRequest(user1._id.toString(),user2._id.toString());
+		sent1 = await sendFriendRequest(user1.fire_id.toString(),user2.fire_id.toString());
 		console.log(sent1);
-		received1 = await acceptRequest(user2._id.toString(),user1._id.toString());
+		received1 = await acceptRequest(user2.fire_id.toString(),user1.fire_id.toString());
 		console.log(received1);
 	}
 }
@@ -281,9 +316,9 @@ try {
 	let sent2, incoming2;
 	if (user1 && user2 && user3)
 	{
-		sent2 = await sendFriendRequest(user3._id.toString(),user1._id.toString());
+		sent2 = await sendFriendRequest(user3.fire_id.toString(),user1.fire_id.toString());
 		console.log(sent2);
-		incoming2 = await sendFriendRequest(user2._id.toString(),user3._id.toString());
+		incoming2 = await sendFriendRequest(user2.fire_id.toString(),user3.fire_id.toString());
 		console.log(incoming2);
 	}
 }
@@ -324,7 +359,7 @@ try {
 	let feed1 = await getFeed(user2.fire_id.toString());
     console.log(feed1);
 } catch (e) {
-    console.log(e);
+	console.log(e);
 }
 
 await closeConnection();

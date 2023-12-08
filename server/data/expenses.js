@@ -1,9 +1,13 @@
-// getExpenseById, addExpense, delExpense, editExpense
+// Functions: getExpenseById, getExpensesByGoalId, addExpense, delExpense, editExpense
 import { goals, expenses } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import * as helper from '../../validation.js';
 
-// Get an expense by its ID.
+/* 
+	Function	: getExpenseById
+ 	Description	: Get a single expense by expenseId.
+	Return		: A single expense.
+ */
 const getExpenseById = async (expenseId) => {
 	// Validate the ID.
 	if (!expenseId) throw `Id is required: getExpenseById`;
@@ -18,23 +22,30 @@ const getExpenseById = async (expenseId) => {
 	else throw 'Expense not found: getExpenseById';
 };
 
-// Get all expenses by goal ID.
+/* 
+	Function	: getExpensesByGoalId
+ 	Description	: Get all expenses for a given goalId. 
+	Return		: An array of expenses.
+ */
 const getExpensesByGoalId = async (goalId) => {
 	// Validate the ID.
 	if (!goalId) throw `Id is required: getExpensesByGoalId`;
 	if (!ObjectId.isValid(goalId)) throw `Invalid id: getExpensesByGoalId`;
 
 	// Get the goal from goal collection.
-	const goalCollection = await goals();
-	let goal = goalCollection.findOne({ _id: new ObjectId(goalId) });
+	const expenseCollection = await expenses();
+	let expenseArray = expenseCollection.find({ goalId: new ObjectId(goalId) }).toArray();
 
 	// Check if a goal was found.
-	if (goal) return goal.expenses;
-	else throw 'Goal not found: getExpensesByGoalId';
+	if (expenseArray) return expenseArray;
+	else throw 'Unable to locate expenses for the provided goalId: getExpensesByGoalId';
 };
 
-//? TEST: update date if needed.
-// Add an expense to the database.
+/* 
+	Function	: addExpense
+ 	Description	: Add an expense to a goal using goalId. 
+	Return		: The added expense object.
+ */
 const addExpense = async (goalId, description, amount, date) => {
 	// Validate the user ID.
 	if (!goalId) throw `Goal ID is required: addExpense`;
@@ -77,8 +88,11 @@ const addExpense = async (goalId, description, amount, date) => {
 	return await getExpenseById(insertInfo.insertedId);
 };
 
-//? TEST
-// Delete an expense from the database.
+/* 
+ 	Function	: delExpense
+ 	Description	: Remove an expense from expense collection and remove expenseId from goal.
+	Return		: The deleted expense object.
+ */
 const delExpense = async (expenseId) => {
 	// Validate the expense ID.
 	if (!expenseId) throw `Expense ID is required: delExpense`;
@@ -101,8 +115,11 @@ const delExpense = async (expenseId) => {
 	return deletedExpense;
 };
 
-//? TEST: update date if needed
-// Edit an expense in the database.
+/* 
+	Function	: editExpense
+ 	Description	: Edit an expense from expense collection.
+	Return		: The edited expense object.
+ */
 const editExpense = async (expenseId, description, amount, date) => {
 	// Validate the expense ID.
 	if (!expenseId) throw `Expense ID is required: editExpense`;
