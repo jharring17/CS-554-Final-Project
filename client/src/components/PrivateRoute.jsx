@@ -9,7 +9,7 @@ const PrivateRoute = () => {
   //console.log('Private Route Comp current user', currentUser);
   // If authorized, return an outlet that will render child elements
   // If not, return element that will navigate to login page
-  return currentUser ? <><Outlet /><FriendsModal /><Navigation /></> : <Navigate to='/' replace={true} />;
+  return currentUser ? <><header className='App-header card'><Navigation /></header><Outlet /><FriendsModal /></> : <Navigate to='/' replace={true} />;
 };
 
 export default PrivateRoute;

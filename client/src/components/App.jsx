@@ -14,8 +14,6 @@ function App() {
   return (
     <AuthProvider>
       <div className='App'>
-        <header className='App-header card'>
-        </header>
         <Routes>
           <Route path='/' element={<SignIn />} />
           <Route path='/feed' element={<PrivateRoute />}>
