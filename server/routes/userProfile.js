@@ -10,16 +10,16 @@ router
     .get(async (req, res) => {
         //check to make sure the id is valid
         let id = req.params.userId;
-        try{
-            id = validate.validId(id);
-        }catch(e){
-            return res.status(400).json({error: e})
-        }
+        // try{
+        //     id = validate.validId(id);
+        // }catch(e){
+        //     return res.status(400).json({error: e})
+        // }
         //get all of the goals for the user
         try{
             let allGoals = await goals.getGoalsByUserId(id);
             console.log(allGoals)
-            return res.json(allGoals);
+            return res.status(200).json(allGoals);
         }catch(e){
             return res.status(404).json({error: e})
         }
@@ -142,23 +142,31 @@ router
 router 
     .route("/:userId/:goalId")
     .get(async (req, res) => {
+        console.log()
         //validate the ids
         let id = req.params.userId;
         let goalId = req.params.goalId;
         try{
-            id = validate.validId(id);
+            // id = validate.validId(id);
             goalId = validate.validId(goalId);
         }catch(e){
             return res.status(400).json({error: e})
         }
-        // return res.render('/editGoal')
+        try{
+            let goal = await goals.getGoalById(goalId)
+            return res.status(200).json(goal)
+        }catch(e){
+            return res.status(500).json({error: e})
+
+        }
+
     })
     .patch(async (req, res) => {
         //validate the ids
         let id = req.params.userId;
         let goalId = req.params.goalId;
         try{
-            id = validate.validId(id);
+            // id = validate.validId(id);
             goalId = validate.validId(goalId);
         }catch(e){
             return res.status(400).json({error: e})
