@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.20",
+    "@mui/styled-engine": "^5.14.20",
     "aws-sdk": "^2.1498.0",
     "axios": "^1.6.2",
     "firebase": "^10.6.0",

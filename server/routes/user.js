@@ -38,7 +38,7 @@ router.route('/:userId/feed').get(async (req, res) => {
 	//validate the id
 	let id = req.params.userId;
 	try {
-		id = validate.validId(id);
+		id = validate.checkFireId(id);
 	} catch (e) {
 		return res.status(400).json({ error: e });
 	}
@@ -55,7 +55,7 @@ router.route('/:userId/:goalId/like').post(async (req, res) => {
 	let userId = req.params.userId;
 	let goalId = req.params.goalId;
 	try {
-		userId = validate.validId(userId);
+		userId = validate.checkFireId(userId);
 		goalId = validate.validId(goalId);
 	} catch (e) {
 		return res.status(400).json({ error: e });

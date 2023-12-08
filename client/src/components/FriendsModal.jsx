@@ -13,6 +13,7 @@ function FriendsModal() {
     const [modalOpened, setModalOpened] = useState(false)
     const [tab, setTab] = useState(0)
     const [pending, setPending] = useState([])
+    const [loading, setLoading] = useState(true)
     const [incoming, setIncoming] = useState([])
     const [inputValue, setInputValue] = useState('')
     const [tabData, setTabData] = useState(<></>)
@@ -54,7 +55,7 @@ function FriendsModal() {
         try {
             if(!(/^[a-zA-Z0-9]+$/.test(username)) || username.length < 8 || username.length > 20) throw {response: {status:400, error: "Bad username"}}
             const {data} = await backend.get(`/getIdByUsername/${username.trim()}`)
-            await backend.post(`/friends/request/SEND`, {user1: userId, user2: data._id})
+            await backend.post(`/friends/request/SEND`, {user1: userId, user2: data.fire_id})
             toast(`Request Sent To ${data.displayName}`)
             setRefresh(!refresh)
         } catch (e) {
@@ -66,9 +67,11 @@ function FriendsModal() {
     useEffect(()=>{
         const getData = async () =>{
             try{
+                await backend(`/getUserByFireAuth/${currentUser.uid}`)
                 setUserId(currentUser.uid)
+                setLoading(false)
             } catch (e) {
-                toast.error("ID ERROR:", e)
+                toast.error("Error:", e)
             }
         }
         getData()
@@ -133,7 +136,8 @@ function FriendsModal() {
     }, [pending])
 
     const tabButtonStyle = {width: "50%", border: "none", backgroundColor: "white", paddingTop: "10px", paddingBottom: "10px", fontSize: "small", fontWeight: "bold"}
-
+    
+    if(loading) return (<></>)
     if(modalOpened) return (<>
         <ToastContainer
         position="top-right"
@@ -166,7 +170,7 @@ function FriendsModal() {
     )
     return (
         <button style={{borderRadius:"50%", border:"none", width: "6vw", height:"6vw", backgroundColor:"#282c34", position:"absolute", bottom: 20, right: 60}} onClick={()=>setModalOpened(true)}>
-            {(incoming.length + pending.length > 0) ? <span style={{position: "absolute", top: -5, left: -5, width: "25px", height: "25px", borderRadius: "50%", backgroundColor: "red", display:"flex", alignItems:"center", justifyContent:"center", fontWeight: "bold", color:"white", zIndex: 1}}>{incoming.length + pending.length}</span> : <></>}
+            {(incoming.length > 0) ? <span style={{position: "absolute", top: -5, left: -5, width: "25px", height: "25px", borderRadius: "50%", backgroundColor: "red", display:"flex", alignItems:"center", justifyContent:"center", fontWeight: "bold", color:"white", zIndex: 1}}>{incoming.length}</span> : <></>}
             <img src={friendSVG} alt="Friend Requests" style={{position:"absolute", width:"95%", height:"95%", top: "3%", left: "5%", color:"white"}}/>
         </button>
     )
