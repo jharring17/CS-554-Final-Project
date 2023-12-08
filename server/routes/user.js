@@ -1,7 +1,8 @@
-import * as goals from "../data/goals.js";
-import * as users from "../data/users.js"
-import * as validate from "../../validation.js";
-import { Router } from "express";
+import * as goals from '../data/goals.js';
+import * as users from '../data/users.js';
+import * as expenses from '../data/expenses.js';
+import * as validate from '../../validation.js';
+import { Router } from 'express';
 const router = Router();
 
 router
