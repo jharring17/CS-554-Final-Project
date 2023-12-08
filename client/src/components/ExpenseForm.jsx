@@ -1,83 +1,63 @@
 import { useState } from 'react';
-import './App.css';
+import '../App.css';
 import axios from 'axios';
-import * as firebase from '../firebase/FirebaseFunctionss.js';
+import * as firebase from '../firebase/FirebaseFunctions.js';
+import { useNavigate } from 'react-router-dom';
 
-function ExpenseForm({ goalId }) {
-	const [formData, setFormData] = useState({
-		description: '',
-		amount: '',
-		date: '',
-	});
+// TODO: Make this pass props, so we can pass the goalId.
+const goalId = '656e160b398f8720a830e799';
+function ExpenseForm() {
+	// Define navigate for page redirection.
+	const navigate = useNavigate();
 
-	const [currentUserFireId, setCurrentUserFireId] = useState('');
-
-	// Get the fireID to generate an expense for a user.
-	try {
-		// Set the current user's fireID.
-		let currentUserFireId = firebase.doGetUID();
-		setCurrentUserFireId(currentUserFireId);
-	} catch (e) {
-		console.log(e);
-	}
-
-	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setFormData({
-			...formData,
-			[name]: value,
-		});
-	};
-
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
+		// Prevent default action.
 		e.preventDefault();
-		console.log('Form submitted: ', formData);
+
+		// Get the values from the form.
+		let userId = firebase.doGetUID();
+		let description = document.getElementById('description').value;
+		let amount = document.getElementById('amount').value;
+		let date = document.getElementById('date').value;
+		console.log('Form submitted & values retrieved.');
 
 		// Call the route to add an expense with the form data.
 		try {
-			axios.post(`localhost:3000/${currentUserFireId}/${goalId}`, {
-				description: formData.description,
-				amount: formData.amount,
-				date: formData.date,
+			await axios.post(`localhost:3000/${userId}/${goalId}`, {
+				description: description,
+				amount: amount,
+				date: date,
 			});
 		} catch (e) {
 			console.log(e);
 		}
+
+		// Redirect the user to the account.
+		navigate('/account');
 	};
 
+	// Return the form.
 	return (
 		<div className="expenseForm">
 			<form>
 				<label>
 					Description
-					<input
-						type="text"
-						name="description"
-						placeholder="Description"
-						value={formData.description}
-						onChange={handleChange}
-					/>
+					<input id="description" />
 				</label>
+				<br />
+				<br />
 				<label>
 					Amount
-					<input
-						type="number"
-						name="amount"
-						placeholder="Amount"
-						value={formData.amount}
-						onChange={handleChange}
-					/>
+					<input id="amount" />
 				</label>
+				<br />
+				<br />
 				<label>
 					Date
-					<input
-						type="date"
-						name="date"
-						placeholder="Date"
-						value={formData.date}
-						onChange={handleChange}
-					/>
+					<input id="date" type="date" />
 				</label>
+				<br />
+				<br />
 				<button type="submit" onClick={handleSubmit}>
 					Add Expense
 				</button>
