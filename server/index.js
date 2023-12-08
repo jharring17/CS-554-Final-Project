@@ -3,9 +3,7 @@ import cors from 'cors';
 const app = express();
 app.use(cors());
 import configRoutes from './routes/index.js';
-import cors from "cors"
 
-app.use(cors())
 app.use(express.json()); //***if you don't have this the request body will be undefined, this is what allows you to read the request body in a route
 
 configRoutes(app);
