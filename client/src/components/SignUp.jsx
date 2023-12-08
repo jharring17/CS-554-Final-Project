@@ -20,7 +20,6 @@ function SignUp() {
       
       await axios.post(`http://localhost:3000/user/register`, 
                       {fire_id: fire_id,
-                      // {fire_id: "abcdefgdkdkdkdkdkdkdkdkdkdkd",
                       displayName: displayName.value,
                       username: username.value,
                       password: passwordOne.value,
