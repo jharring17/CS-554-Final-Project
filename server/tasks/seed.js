@@ -68,7 +68,7 @@ try {
 	console.log(e);
 }
 try {
-	user3 = await register('NDq0DvRO1cXAw4Qwv8AOQtUSvd73','JacobRose', 'jrose0116', 'Password1!', 21);
+	user3 = await register('NDq0DvRO1cXAw4Qwv8AOQtUSvd73','JacobRose', 'jrose0116', 'jrose0116@gmail.com', 'Password1!', 21);
 	console.log(user3);
 } catch (e) {
 	console.log(e);
@@ -266,9 +266,9 @@ try {
 	let sent1, received1;
 	if (user1 && user2)
 	{
-		sent1 = await sendFriendRequest(user1._id.toString(),user2._id.toString());
+		sent1 = await sendFriendRequest(user1.fire_id.toString(),user2.fire_id.toString());
 		console.log(sent1);
-		received1 = await acceptRequest(user2._id.toString(),user1._id.toString());
+		received1 = await acceptRequest(user2.fire_id.toString(),user1.fire_id.toString());
 		console.log(received1);
 	}
 }
@@ -281,9 +281,9 @@ try {
 	let sent2, incoming2;
 	if (user1 && user2 && user3)
 	{
-		sent2 = await sendFriendRequest(user3._id.toString(),user1._id.toString());
+		sent2 = await sendFriendRequest(user3.fire_id.toString(),user1.fire_id.toString());
 		console.log(sent2);
-		incoming2 = await sendFriendRequest(user2._id.toString(),user3._id.toString());
+		incoming2 = await sendFriendRequest(user2.fire_id.toString(),user3.fire_id.toString());
 		console.log(incoming2);
 	}
 }

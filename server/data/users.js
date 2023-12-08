@@ -156,7 +156,7 @@ const getUserByUsername = async (username) => {
         throw "User not found: getUserByUsername";
 }
 
-const getFeed = async (id) => {
+const getFeed = async (fire_id) => {
     //validations
     if(!fire_id) throw `Id is required: getFeed`
     fire_id = helper.checkFireId(fire_id);
