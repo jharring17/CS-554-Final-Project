@@ -32,7 +32,6 @@ function App() {
           </Route>
           <Route path='/createCategory' element={<PrivateRoute />}>
             <Route path='/createCategory' element={<CategoryForm />} />
-              
           </Route>
           {/* <Route path='/friends' element={<PrivateRoute />}>
             <Route path='/friends' element={<Friends />} />
