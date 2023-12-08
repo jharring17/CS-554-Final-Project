@@ -10,7 +10,7 @@ function Account() {
       <h2>Dashboard</h2>
       <Link to='/createCategory'>Create Category</Link>
       <br/>
-      <Link>Add goal</Link>
+      <Link to='/makeGoal'>Add goal</Link>
       <br/>
       <Link>Report Expense</Link>
       <br/>
