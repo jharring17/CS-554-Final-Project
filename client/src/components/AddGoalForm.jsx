@@ -4,7 +4,14 @@ import { doGetUID } from "../firebase/FirebaseFunctions";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 function AddGoal(){
+    const [categories, setCategories] = useState([])
     const navigate = useNavigate();
+
+    async function getUserInfo(){
+        let id = doGetUID();
+        let data = await axios.get(`http://localhost:3000/user/${id}/getUserInfo`)
+        setCategories(data.data.categories)
+    }
     async function submitGoal(e){
         e.preventDefault();
         let userId = doGetUID();
@@ -26,7 +33,7 @@ function AddGoal(){
         )
         navigate('/account')
     } 
-
+    getUserInfo()
     return(
         <div>
             <h1>Make a New Goal!</h1>
@@ -40,7 +47,17 @@ function AddGoal(){
                 </label>
                 <br/>
                 <label>
-                    Category: <input id="category" required />
+                    Category:  
+                    <select id="category">
+                        <option>...</option>
+                        {categories.map((category) => {
+                            return (
+                                <option value={category} key={category}>
+                                {category}
+                            </option>
+                            )
+                        })}
+                    </select>
                 </label>
                 <br/>
                 <label>
