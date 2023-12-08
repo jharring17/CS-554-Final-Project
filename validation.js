@@ -47,6 +47,19 @@ export function checkName(name, stringName) {
     return name;
 }
 
+export function checkCategory(category) {
+    category = stringChecker(category);
+    category = category.toLowerCase();
+    if (category.length > 30) {
+      throw 'category name too long: checkCategory';
+    }
+    if (!/^[a-zA-Z0-9_.-]*[a-zA-Z][a-zA-Z0-9_. -]*$/.test(category)) { 
+      //rn this takes multi word categories with numbers and _.-
+      throw 'invalid category';
+    }
+    return category;
+}
+
 export function limitChecker(limit){
     if(typeof limit != "number") throw `Limit must be a valid number`;
     if(limit <= 0) throw `Limit must be a valid number greater than 0`;

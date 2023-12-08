@@ -243,4 +243,31 @@ const updateHistory = async (fire_id) => {
 
     return pastGoalsArr;
 };
-export { register, login, editUserInfo, getUser, getFeed, getHistory, updateHistory, getUserByMongoId, getUserByUsername }
+
+const addCategory = async (fire_id, category) => {
+    if(!fire_id || !category) throw `Not enough inputs: addCategory`
+    // fire_id = helper.checkFireId(fire_id);
+    category = helper.checkCategory(category);
+
+    const userCollection = await users();
+    let user = await userCollection.findOne({fire_id: fire_id});
+    let newCategories = user.categories;
+    if (newCategories.includes(category)) {
+        throw 'cannot add duplicate category';
+    }
+    else {
+        newCategories.push(category);
+    }
+
+    let updatedUser = await userCollection.updateOne(
+		{ fire_id: fire_id },
+		{ $set: { categories: newCategories } },
+		{ returnDocument: 'after' }
+	);
+
+    let newUser = await userCollection.findOne({fire_id: fire_id});
+
+    return newUser;
+}
+
+export { register, login, editUserInfo, getUser, getFeed, getHistory, updateHistory, getUserByMongoId, getUserByUsername, addCategory }
