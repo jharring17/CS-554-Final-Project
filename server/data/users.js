@@ -146,7 +146,7 @@ const getUserByUsername = async (username) => {
     if(!username) throw `username is required: getUserByUsername`
 
     const userCollection = await users();
-    let user = await userCollection.findOne({username: username});
+    let user = await userCollection.findOne({username: username.toLowerCase()});
     if (user)
     {
         user._id = user._id.toString();
