@@ -8,7 +8,7 @@ function Account() {
   return (
     <div className='card'>
       <h2>Dashboard</h2>
-      <Link>Create Category</Link>
+      <Link to='/createCategory'>Create Category</Link>
       <br/>
       <Link to='/makeGoal'>Add goal</Link>
       <br/>

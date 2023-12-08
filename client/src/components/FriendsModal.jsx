@@ -66,8 +66,7 @@ function FriendsModal() {
     useEffect(()=>{
         const getData = async () =>{
             try{
-                const {data: mongoId} = await backend.get(`/getIdByFireAuth/${currentUser.uid}`)
-                setUserId(mongoId._id)
+                setUserId(currentUser.uid)
             } catch (e) {
                 toast.error("ID ERROR:", e)
             }
@@ -98,7 +97,7 @@ function FriendsModal() {
                     return;
                 }
                 const promise = incoming.map(async (id)=>{
-                    const {data} = await backend.get(`/getUserById/${id}`)
+                    const {data} = await backend.get(`/getUserByFireAuth/${id}`)
                     const userTemp = {name: data.displayName}// getUser
 
                     return <div style={{display:"flex", flexDirection: "row"}} key={id}><p style={{marginLeft: "10px", marginRight: "auto", maxWidth: "50%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>{userTemp.name}</p><button style={accDecButtonStyles} onClick={()=>acceptFriend(id)}>Accept</button><button style={accDecButtonStyles} onClick={()=>declineFriend(id)}>Decline</button></div>
@@ -122,7 +121,7 @@ function FriendsModal() {
                     return;
                 }
                 const promise = pending.map(async (id)=>{
-                    const {data} = await backend.get(`/getUserById/${id}`)
+                    const {data} = await backend.get(`/getUserByFireAuth/${id}`)
                     const userTemp = {name: data.displayName}// getUser
                     return <div style={{display:"flex", flexDirection: "row"}} key={id}><p style={{marginLeft: "10px", marginRight: "auto", maxWidth: "70%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>{userTemp.name}</p><button style={accDecButtonStyles} onClick={()=>cancelRequest(id)}>Cancel</button></div>
                 })

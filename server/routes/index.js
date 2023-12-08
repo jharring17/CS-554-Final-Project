@@ -8,7 +8,7 @@ const constructorMethod = (app) => {
 	app.use("/user", userRoutes);
 	app.use("/userprofile", userProfileRoutes);
 
-	app.get("/getIdByFireAuth/:id", async (req, res) => {
+	app.get("/getUserByFireAuth/:id", async (req, res) => {
 		try{
 			let data = await getUser(req.params.id)
 			return res.json(data)
