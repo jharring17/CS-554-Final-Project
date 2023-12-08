@@ -1,4 +1,4 @@
-import { getUserByFireId, getUserByUsername, getUser } from "../data/users.js";
+import { getUserByUsername, getUser, getUserByMongoId } from "../data/users.js";
 import friendsRoutes from "./friends.js";
 import userRoutes from "./user.js";
 import userProfileRoutes from "./userProfile.js";
@@ -10,7 +10,7 @@ const constructorMethod = (app) => {
 
 	app.get("/getIdByFireAuth/:id", async (req, res) => {
 		try{
-			let data = await getUserByFireId(req.params.id)
+			let data = await getUser(req.params.id)
 			return res.json(data)
 		} catch (e) {
 			return res.status(404).json({error: e})
@@ -28,7 +28,7 @@ const constructorMethod = (app) => {
 
 	app.get("/getUserById/:id", async (req, res) => {
 		try{
-			let data = await getUser(req.params.id)
+			let data = await getUserByMongoId(req.params.id)
 			return res.json(data)
 		} catch (e) {
 			return res.status(404).json({error: e})

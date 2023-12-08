@@ -128,22 +128,22 @@ const getUser = async (fire_id) => {
         throw "User not found: getUser";
 };
 
-const getUserByFireId = async (fire_id) => {
-    if(!fire_id) throw `fireId is required: getUser`
+const getUserByMongoId = async (id) => {
+    if(!id) throw `fireId is required: getUserByMongoId`
 
     const userCollection = await users();
-    let user = await userCollection.findOne({fire_id: fire_id});
+    let user = await userCollection.findOne({_id: new ObjectId(id)});
     if (user)
     {
         user._id = user._id.toString();
         return user;
     }
     else
-        throw "User not found: getUser";
+        throw "User not found: getUserByMongoId";
 }
 
 const getUserByUsername = async (username) => {
-    if(!username) throw `username is required: getUser`
+    if(!username) throw `username is required: getUserByUsername`
 
     const userCollection = await users();
     let user = await userCollection.findOne({username: username});
@@ -153,7 +153,7 @@ const getUserByUsername = async (username) => {
         return user;
     }
     else
-        throw "User not found: getUser";
+        throw "User not found: getUserByUsername";
 }
 
 const getFeed = async (id) => {
@@ -243,4 +243,4 @@ const updateHistory = async (fire_id) => {
 
     return pastGoalsArr;
 };
-export { register, login, editUserInfo, getUser, getFeed, getHistory, updateHistory, getUserByFireId, getUserByUsername }
+export { register, login, editUserInfo, getUser, getFeed, getHistory, updateHistory, getUserByMongoId, getUserByUsername }
