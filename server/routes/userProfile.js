@@ -84,7 +84,8 @@ router
         let id = req.params.userId;
         //validate all of the input
         try{
-            id = validate.validId(id);
+            // id = validate.validId(id);
+            id = validate.stringChecker(id)
             req.body.title = validate.stringChecker(req.body.title)
             req.body.description = validate.stringChecker(req.body.description);
             req.body.category = validate.stringChecker(req.body.category);
@@ -93,6 +94,7 @@ router
             req.body.category = await validate.categoryChecker(id, req.body.category)
             req.body.goalDate = validate.goalDateChecker(req.body.goalDate)
         }catch(e){
+            console.log(e)
             return res.status(400).json({error: e})
         }
         //now try to add the goal

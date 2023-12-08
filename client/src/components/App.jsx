@@ -9,6 +9,7 @@ import SignIn from './SignIn';
 import SignUp from './SignUp';
 import {AuthProvider} from '../context/AuthContext';
 import PrivateRoute from './PrivateRoute';
+import AddGoalForm from './AddGoalForm';
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
           </Route>
           <Route path='/account' element={<PrivateRoute />}>
             <Route path='/account' element={<Account />} />
+          </Route>
+          <Route path='/makeGoal' element={<PrivateRoute />}>
+            <Route path='/makeGoal' element={<AddGoalForm />} />
           </Route>
           {/* <Route path='/friends' element={<PrivateRoute />}>
             <Route path='/friends' element={<Friends />} />

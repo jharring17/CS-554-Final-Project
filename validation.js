@@ -83,6 +83,7 @@ export async function categoryChecker(userId, category){
     const userCollection = await users();
     // let result = await userCollection.findOne({_id: new ObjectId(userId)});
     let result = await userCollection.findOne({fire_id: userId})
+    console.log("user: " + result)
     let validCategories = result.categories;
 
     let match = false
