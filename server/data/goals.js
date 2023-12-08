@@ -253,7 +253,7 @@ const likePost = async (userId, goalId) => {
 
     //check to make sure that the user and the goal exist 
     let goalCollection = await goals();
-    let goal = await goalCollection.findOne({_id: goalId});
+    let goal = await goalCollection.findOne({_id: new ObjectId(goalId)});
     if(goal === null) throw `Goal does not exist: likePost`
     let userCollection = await users();
     // let user = await userCollection.findOne({_id: userId});
@@ -265,7 +265,6 @@ const likePost = async (userId, goalId) => {
     let liked = false;
     let index;
 
-    console.log(goal)
     for(let i = 0; i < goal.likes.length; i++){
         if((user.fire_id).toString() === (goal.likes[i]).toString()){
             liked = true;
@@ -274,10 +273,8 @@ const likePost = async (userId, goalId) => {
     }
     if(liked){
         goal.likes.splice(index);
-        console.log("UserId removed");
     }else{
         goal.likes.push(userId);
-        console.log("UserId added");
     }
     //now update the overall goal
     let updated = {
