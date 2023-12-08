@@ -29,7 +29,7 @@ function App() {
           </Route>
           <Route path='/makeGoal' element={<PrivateRoute />}>
             <Route path='/makeGoal' element={<AddGoalForm />} />
-              
+          </Route>
           <Route path='/createCategory' element={<PrivateRoute />}>
             <Route path='/createCategory' element={<CategoryForm />} />
               
