@@ -10,6 +10,7 @@ import { AuthProvider } from '../context/AuthContext';
 import PrivateRoute from './PrivateRoute';
 import AddGoalForm from './AddGoalForm';
 import ExpenseForm from './ExpenseForm.jsx';
+import Navigation from './Navigation';
 
 function App() {
 	return (

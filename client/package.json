@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.19",
     "@mui/material": "^5.14.20",
     "@mui/styled-engine": "^5.14.20",
     "aws-sdk": "^2.1498.0",
