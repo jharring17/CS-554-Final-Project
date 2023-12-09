@@ -32,12 +32,11 @@ function Account() {
           <SignOutButton />
         </div>
 
-        <div className='card'>
-
-        {goals.map((goal) => {
-          return <GoalCard key={goal._id} id={goal._id}/>
-        })}
-        </div>
+        {(goals.length != 0) ? <div className='card'>
+          {goals.map((goal) => {
+            return <GoalCard key={goal._id} id={goal._id}/>
+          })}
+        </div> : <></>}
       </>
 
   );
