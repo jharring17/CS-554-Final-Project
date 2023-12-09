@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import SignOutButton from './SignOut';
 import {Link} from 'react-router-dom';
 import '../App.css';
@@ -9,13 +9,16 @@ import GoalCard from './GoalCard';
 
 function Account() {
   const [goals, setGoals] = useState([])
-  async function getGoals(){
-    let id = doGetUID();
-    let data = await axios.get(`http://localhost:3000/userProfile/${id}`)
-    setGoals(data.data)
-  }
+  
+  useEffect(() => {
+    async function getGoals(){
+      let id = doGetUID();
+      let data = await axios.get(`http://localhost:3000/userProfile/${id}`)
+      setGoals(data.data)
+    }
+    getGoals()
+  }, [])
 
-  getGoals()
   return (
       <>
         <div className='card'>
