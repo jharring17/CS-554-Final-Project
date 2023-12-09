@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react"
+import React, {useState, useContext, useEffect} from "react"
 import {AuthContext} from '../context/AuthContext';
 import { doGetUID } from "../firebase/FirebaseFunctions";
 import axios from "axios";
@@ -7,11 +7,16 @@ function AddGoal(){
     const [categories, setCategories] = useState([])
     const navigate = useNavigate();
 
-    async function getUserInfo(){
-        let id = doGetUID();
-        let data = await axios.get(`http://localhost:3000/user/${id}/getUserInfo`)
-        setCategories(data.data.categories)
-    }
+    useEffect( ()=>{
+        async function getUserInfo(){
+            let id = doGetUID();
+            let data = await axios.get(`http://localhost:3000/user/${id}/getUserInfo`)
+            setCategories(data.data.categories)
+        }
+        getUserInfo()
+        }, []
+    )
+
     async function submitGoal(e){
         e.preventDefault();
         let userId = doGetUID();
@@ -33,7 +38,6 @@ function AddGoal(){
         )
         navigate('/account')
     } 
-    getUserInfo()
     return(
         <div>
             <h1>Make a New Goal!</h1>
