@@ -111,7 +111,7 @@ export async function categoryChecker(userId, category){
 }
 
 export function goalDateChecker(date){
-    if(date[2] != '/' && date[5] != '/') throw `Release date needs to be in the format 'MM/DD/YYYY'`
+    if(date[2] != '/' && date[5] != '/') throw `Date needs to be in the format 'MM/DD/YYYY'`
     let validMonths = ['01','02','03','04','05','06','07','08', '09', '10', '11', '12'];
     let present = false;
     //make sure the month matches 1 valid month
