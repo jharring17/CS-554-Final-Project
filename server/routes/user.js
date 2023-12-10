@@ -237,8 +237,11 @@ router
         let category = req.body.category;
         try {
             fire_id = validate.checkFireId(fire_id);
+			category = validate.checkCategory(category);
+			// ensure cannot add duplicate category here:
         }
         catch(e) {
+			console.log(e)
             return res.status(400).json({error: e})
         }
         try {

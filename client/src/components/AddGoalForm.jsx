@@ -118,9 +118,7 @@ function AddGoal(){
     return(
         <div>
        {error && 
-        <h1>
-            Error: {error}
-        </h1>
+        <h4 className='error'>{error}</h4>
         }
         <div>
             <h1>Make a New Goal!</h1>
