@@ -48,6 +48,7 @@ export function checkName(name, stringName) {
 }
 
 export function checkCategory(category) {
+    //checks if a category is a valid input (does not check if user already has that category)
     category = stringChecker(category);
     category = category.toLowerCase();
     if (category.length > 30) {
@@ -92,6 +93,7 @@ export const checkPassword = (password) => {
 }
 
 export async function categoryChecker(userId, category){
+  //checks if the user has a category
     category = category.toLowerCase();
     const userCollection = await users();
     // let result = await userCollection.findOne({_id: new ObjectId(userId)});
