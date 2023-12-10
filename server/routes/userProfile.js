@@ -141,7 +141,6 @@ router
 router 
     .route("/:userId/:goalId")
     .get(async (req, res) => {
-        console.log()
         //validate the ids
         let id = req.params.userId;
         let goalId = req.params.goalId;
@@ -202,7 +201,7 @@ router
         if(req.body.category){
             try{
                 req.body.category = validate.stringChecker(req.body.category);
-                req.body.category = await validate.categoryChecker(req.body.category);            
+                req.body.category = await validate.categoryChecker(req.body.userId, req.body.category);            
             }catch(e){
                 return res.status(400).json({error: e})
             }

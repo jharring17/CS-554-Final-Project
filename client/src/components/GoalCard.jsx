@@ -9,11 +9,20 @@ import {
 } from '@mui/material';
 import axios from 'axios'
 import { doGetUID } from "../firebase/FirebaseFunctions";
+import EditGoal from './EditGoal';
 
 function GoalCard(props){
     const [goal, setGoal] = useState({});
     const [showExpenses, setShowExpenses] = useState(false)
-    
+    const [showEdit, setShowEdit] = useState(false);
+
+    function openEdit(){
+      setShowEdit(true)
+    }
+    function handleClose(){
+      setShowEdit(false)
+    }
+
     useEffect( () => {
       setShowExpenses(false)
       async function getGoalInfo(){
@@ -25,7 +34,7 @@ function GoalCard(props){
         }
       }
       getGoalInfo();
-    }, [])
+    }, [showEdit])
 
     return (
       <>
@@ -55,6 +64,8 @@ function GoalCard(props){
                   })}
                 </>
               }
+              <button onClick={()=>{openEdit()}}>Edit Goal</button>
+              {showEdit && <EditGoal isOpen={openEdit} close={handleClose} goal={goal._id} />}
 
               <button onClick={()=>{alert('will add expense for goal here')}}>Add Expense</button>
               <br/>
