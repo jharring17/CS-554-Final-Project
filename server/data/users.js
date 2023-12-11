@@ -40,6 +40,7 @@ const register = async (fire_id, displayName, username, email, password, age) =>
         incomingFriends: [],
         history: [],
         categories: ["food", "utilities", "entertainment"],
+        profilePic: "https://res.cloudinary.com/djllvfvts/image/upload/v1702326218/360_F_553796090_XHrE6R9jwmBJUMo9HKl41hyHJ5gqt9oz_frzcgl.jpg",
         goals: []
     };
     const insertInfo = await userCollection.insertOne(newUser); 
