@@ -7,8 +7,8 @@ import * as helper from "../../validation.js"
 import bcrypt from 'bcrypt';
 const saltRounds = 2;
 
-const register = async (fire_id, displayName, username, email, password, age) => {
-    if (!displayName || !username || !email || !password || !age) {
+const register = async (fire_id, displayName, username, email, age) => {
+    if (!displayName || !username || !email || !age) {
       throw 'All input fields must be provided :: register';
     }
   
@@ -16,7 +16,6 @@ const register = async (fire_id, displayName, username, email, password, age) =>
     displayName = helper.checkName(displayName, "display name");
     username = helper.checkName(username, "username");
     email = helper.checkEmail(email);
-    password = helper.checkPassword(password);
     age = helper.checkAge(age);
 
     const userCollection = await users();
@@ -24,16 +23,13 @@ const register = async (fire_id, displayName, username, email, password, age) =>
     if (user != null) {
       throw `User already exists with this email :: register`;
     }
-  
-    const hash = await bcrypt.hash(password, saltRounds);
-  
+    
     //actually insert
     let newUser = {
         fire_id,
         displayName,
         username, 
         email,
-        password: hash,
         age: age,
         friends: [],
         pendingFriends: [],
@@ -50,40 +46,39 @@ const register = async (fire_id, displayName, username, email, password, age) =>
     return newUser;
 }
 
-const login = async (email, password) => {
-    if (!email || !password) {
-        throw 'All input fields must be provided :: login';
-    }
+// aren't using this anymore
+// const login = async (email, password) => {
+//     if (!email || !password) {
+//         throw 'All input fields must be provided :: login';
+//     }
 
-    email = helper.checkEmail(email);
-    password = helper.checkPassword(password);
+//     email = helper.checkEmail(email);
+//     password = helper.checkPassword(password);
 
-    const userCollection = await users();
-    const user = await userCollection.findOne({email: email});
-    if (user === null) {
-        throw `Either the email or password is invalid :: login`;
-    }
-    else {
-        let same = await bcrypt.compare(password, user.password);
-        if (same) {
-            return user;
-        }
-        else {
-            throw `Either the email address or password is invalid :: login`;
-        }
-    }
-}
+//     const userCollection = await users();
+//     const user = await userCollection.findOne({email: email});
+//     if (user === null) {
+//         throw `Either the email or password is invalid :: login`;
+//     }
+//     else {
+//         let same = await bcrypt.compare(password, user.password);
+//         if (same) {
+//             return user;
+//         }
+//         else {
+//             throw `Either the email address or password is invalid :: login`;
+//         }
+//     }
+// }
 
-const editUserInfo = async (fire_id, displayName, username, password) => {
-    if (!displayName || !username || !password) {
+const editUserInfo = async (fire_id, displayName, username) => {
+    if (!displayName || !username) {
         throw 'All input fields must be provided :: editUserInfo';
     }
   
     fire_id = helper.checkFireId(fire_id);
     displayName = helper.checkName(displayName, "display name");
     username = helper.checkName(username, "username");
-    password = helper.checkPassword(password);
-    const hash = await bcrypt.hash(password, saltRounds);
 
     const userCollection = await users();
     const currentUser = await userCollection.findOne({fire_id: fire_id});
@@ -92,7 +87,6 @@ const editUserInfo = async (fire_id, displayName, username, password) => {
     const updatedUser = {
         displayName,
         username, 
-        password: hash,
         friends: currentUser.friends,
         pendingFriends: currentUser.pendingFriends,
         incomingFriends: currentUser.incomingFriends,
@@ -271,4 +265,4 @@ const addCategory = async (fire_id, category) => {
     return newUser;
 }
 
-export { register, login, editUserInfo, getUser, getFeed, getHistory, updateHistory, getUserByMongoId, getUserByUsername, addCategory }
+export { register, editUserInfo, getUser, getFeed, getHistory, updateHistory, getUserByMongoId, getUserByUsername, addCategory }

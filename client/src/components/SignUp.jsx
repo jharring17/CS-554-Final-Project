@@ -142,7 +142,6 @@ function SignUp() {
                       {fire_id: fire_id,
                       displayName: displayName.value,
                       username: username.value,
-                      password: passwordOne.value,
                       email: email.value,
                       age: age.value})
       setSignedUp(true);
@@ -177,6 +176,9 @@ function SignUp() {
               autoFocus={true}
             />
           </label>
+          <p className="input-requirements">
+            Min 8 characters, max 20 characters. Only letters and numbers.
+          </p>
         </div>
         <div className='form-group'>
           <label>
@@ -203,6 +205,9 @@ function SignUp() {
               placeholder='Username'
             />
           </label>
+          <p className="input-requirements">
+            Min 8 characters, max 20 characters. Only letters and numbers.
+          </p>
         </div>
         <div className='form-group'>
           <label>
@@ -218,6 +223,9 @@ function SignUp() {
               required
             />
           </label>
+          <p className="input-requirements">
+            Min 8 characters. Must have at least 1 uppercase letter, 1 number, and 1 special character.
+          </p>
         </div>
         <div className='form-group'>
           <label>
