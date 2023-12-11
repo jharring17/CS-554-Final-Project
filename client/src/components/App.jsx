@@ -9,6 +9,8 @@ import SignUp from './SignUp';
 import {AuthProvider} from '../context/AuthContext';
 import PrivateRoute from './PrivateRoute';
 import AddGoalForm from './AddGoalForm';
+import EditProfileForm from './EditProfileForm.jsx';
+import ChangePassword from './ChangePassword.jsx';
 import Friends from './Friends'
 
 function App() {
@@ -29,8 +31,14 @@ function App() {
           <Route path='/createCategory' element={<PrivateRoute />}>
             <Route path='/createCategory' element={<CategoryForm />} />
           </Route>
+          <Route path='/editProfile' element={<PrivateRoute />}>
+            <Route path='/editProfile' element={<EditProfileForm />} />
+          </Route>
           <Route path='/friends' element={<PrivateRoute />}>
             <Route path='/friends' element={<Friends />} />
+          </Route>
+          <Route path='/changePassword' element={<ChangePassword />}>
+            <Route path='/changePassword' element={<Friends />} />
           </Route>
           {/* <Route path='/loggedOut' element={<PrivateRoute />}>
             <Route path='/loggedOut' element={<LogOut />} />
