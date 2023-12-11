@@ -120,8 +120,7 @@ function SignUp() {
       fire_id = doGetUID();
     }
     catch (error) {
-      console.log(error);
-      setErrorState(error);
+      setErrorState(error.toString());
       alert(error);
       return false;
     }
