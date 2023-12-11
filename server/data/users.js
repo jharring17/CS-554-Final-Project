@@ -70,14 +70,15 @@ const register = async (fire_id, displayName, username, email, age) => {
 //     }
 // }
 
-const editUserInfo = async (fire_id, displayName, username) => {
-    if (!displayName || !username) {
+const editUserInfo = async (fire_id, displayName, username, email) => {
+    if (!displayName || !username || !email) {
         throw 'All input fields must be provided :: editUserInfo';
     }
   
     fire_id = helper.checkFireId(fire_id);
     displayName = helper.checkName(displayName, "display name");
     username = helper.checkName(username, "username");
+    email = helper.checkEmail(email);
 
     const userCollection = await users();
     const currentUser = await userCollection.findOne({fire_id: fire_id});
@@ -86,6 +87,7 @@ const editUserInfo = async (fire_id, displayName, username) => {
     const updatedUser = {
         displayName,
         username, 
+        email,
         friends: currentUser.friends,
         pendingFriends: currentUser.pendingFriends,
         incomingFriends: currentUser.incomingFriends,
