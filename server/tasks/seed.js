@@ -47,37 +47,37 @@ let goal1 = undefined;
 let goal2 = undefined;
 
 try {
-	user1 = await register('9MporPAh6yMXcgEWaR8u1e5qfxx1', 'IsabellaStone', 'ibellarose1', 'ibellarose1@outlook.com', 'Password123!', 21);
+	user1 = await register('9MporPAh6yMXcgEWaR8u1e5qfxx1', 'IsabellaStone', 'ibellarose1', 'ibellarose1@outlook.com', 21);
 	console.log(user1);
 } catch (e) {
 	console.log(e);
 }
+// try {
+// 	let signedIn = await login('ibelLArose1 ', 'Password123!');
+// 	console.log('succesfully logged in user 1');
+// } catch (e) {
+// 	console.log(e);
+// }
+// try {
+// 	// let failedSignIn  = await login("ibellarose1", "Paord123!"); //wrong password
+// 	let failedSignIn = await login('iblarose1', 'Password123!'); //wrong username
+// } catch (e) {
+// 	console.log('successfully FAILED to sign in user 1');
+// }
 try {
-	let signedIn = await login('ibelLArose1 ', 'Password123!');
-	console.log('succesfully logged in user 1');
-} catch (e) {
-	console.log(e);
-}
-try {
-	// let failedSignIn  = await login("ibellarose1", "Paord123!"); //wrong password
-	let failedSignIn = await login('iblarose1', 'Password123!'); //wrong username
-} catch (e) {
-	console.log('successfully FAILED to sign in user 1');
-}
-try {
-	let newUser1 = await editUserInfo(user1._id, 'BellaStone', 'ibellarose1', 'Password123!', 21); //can't edit username
+	let newUser1 = await editUserInfo(user1._id, 'BellaStone', 'ibellarose1', 21);
 	console.log(newUser1);
 } catch (e) {
 	console.log(e);
 }
 try {
-	user2 = await register('H2L2xyEKplg0K5ice7MtY7oUeWY2','MeganSanford', 'megxxsan', 'megxxsan@outlook.com', 'Abc123!!', 21);
+	user2 = await register('H2L2xyEKplg0K5ice7MtY7oUeWY2','MeganSanford', 'megxxsan', 'megxxsan@outlook.com', 21);
 	console.log(user2);
 } catch (e) {
 	console.log(e);
 }
 try {
-	user3 = await register('NDq0DvRO1cXAw4Qwv8AOQtUSvd73','JacobRose', 'jrose0116', 'jrose0116@gmail.com', 'Password1!', 21);
+	user3 = await register('NDq0DvRO1cXAw4Qwv8AOQtUSvd73','JacobRose', 'jrose0116', 'jrose0116@gmail.com', 21);
 	console.log(user3);
 } catch (e) {
 	console.log(e);

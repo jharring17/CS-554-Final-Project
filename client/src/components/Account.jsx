@@ -29,7 +29,7 @@ function Account() {
           <br/>
           <Link>Report Expense</Link>
           <br/>
-          <Link>Edit Profile</Link>
+          <Link to='/editProfile'>Edit Profile</Link>
           <br/>
           {/* <ChangePassword /> */}
           <SignOutButton />
