@@ -142,7 +142,6 @@ function SignUp() {
                       {fire_id: fire_id,
                       displayName: displayName.value,
                       username: username.value,
-                      password: passwordOne.value,
                       email: email.value,
                       age: age.value})
       setSignedUp(true);
