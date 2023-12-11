@@ -136,7 +136,7 @@ function EditGoal(props){
         return (
             <div>
                 {error && 
-                    <h3>Error: {error}</h3>
+                    <h3 className='error'>Error: {error}</h3>
                 }
                 <form id="editGoal" onSubmit={submitGoal}>
                     <label>
