@@ -1,7 +1,6 @@
 // console.log('Implement me!');
 import {
 	register,
-	login,
 	editUserInfo,
 	getUser,
 	getFeed,
