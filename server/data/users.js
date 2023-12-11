@@ -264,4 +264,4 @@ const addCategory = async (fire_id, category) => {
     return newUser;
 }
 
-export { register, login, editUserInfo, getUser, getFeed, getHistory, updateHistory, getUserByMongoId, getUserByUsername, addCategory }
+export { register, editUserInfo, getUser, getFeed, getHistory, updateHistory, getUserByMongoId, getUserByUsername, addCategory }
