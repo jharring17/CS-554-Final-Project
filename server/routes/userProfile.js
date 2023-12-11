@@ -30,8 +30,8 @@ router
     .post(async (req, res) => {
         let displayName = req.body.displayName;
         let username = req.body.username;
-        let password = req.body.password;
-        let useOldPass = false;
+        let email = req.body.email;
+        // let password = req.body.password;
 
         let user = await users.getUser(req.params.userId);
 
@@ -42,25 +42,22 @@ router
         if (!username) {
             username = user.username;
         }
-        if (!password) {
-            useOldPass = true;
-            password = user.password; //does this work ok - does it just resave the hashed pass?
+        if (!email) {
+            email = user.email;
         }
 
         //error check
         try {
             displayName = validate.checkName(displayName, "displayName");
             username = validate.checkName(username, "username");
-            if (!useOldPass) {
-                password = validate.checkPassword(password);
-            }
+            email = validate.checkEmail(email);
         }
         catch (e) {
             return res.status(400).json({error: e})
         }
 
         try {
-            let newUser = await users.editUserInfo(req.params.userId, displayName, username, password);
+            let newUser = await users.editUserInfo(req.params.userId, displayName, username, email);
             return res.status(200).json(newUser)
         }
         catch (e) {
