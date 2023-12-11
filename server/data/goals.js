@@ -24,6 +24,7 @@ const addGoal = async (
     // if(!ObjectId.isValid(userId)) throw `Invalid UserId: addGoal`;
 
     //check to see that inputs are valid strings
+    userId = helper.checkFireId(userId);
     title = helper.stringChecker(title);
     description = helper.stringChecker(description);
     category = helper.stringChecker(category);
@@ -142,12 +143,11 @@ const updateGoal = async (
     if(!expenses) throw `Expenses Array is required: updateGoal`;
     if(!likes) throw `Likes array is required: updateGoal`;
 
-    //check to see that the id and userId is valid
+    //check to see that the id is valid
     if(!ObjectId.isValid(id)) throw `Invalid Id: updateGoal`;
-    // if(!ObjectId.isValid(userId)) throw `Invalid UserId: updateGoal`;
-    //NEED A WAY TO VALIDATE THE FIRE_ID
 
     //check to see that inputs are valid strings
+    userId = helper.checkFireId(userId);
     title = helper.stringChecker(title);
     description = helper.stringChecker(description);
     category = helper.stringChecker(category);
@@ -218,12 +218,10 @@ const getGoalById = async (id) => {
 const getGoalsByUserId = async (id) => {
     //check to see that the id is valid
     if(!id) throw `Id is required: getGoalsByUserId`
-    // if(!ObjectId.isValid(id)) throw `Invalid GoalId: getGoalsByUserId`;
-    //NEED A WAY TO VALIDATE FIRE_ID
+    id = helper.checkFireId(id);
 
     //get the user
     const userCollection = await users();
-    // let user = await userCollection.findOne({_id: new ObjectId(id)});
     let user = await userCollection.findOne({fire_id: id});
 
     if(user === null) throw `No user exists: getGoalsByUserId`;
@@ -247,9 +245,8 @@ const likePost = async (userId, goalId) => {
     //check to make sure that the ids are valid
     if(!userId) throw `UserId is required: likePost`
     if(!goalId) throw `GoalId is required: likePost`
-    // if(!ObjectId.isValid(userId)) throw `Invalid UserId: likePostGoal`;
-    //NEED TO FIND A WAY TO VALIDATE THE FIRE_ID
     if(!ObjectId.isValid(goalId)) throw `Invalid GoalId: likePostGoal`;
+    userId = helper.checkFireId(userId);
 
     //check to make sure that the user and the goal exist 
     let goalCollection = await goals();

@@ -47,16 +47,17 @@ export function checkName(name, stringName) {
 }
 
 export function checkCategory(category) {
-	category = stringChecker(category);
-	category = category.toLowerCase();
-	if (category.length > 30) {
-		throw 'category name too long: checkCategory';
-	}
-	if (!/^[a-zA-Z0-9_.-]*[a-zA-Z][a-zA-Z0-9_. -]*$/.test(category)) {
-		//rn this takes multi word categories with numbers and _.-
-		throw 'invalid category';
-	}
-	return category;
+    //checks if a category is a valid input (does not check if user already has that category)
+    category = stringChecker(category);
+    category = category.toLowerCase();
+    if (category.length > 30) {
+      throw 'category name too long: checkCategory';
+    }
+    if (!/^[a-zA-Z0-9_.-]*[a-zA-Z][a-zA-Z0-9_. -]*$/.test(category)) { 
+      //rn this takes multi word categories with numbers and _.-
+      throw 'invalid category';
+    }
+    return category;
 }
 
 export function limitChecker(limit) {
@@ -90,13 +91,14 @@ export const checkPassword = (password) => {
 	return password;
 };
 
-export async function categoryChecker(userId, category) {
-	category = category.toLowerCase();
-	const userCollection = await users();
-	// let result = await userCollection.findOne({_id: new ObjectId(userId)});
-	let result = await userCollection.findOne({ fire_id: userId });
-	console.log('user: ' + result);
-	let validCategories = result.categories;
+export async function categoryChecker(userId, category){
+  //checks if the user has a category
+    category = category.toLowerCase();
+    const userCollection = await users();
+    // let result = await userCollection.findOne({_id: new ObjectId(userId)});
+    let result = await userCollection.findOne({fire_id: userId})
+    console.log("user: " + result)
+    let validCategories = result.categories;
 
 	let match = false;
 	for (let i = 0; i < validCategories.length; i++) {
@@ -109,19 +111,18 @@ export async function categoryChecker(userId, category) {
 	return category;
 }
 
-export function goalDateChecker(date) {
-	if (date[2] != '/' && date[5] != '/')
-		throw `Release date needs to be in the format 'MM/DD/YYYY'`;
-	let validMonths = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-	let present = false;
-	//make sure the month matches 1 valid month
-	for (let i = 0; i < validMonths.length; i++) {
-		if (validMonths[i] === date.substring(0, 2)) {
-			present = true;
-			break;
-		}
-	}
-	if (present === false) throw `Invalid month`;
+export function goalDateChecker(date){
+    if(date[2] != '/' && date[5] != '/') throw `Date needs to be in the format 'MM/DD/YYYY'`
+    let validMonths = ['01','02','03','04','05','06','07','08', '09', '10', '11', '12'];
+    let present = false;
+    //make sure the month matches 1 valid month
+    for(let i = 0; i < validMonths.length; i++){
+      if(validMonths[i] === date.substring(0,2)){
+        present = true;
+        break;
+      }
+    }
+    if(present === false) throw `Invalid month`;
 
 	//check to make sure the month lines up with dates
 	if (

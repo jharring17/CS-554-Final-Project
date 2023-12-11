@@ -10,12 +10,12 @@ router
     .get(async (req, res) => {
         //check to make sure the id is valid
         let id = req.params.userId;
-        // try{
-        //     id = validate.validId(id);
-        // }catch(e){
-        //     return res.status(400).json({error: e})
-        // }
-        //get all of the goals for the user
+        try{
+            id = validate.checkFireId(id);
+        }catch(e){
+            return res.status(400).json({error: e})
+        }
+        // get all of the goals for the user
         try{
             let allGoals = await goals.getGoalsByUserId(id);
             console.log(allGoals)
@@ -74,7 +74,7 @@ router
         //validate the id
         let id = req.params.userId;
         try{
-            id = validate.validId(id);
+            id = validate.checkFireId(id);
         }catch(e){
             return res.status(400).json({error: e})
         }
@@ -84,8 +84,7 @@ router
         let id = req.params.userId;
         //validate all of the input
         try{
-            // id = validate.validId(id);
-            id = validate.stringChecker(id)
+            id = validate.checkFireId(id)
             req.body.title = validate.stringChecker(req.body.title)
             req.body.description = validate.stringChecker(req.body.description);
             req.body.category = validate.stringChecker(req.body.category);
@@ -142,12 +141,11 @@ router
 router 
     .route("/:userId/:goalId")
     .get(async (req, res) => {
-        console.log()
         //validate the ids
         let id = req.params.userId;
         let goalId = req.params.goalId;
         try{
-            // id = validate.validId(id);
+            id = validate.checkFireId(id);
             goalId = validate.validId(goalId);
         }catch(e){
             return res.status(400).json({error: e})
@@ -166,7 +164,7 @@ router
         let id = req.params.userId;
         let goalId = req.params.goalId;
         try{
-            // id = validate.validId(id);
+            id = validate.checkFireId(id);
             goalId = validate.validId(goalId);
         }catch(e){
             return res.status(400).json({error: e})
@@ -203,7 +201,7 @@ router
         if(req.body.category){
             try{
                 req.body.category = validate.stringChecker(req.body.category);
-                req.body.category = await validate.categoryChecker(req.body.category);            
+                req.body.category = await validate.categoryChecker(req.body.userId, req.body.category);            
             }catch(e){
                 return res.status(400).json({error: e})
             }

@@ -131,9 +131,10 @@ const removeFriend = async (fromUserId, toUserId) => {
     if (!user1 || !user2) throw "User(s) not found: removeFriend"
 
     let code = "CODE_NOT_SET";
+
     if(user1.friends.includes(toUserId)) {
-        user1.friends = user1.friends.filter((id) != toUserId)
-        user2.friends = user2.friends.filter((id) != fromUserId)
+        user1.friends = user1.friends.filter((id) => id != toUserId)
+        user2.friends = user2.friends.filter((id) => id != fromUserId)
 
         code = "FRIEND_REMOVED"
     }
