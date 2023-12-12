@@ -25,8 +25,8 @@ const addGoal = async (
 
     //check to see that inputs are valid strings
     userId = helper.checkFireId(userId);
-    title = helper.stringChecker(title);
-    description = helper.stringChecker(description);
+    title = helper.checkGoalTitle(title);
+    description = helper.checkGoalDesc(description);
     category = helper.stringChecker(category);
     goalDate = helper.stringChecker(goalDate); 
 
@@ -148,8 +148,8 @@ const updateGoal = async (
 
     //check to see that inputs are valid strings
     userId = helper.checkFireId(userId);
-    title = helper.stringChecker(title);
-    description = helper.stringChecker(description);
+    title = helper.checkGoalTitle(title);
+    description = helper.checkGoalDesc(description);
     category = helper.stringChecker(category);
     goalDate = helper.stringChecker(goalDate); 
 

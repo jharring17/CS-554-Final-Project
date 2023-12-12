@@ -70,6 +70,8 @@ function AddGoal(){
     async function submitGoal(e){
         setError(null)
         e.preventDefault();
+        let waiting = false;
+
         let userId = doGetUID();
         let title = document.getElementById('title').value.trim();
         let description = document.getElementById('description').value.trim();
@@ -78,29 +80,67 @@ function AddGoal(){
         let date = document.getElementById('date').value.trim();
 
         //checking input
-        if(title.length === 0){
-            setError("Title Cannot Be An Empty String")
+        //title
+        if(typeof title != 'string') {
+            setError(`Title must be a string`);
+            waiting = true;
         }
-        if(description.length === 0){
-            setError("Description Cannot Be An Empty String")
+        title = title.trim();
+        if(title.length === 0) {
+            setError(`Title cannot be empty`);
+            waiting = true;
         }
-        if(title.length === 0){
-            setError("Title Cannot Be An Empty String")
+        if (title.length < 3) {
+            setError(`Title length must be at least 3`);
+            waiting = true;
         }
+        if (!/[A-Za-z]/.test(title)) {
+            setError(`Title must contain at least one letter`);
+            waiting = true;
+        }
+        if (!/^[A-Za-z0-9:&$%-]/.test(title)) {
+            setError(`Title is invalid`);
+            waiting = true;
+        }
+        //desc
+        if(typeof description != 'string') {
+            setError(`Description must be a string`);
+            waiting = true;
+        }
+        description = description.trim();
+        if(description.length === 0) {
+            setError(`Description cannot be empty`);
+            waiting = true;
+        }
+        if (description.length < 5) {
+            setError(`Description length must be at least 5`);
+            waiting = true;
+        }
+        if (!/[A-Za-z]/.test(description)) {
+            setError(`Description must contain at least one letter`);
+            waiting = true;
+        }
+
         limit = parseFloat(limit);
         let temp = (limit * 1000)%10;
         if(temp != 0){
-            setError("Limit must be a valid dollar amount")
+            setError("Limit must be a valid dollar amount");
+            waiting = true;
         }
         if(date.length === 0){
-            setError("Date Cannot Be An Empty String")
+            setError("Date Cannot Be An Empty String");
+            waiting = true;
         }
         let result = dateChecker(date);
         if(result != date){
-            setError(result)
+            setError(result);
+            waiting = true;
         }
-        if(error != null){
-            return
+        // if(error != null){
+        //     return
+        // }
+        if(waiting){
+            return;
         }
 
         let data = await axios.post(`http://localhost:3000/userProfile/${userId}/newGoal`, 

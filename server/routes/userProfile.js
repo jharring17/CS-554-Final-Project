@@ -81,14 +81,14 @@ router
         let id = req.params.userId;
         //validate all of the input
         try{
-            id = validate.checkFireId(id)
-            req.body.title = validate.stringChecker(req.body.title)
-            req.body.description = validate.stringChecker(req.body.description);
+            id = validate.checkFireId(id);
+            req.body.title = validate.checkGoalTitle(req.body.title);
+            req.body.description = validate.checkGoalDesc(req.body.description);
             req.body.category = validate.stringChecker(req.body.category);
             req.body.goalDate = validate.stringChecker(req.body.goalDate); 
             req.body.limit = validate.limitChecker(req.body.limit);
-            req.body.category = await validate.categoryChecker(id, req.body.category)
-            req.body.goalDate = validate.goalDateChecker(req.body.goalDate)
+            req.body.category = await validate.categoryChecker(id, req.body.category);
+            req.body.goalDate = validate.goalDateChecker(req.body.goalDate);
         }catch(e){
             console.log(e)
             return res.status(400).json({error: e})
@@ -98,6 +98,7 @@ router
             let added = await goals.addGoal(id, req.body.title, req.body.description, req.body.category, req.body.limit, req.body.goalDate);
             return res.status(200).json(added)
         }catch(e){
+            console.log(e);
             return res.status(500).json({error: e})
         }
     })
@@ -179,7 +180,7 @@ router
         //now we have to see which are updated, and then call the function
         if(req.body.title){
             try{
-                req.body.title = validate.stringChecker(req.body.title);
+                req.body.title = validate.checkGoalTitle(req.body.title);
             }catch(e){
                 return res.status(400).json({error: e})
             }
@@ -188,7 +189,7 @@ router
         }
         if(req.body.description){
             try{
-                req.body.description = validate.stringChecker(req.body.description);
+                req.body.description = validate.checkGoalDesc(req.body.description);
             }catch(e){
                 return res.status(400).json({error: e})
             }
