@@ -77,15 +77,52 @@ function EditGoal(props){
 
         let waiting = false;
         let title = document.getElementById('title').value.trim();
+        //title
+        if(typeof title != 'string') {
+            setError(`Title must be a string`);
+            waiting = true;
+        }
+        title = title.trim();
+        if(title.length === 0) {
+            setError(`Title cannot be empty`);
+            waiting = true;
+        }
+        if (title.length < 3) {
+            setError(`Title length must be at least 3`);
+            waiting = true;
+        }
+        if (!/[A-Za-z]/.test(title)) {
+            setError(`Title must contain at least one letter`);
+            waiting = true;
+        }
+        if (!/^[A-Za-z0-9:&$%-]/.test(title)) {
+            setError(`Title is invalid`);
+            waiting = true;
+        }
         if(title.length === 0){
             setError("Title Cannot Be An Empty String")
             waiting = true;
         }
+        //desc
         let description = document.getElementById('description').value.trim();
-        if(description.length === 0){
-            setError("Title Cannot Be An Empty String")
+        if(typeof description != 'string') {
+            setError(`Description must be a string`);
             waiting = true;
         }
+        description = description.trim();
+        if(description.length === 0) {
+            setError(`Description cannot be empty`);
+            waiting = true;
+        }
+        if (description.length < 5) {
+            setError(`Description length must be at least 5`);
+            waiting = true;
+        }
+        if (!/[A-Za-z]/.test(description)) {
+            setError(`Description must contain at least one letter`);
+            waiting = true;
+        }
+
         let limit = document.getElementById('limit').value.trim();
         limit = parseFloat(limit);
         let temp = (limit * 1000)%10;

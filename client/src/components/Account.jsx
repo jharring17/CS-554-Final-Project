@@ -26,7 +26,7 @@ function Account() {
 
       let userData = await axios.get(`http://localhost:3000/user/${id}/getUserInfo`)
       setUserData(userData.data)
-      console.log(userData.data.profilePic)
+
     }
     getGoals()
   }, [])

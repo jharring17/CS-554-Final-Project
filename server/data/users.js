@@ -71,7 +71,7 @@ const register = async (fire_id, displayName, username, email, age) => {
 //     }
 // }
 
-const editUserInfo = async (fire_id, displayName, username, email) => {
+const editUserInfo = async (fire_id, displayName, username, email, photo) => {
     if (!displayName || !username || !email) {
         throw 'All input fields must be provided :: editUserInfo';
     }
@@ -94,6 +94,7 @@ const editUserInfo = async (fire_id, displayName, username, email) => {
         incomingFriends: currentUser.incomingFriends,
         history: currentUser.history,
         categories: currentUser.categories,
+        profilePic: photo,
         goals: currentUser.goals
     };
     
