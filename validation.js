@@ -64,6 +64,12 @@ export function checkCategory(category) {
 export function limitChecker(limit){
     if(typeof limit != "number") throw `Limit must be a valid number`;
     if(limit <= 0) throw `Limit must be a valid number greater than 0`;
+    if (Number.isInteger(limit))
+      return limit;
+    if (limit.toFixed(2) != limit.toString())
+    {
+      throw `Limit must have 0 or 2 decimal points`;
+    }
     return limit;
 }
 
@@ -263,4 +269,30 @@ export function validId(id){
   id = id.trim();
   if(!ObjectId.isValid(id)) throw 'Invalid user id';
   return id;
+}
+
+export function checkGoalTitle(title)
+{
+  title = stringChecker(title);
+  if (title.length < 3) {
+    throw `Title length must be at least 3`;
+  }
+  if (!/[A-Za-z]/.test(title)) {
+    throw `Title must contain at least one letter`;
+  }
+  if (!/^[A-Za-z0-9:&$%-]/.test(title)) {
+    throw `Title is invalid`;
+  }
+  return title;
+}
+export function checkGoalDesc(desc)
+{
+  desc = stringChecker(desc);
+  if (desc.length < 5) {
+    throw `Description length must be at least 5`;
+  }
+  if (!/[A-Za-z]/.test(desc)) {
+    throw `Description must contain at least one letter`;
+  }
+  return desc;
 }

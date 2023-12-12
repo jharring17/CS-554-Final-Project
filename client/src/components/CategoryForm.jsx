@@ -15,16 +15,16 @@ function CategoryForm(e) {
         let category = document.getElementById('category').value;
         try {
           //category
-          if(typeof category != 'string') throw `Input must be a string`;
+          if(typeof category != 'string') throw `Category must be a string`;
           category = category.trim();
-          if(category.length === 0) throw `String cannot be empty`;
+          if(category.length === 0) throw `Category cannot be empty`;
           category = category.toLowerCase();
           if (category.length > 30) {
-            throw 'category name too long: CategoryForm.jsx';
+            throw 'Category name too long: CategoryForm.jsx';
           }
           if (!/^[a-zA-Z0-9_.-]*[a-zA-Z][a-zA-Z0-9_. -]*$/.test(category)) { 
             //rn this takes multi word categories with numbers and _.-
-            throw 'invalid category: CategoryForm.jsx';
+            throw 'Invalid category: CategoryForm.jsx';
           }
         }
         catch (error)
