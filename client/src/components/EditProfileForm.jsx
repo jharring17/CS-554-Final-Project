@@ -12,7 +12,9 @@ function CategoryForm(e) {
     const [errorState, setErrorState] = useState('');
     const [user, setUser] = useState(null);
 
-    let displayName, username, email;
+    const [photo, setPhoto] = useState('');
+
+    let displayName, username, email, profilePic;
 
     useEffect( () => {
         setUser(null)
@@ -27,12 +29,25 @@ function CategoryForm(e) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        let newLink = "";
+        if(photo[0] != undefined){
+            let photoUploading = new FormData();
+            //append the file custom key from cloudinary (gp0pimba)
+            photoUploading.append("file", photo[0]);
+            photoUploading.append("upload_preset", "gp0pimba");
+            //upload the photo to cloudinary (djllvfvts is my cloud name)
+            let data = await axios.post('https://api.cloudinary.com/v1_1/djllvfvts/image/upload', photoUploading)
+            newLink = data.data.secure_url;
+        }else{
+            newLink = user.profilePic
+        }
+
+
         let displayName = document.getElementById('displayName').value;
         let username = document.getElementById('username').value;
         let email = document.getElementById('email').value;
         // let age = document.getElementById('age').value;
-
-
         try {
           //error check
         }
@@ -40,15 +55,19 @@ function CategoryForm(e) {
         {
           console.log(error);
           setErrorState(error);
+
           return false;
         }
         try {
           const fire_id = doGetUID();
+        //   let pic = document.getElementById('image').value;
           console.log("fireid", fire_id)
           await axios.post(`http://localhost:3000/userProfile/${fire_id}/editProfile`, 
                             {displayName: displayName,
                             username: username,
-                            email: email})
+                            email: email,
+                            photo: newLink
+                        })
         } 
         catch (error) {
           console.log(error);
@@ -63,6 +82,7 @@ function CategoryForm(e) {
         )
     }
     else {
+        console.log(user)
         return (
             <>
                 <Link to='/changePassword'>Change password</Link>
@@ -128,7 +148,22 @@ function CategoryForm(e) {
                         />
                     </label>
                     </div>
-        
+                    <div className='form-group'>
+                    <label >
+                        Profile Pic:
+                        <br />
+                        <input
+                        className='form-control'
+                        type='file'
+                        id="image"
+                        name="image"
+                        accept=".img,.jpeg,.png,.jpg"
+                        autoFocus={true}
+                        onChange={(e) => setPhoto(e.target.files)}
+                        />
+                    </label>
+                    </div>
+
                     {/* <div className='form-group'>
                     <label>
                         Age:

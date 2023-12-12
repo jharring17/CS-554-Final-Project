@@ -31,6 +31,7 @@ router
         let displayName = req.body.displayName;
         let username = req.body.username;
         let email = req.body.email;
+        let photo = req.body.photo;
         // let password = req.body.password;
 
         let user = await users.getUser(req.params.userId);
@@ -57,7 +58,7 @@ router
         }
 
         try {
-            let newUser = await users.editUserInfo(req.params.userId, displayName, username, email);
+            let newUser = await users.editUserInfo(req.params.userId, displayName, username, email, photo);
             return res.status(200).json(newUser)
         }
         catch (e) {
