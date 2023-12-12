@@ -22,7 +22,6 @@ function CategoryForm(e) {
             setUser(userData.data);
         }
         getUserInfo();
-        // console.log(user.data);
     }, [])
 
     const handleSubmit = async (e) => {
@@ -31,7 +30,6 @@ function CategoryForm(e) {
         let username = document.getElementById('username').value;
         let email = document.getElementById('email').value;
         // let age = document.getElementById('age').value;
-
 
         try {
           //error check
