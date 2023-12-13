@@ -24,7 +24,6 @@ function CategoryForm(e) {
             setUser(userData.data);
         }
         getUserInfo();
-        // console.log(user.data);
     }, [])
 
     const handleSubmit = async (e) => {
