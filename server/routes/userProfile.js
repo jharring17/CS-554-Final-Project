@@ -4,6 +4,9 @@ import * as validate from "../../validation.js";
 import * as friends from "../data/friends.js";
 import { Router } from "express";
 const router = Router();
+import redis from 'redis';
+const client = redis.createClient();
+client.connect().then(()=>{})
 
 router 
     .route("/:userId")
@@ -15,13 +18,25 @@ router
         }catch(e){
             return res.status(400).json({error: e})
         }
-        // get all of the goals for the user
-        try{
-            let allGoals = await goals.getGoalsByUserId(id);
-            console.log(allGoals)
-            return res.status(200).json(allGoals);
-        }catch(e){
-            return res.status(404).json({error: e})
+        //check to see if it's in the cache
+        let stored = await client.exists(`user/${id}`);
+        if(stored){
+            //get the data from the cache
+            console.log("data was in the cache")
+            let userPageInfo = await client.get(`user/${id}`);
+            userPageInfo = JSON.parse(userPageInfo);
+            return res.status(200).json(userPageInfo);
+        }else{
+            console.log("data was not in cache")
+            // get all of the goals for the user
+            try{
+                let allGoals = await goals.getGoalsByUserId(id);
+                let asString = JSON.stringify(allGoals)
+                let addedToCache = await client.setEx(`user/${id}`, 3600, asString)
+                return res.status(200).json(allGoals);
+            }catch(e){
+                return res.status(404).json({error: e})
+            }
         }
     });
 
@@ -97,6 +112,7 @@ router
         //now try to add the goal
         try{
             let added = await goals.addGoal(id, req.body.title, req.body.description, req.body.category, req.body.limit, req.body.goalDate);
+            let removeFromCache = await client.del(`user/${id}`);
             return res.status(200).json(added)
         }catch(e){
             console.log(e);
@@ -256,6 +272,7 @@ router
         //now update the goal
         try{
             let updated = await goals.updateGoal(goalId, id, req.body.title, req.body.description, req.body.category, req.body.limit, req.body.goalDate, req.body.successful, req.body.expenses, req.body.likes);
+            let removeFromCache = await client.del(`user/${id}`);
             return res.status(200).json(updated)
         }catch(e){
             return res.status(500).json({error: e})
