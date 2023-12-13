@@ -2,7 +2,7 @@ import React, {useState, useContext, useEffect} from "react"
 import {AuthContext} from '../context/AuthContext';
 import { doGetUID } from "../firebase/FirebaseFunctions";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function AddGoal(){
     const [categories, setCategories] = useState([]);
@@ -196,6 +196,8 @@ function AddGoal(){
                 <button type="submit">Create Goal</button>
             </form>
         </div>
+        <br/>
+        <Link to='/account'>Back to Account</Link>
         </div>
  
     )
