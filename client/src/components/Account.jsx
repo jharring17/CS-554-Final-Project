@@ -37,16 +37,18 @@ function Account() {
   else{
     return (
       <>
-        <Card>
+        
+
+        <div className='card'>
+          <h2>Dashboard</h2>
+          {/* <Card> */}
           <CardMedia
               component='img'
               image={userData.profilePic}
               title='art image'
               style={{ maxWidth: '200px', height: '200px' }}
           />
-        </Card>
-        <div className='card'>
-          <h2>Dashboard</h2>
+        {/* </Card> */}
           <Link to='/createCategory'>Create Category</Link>
           <br/>
           <Link to='/makeGoal'>Add goal</Link>
