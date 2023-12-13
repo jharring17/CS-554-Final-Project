@@ -72,8 +72,7 @@ function GoalCard(props){
               <button onClick={()=>{openEdit()}}>Edit Goal</button>
               {showEdit && <EditGoal isOpen={openEdit} close={handleClose} goal={goal._id} />}
               <button onClick={()=>{openExpense()}}>Add Expense</button>
-              {showExpenseForm && <ExpenseForm isOpen={openExpense} close={handleClose} goal={goal._id} />}
-              {/* <button onClick={()=>{alert('will add expense for goal here')}}>Add Expense</button> */}
+              {showExpenseForm && <ExpenseForm isOpen={openExpense} close={handleClose} goalId={goal._id} />}
               <br/>
               <br/>
           </Card>
