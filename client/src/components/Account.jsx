@@ -49,13 +49,13 @@ function Account() {
               style={{ maxWidth: '200px', height: '200px', marginLeft: 'auto', marginRight: 'auto' }}
           />
         {/* </Card> */}
-          <Link to='/createCategory'>Create Category</Link>
+          <Link to='./createCategory'>Create Category</Link>
           <br/>
-          <Link to='/makeGoal'>Add goal</Link>
+          <Link to='./makeGoal'>Add goal</Link>
           <br/>
           <Link>Report Expense</Link>
           <br/>
-          <Link to='/editProfile'>Edit Profile</Link>
+          <Link to='./editProfile'>Edit Profile</Link>
           <br/>
           {/* <ChangePassword /> */}
           <SignOutButton />

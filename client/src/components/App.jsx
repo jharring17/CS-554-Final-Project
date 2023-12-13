@@ -25,8 +25,11 @@ function App() {
           </Route>
           <Route path='/account' element={<PrivateRoute />}>
             <Route path='/account' element={<Account />} />
+            <Route path='/account/makeGoal' element={<AddGoalForm />} />
+            <Route path='/account/createCategory' element={<CategoryForm />} />
+            <Route path='/account/editProfile' element={<EditProfileForm />} />
           </Route>
-          <Route path='/makeGoal' element={<PrivateRoute />}>
+          {/* <Route path='/makeGoal' element={<PrivateRoute />}>
             <Route path='/makeGoal' element={<AddGoalForm />} />
           </Route>
           <Route path='/createCategory' element={<PrivateRoute />}>
@@ -34,7 +37,7 @@ function App() {
           </Route>
           <Route path='/editProfile' element={<PrivateRoute />}>
             <Route path='/editProfile' element={<EditProfileForm />} />
-          </Route>
+          </Route> */}
           <Route path='/friends' element={<PrivateRoute />}>
             <Route path='/friends' element={<Friends />} />
           </Route>
