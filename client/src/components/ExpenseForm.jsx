@@ -32,7 +32,6 @@ function ExpenseForm(props) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log('Form submitted: ', formData);
 
 		// Call the route to add an expense with the form data.
 		try {
@@ -46,39 +45,36 @@ function ExpenseForm(props) {
 		}
 	};
 
+	// Return the form.
 	return (
 		<div className="expenseForm">
+			<h1>Track an Expense</h1>
+			{errors.map((error, index) => {
+				return (
+					<p key={index} className="error">
+						{error}
+					</p>
+				);
+			})}
 			<form>
 				<label>
 					Description
-					<input
-						type="text"
-						name="description"
-						placeholder="Description"
-						value={formData.description}
-						onChange={handleChange}
-					/>
+					<input id="description" placeholder="I bought..." />
 				</label>
+				<br />
+				<br />
 				<label>
 					Amount
-					<input
-						type="number"
-						name="amount"
-						placeholder="Amount"
-						value={formData.amount}
-						onChange={handleChange}
-					/>
+					<input id="amount" placeholder="$$$" />
 				</label>
+				<br />
+				<br />
 				<label>
 					Date
-					<input
-						type="date"
-						name="date"
-						placeholder="Date"
-						value={formData.date}
-						onChange={handleChange}
-					/>
+					<input type="date" id="date" />
 				</label>
+				<br />
+				<br />
 				<button type="submit" onClick={handleSubmit}>
 					Add Expense
 				</button>

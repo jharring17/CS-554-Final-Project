@@ -36,7 +36,7 @@ const Friends = () => {
                 const {data} = await backend.get(`/getUserByFireAuth/${friend}`)
                 return (
                     <div key={friend} className="card" style={{display:"flex", gap: "25px", alignItems: "center", padding: "2px 10px", margin: "10px auto", maxWidth: "500px", minWidth: "fit-content", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1)"}}>
-                        <img src="https://placehold.co/256x256.png" style={{width:"40px", height:"45px", borderRadius: "100%" }}/>
+                        <img src={data.profilePic} style={{width:"45px", height:"45px", borderRadius: "100%" }}/>
                         <div style={{margin: "4px", textAlign: "left"}}>
                             <NavLink to={`/userprofile/${friend}`} style={{margin: "0 0", fontSize:"16px", cursor: "pointer", color: "black", fontWeight: "normal", textDecoration: "none"}} onMouseEnter={(e)=>(e.currentTarget.style.color = "darkblue")} onMouseLeave={(e)=>(e.currentTarget.style.color = "black")}>{data.displayName}</NavLink>
                             <p style={{margin: "0 0", fontSize: "12px"}}>{data.username}</p>

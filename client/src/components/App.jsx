@@ -11,7 +11,8 @@ import PrivateRoute from './PrivateRoute';
 import AddGoalForm from './AddGoalForm';
 import EditProfileForm from './EditProfileForm.jsx';
 import ChangePassword from './ChangePassword.jsx';
-import Friends from './Friends'
+import Friends from './Friends';
+import FriendProfile from './FriendProfile.jsx';
 
 function App() {
   return (
@@ -39,6 +40,9 @@ function App() {
           </Route>
           <Route path='/changePassword' element={<ChangePassword />}>
             <Route path='/changePassword' element={<Friends />} />
+          </Route>
+          <Route path='/userprofile/:fireId'>
+            <Route path='/userprofile/:fireId' element={<FriendProfile />} />
           </Route>
           {/* <Route path='/loggedOut' element={<PrivateRoute />}>
             <Route path='/loggedOut' element={<LogOut />} />
