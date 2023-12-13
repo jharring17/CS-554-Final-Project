@@ -32,10 +32,11 @@ function ExpenseForm(props) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		console.log('Form submitted: ', formData);
 
 		// Call the route to add an expense with the form data.
 		try {
-			axios.post(`localhost:3000/userProfile/${currentUserFireId}/${props.goal}`, {
+			axios.post(`localhost:3000/${currentUserFireId}/${goalId}`, {
 				description: formData.description,
 				amount: formData.amount,
 				date: formData.date,
