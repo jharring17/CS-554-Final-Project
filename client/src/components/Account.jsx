@@ -42,6 +42,7 @@ function Account() {
               component='img'
               image={userData.profilePic}
               title='art image'
+              style={{ maxWidth: '200px', height: '200px' }}
           />
         </Card>
         <div className='card'>
