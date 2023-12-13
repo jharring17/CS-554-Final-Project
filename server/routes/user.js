@@ -165,7 +165,7 @@ router.route("/:userId/:goalId/:expenseId").put(async (req, res) => {
 		expenseId = validate.validId(expenseId);
 		description = validate.stringChecker(description);
 		amount = validate.limitChecker(amount);
-		date = validate.goalDateChecker(date);
+		date = validate.expenseDateChecker(date);
 	} catch (e) {
 		return res.status(400).json({ error: e });
 	}
@@ -226,7 +226,7 @@ router.route("/:userId/:goalId/:expenseId").put(async (req, res) => {
 		expenseId = validate.validId(expenseId);
 		description = validate.stringChecker(description);
 		amount = validate.limitChecker(amount);
-		date = validate.goalDateChecker(date);
+		date = validate.expenseDateChecker(date);
 
 		// Check that the user owns the goal.
 		let goal = await goals.getGoalById(goalId);
