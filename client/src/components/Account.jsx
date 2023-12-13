@@ -46,7 +46,7 @@ function Account() {
               component='img'
               image={userData.profilePic}
               title='art image'
-              style={{ maxWidth: '200px', height: '200px' }}
+              style={{ maxWidth: '200px', height: '200px', marginLeft: 'auto', marginRight: 'auto' }}
           />
         {/* </Card> */}
           <Link to='/createCategory'>Create Category</Link>
