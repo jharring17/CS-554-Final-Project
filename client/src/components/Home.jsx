@@ -25,14 +25,22 @@ function Home() {
   
   if(loadingFeed) return (
     <>
-      <div className='card'>
+      {/* <div className='card'>
         <h2>
           Hello {currentUser && currentUser.displayName}, {currentUser.uid}, this is the Protected
           Home page used to show your feed
         </h2>
-      </div>
+      </div> */}
       <div className='card'>Loading...</div>
     </>
+  )
+
+  if(feedData.length == 0) return (
+    <div className='card'>
+      <h2>
+        Nothing to be shown
+      </h2>
+    </div>
   )
 
   const feed = <>
@@ -45,12 +53,12 @@ function Home() {
 
   return (
     <>
-    <div className='card'>
+    {/* <div className='card'>
       <h2>
         Hello {currentUser && currentUser.displayName}, {currentUser.uid}, this is the Protected
         Home page used to show your feed
       </h2>
-    </div>
+    </div> */}
       {feed}
     </>
   );
