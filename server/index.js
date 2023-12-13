@@ -1,6 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 const app = express();
+import redis from 'redis';
+const client = redis.createClient();
+client.connect().then(() => {});
 app.use(cors());
 import configRoutes from './routes/index.js';
 

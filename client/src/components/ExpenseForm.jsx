@@ -1,25 +1,26 @@
-import { useState } from 'react';
-import './App.css';
+import { useEffect, useState } from 'react';
+// import './App.css';
 import axios from 'axios';
-import * as firebase from '../firebase/FirebaseFunctionss.js';
+import * as firebase from '../firebase/FirebaseFunctions.js';
 
-function ExpenseForm({ goalId }) {
+function ExpenseForm(props) {
 	const [formData, setFormData] = useState({
 		description: '',
 		amount: '',
 		date: '',
 	});
-
 	const [currentUserFireId, setCurrentUserFireId] = useState('');
 
-	// Get the fireID to generate an expense for a user.
-	try {
-		// Set the current user's fireID.
-		let currentUserFireId = firebase.doGetUID();
-		setCurrentUserFireId(currentUserFireId);
-	} catch (e) {
-		console.log(e);
-	}
+	useEffect(()=> {
+		// Get the fireID to generate an expense for a user.
+		try {
+			// Set the current user's fireID.
+			let currentUserFireId = firebase.doGetUID();
+			setCurrentUserFireId(currentUserFireId);
+		} catch (e) {
+			console.log(e);
+		}
+	}, [])
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -45,39 +46,36 @@ function ExpenseForm({ goalId }) {
 		}
 	};
 
+	// Return the form.
 	return (
 		<div className="expenseForm">
+			<h1>Track an Expense</h1>
+			{errors.map((error, index) => {
+				return (
+					<p key={index} className="error">
+						{error}
+					</p>
+				);
+			})}
 			<form>
 				<label>
 					Description
-					<input
-						type="text"
-						name="description"
-						placeholder="Description"
-						value={formData.description}
-						onChange={handleChange}
-					/>
+					<input id="description" placeholder="I bought..." />
 				</label>
+				<br />
+				<br />
 				<label>
 					Amount
-					<input
-						type="number"
-						name="amount"
-						placeholder="Amount"
-						value={formData.amount}
-						onChange={handleChange}
-					/>
+					<input id="amount" placeholder="$$$" />
 				</label>
+				<br />
+				<br />
 				<label>
 					Date
-					<input
-						type="date"
-						name="date"
-						placeholder="Date"
-						value={formData.date}
-						onChange={handleChange}
-					/>
+					<input type="date" id="date" />
 				</label>
+				<br />
+				<br />
 				<button type="submit" onClick={handleSubmit}>
 					Add Expense
 				</button>
