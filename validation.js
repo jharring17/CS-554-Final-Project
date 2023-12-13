@@ -158,6 +158,46 @@ export function goalDateChecker(date){
     return date;
 }
 
+export function expenseDateChecker(date){
+  if(date[2] != '/' && date[5] != '/') throw `Date needs to be in the format 'MM/DD/YYYY'`
+  let validMonths = ['01','02','03','04','05','06','07','08', '09', '10', '11', '12'];
+  let present = false;
+  //make sure the month matches 1 valid month
+  for(let i = 0; i < validMonths.length; i++){
+    if(validMonths[i] === date.substring(0,2)){
+      present = true;
+      break;
+    }
+  }
+  if(present === false) throw `Invalid month`;
+
+  //check to make sure the month lines up with dates
+  if(date.substring(0,2) === "04" || date.substring(0,2) === "06" || date.substring(0,2) === "09" || date.substring(0,2) === "11"){
+    if(parseInt(date.substring(3,5)) > 30 || parseInt(date.substring(3,5)) < 0) throw `Invalid day`;
+  }
+  else if(date.substring(0,2) === "01" || date.substring(0,2) === "03" || date.substring(0,2) === "05" || date.substring(0,2) === "07" || date.substring(0,2) === "08" || date.substring(0,2) === "10" || date.substring(0,2) === "12"){
+    if(parseInt(date.substring(3,5)) > 31 || parseInt(date.substring(3,5)) < 0) throw `Invalid day`;
+  }
+  else{
+    if(parseInt(date.substring(3,5)) > 28 || parseInt(date.substring(3,5)) < 0) throw `Invalid day`;
+  }
+  //used this link to get the current date: https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript
+  let currDate = new Date();
+  let month = currDate.getMonth() + 1;
+  let day = currDate.getDate();
+  let year = currDate.getFullYear();
+
+  //now we have to compare to make sure that the goalDate is later than the curr date
+  let expMonth = parseInt(date.substring(0, 2));
+  let expDay = parseInt(date.substring(3,5));
+  let expYear = parseInt(date.substring(6));
+  if(year < expYear) throw `Goal Date must be a past date (invalid year)`
+  if(year === expYear && month < expMonth) throw `Goal Date must be a past date (invalid month)`
+  if(year === expYear && month === expMonth && day < expDay) throw `Goal Date must be a past date (invalid day)`
+
+  return date;
+}
+
 export function isBoolean(bool){
   if(typeof bool != "boolean") throw `Variale must be true or false`;
   return bool;
