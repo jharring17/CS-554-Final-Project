@@ -59,6 +59,8 @@ function ExpenseForm({ goalId }) {
 				console.log(e);
 			}
 		}
+		document.getElementById('expenseForm').reset();
+		alert('Added Expense');
 	};
 
 	// Return the form.
@@ -72,7 +74,7 @@ function ExpenseForm({ goalId }) {
 					</p>
 				);
 			})}
-			<form>
+			<form onSubmit={handleSubmit} id="expenseForm">
 				<label>
 					Description
 					<input id="description" placeholder="I bought..." />
