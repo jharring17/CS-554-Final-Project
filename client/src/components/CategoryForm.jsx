@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {AuthContext} from '../context/AuthContext';
 import {doGetUID} from '../firebase/FirebaseFunctions';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, Link} from 'react-router-dom';
 import '../App.css';
 import axios from 'axios';
 
@@ -47,32 +47,36 @@ function CategoryForm(e) {
     };
 
   return (
-    <form onSubmit={handleSubmit}>
-        {errorState && <h4 className='error'>{errorState}</h4>}
-        <div className='form-group'>
-          <label>
-            Enter a category you would like to add:
-            <br />
-            <input
-              className='form-control'
-              required
-              name='category'
-              id='category'
-              type='text'
-              placeholder='category'
-              autoFocus={true}
-            />
-          </label>
-        </div>
-        <button
-          className='button'
-          id='submitButton'
-          name='submitButton'
-          type='submit'
-        >
-          Submit
-        </button>
-    </form>
+    <>
+      <form onSubmit={handleSubmit}>
+          {errorState && <h4 className='error'>{errorState}</h4>}
+          <div className='form-group'>
+            <label>
+              Enter a category you would like to add:
+              <br />
+              <input
+                className='form-control'
+                required
+                name='category'
+                id='category'
+                type='text'
+                placeholder='category'
+                autoFocus={true}
+              />
+            </label>
+          </div>
+          <button
+            className='button'
+            id='submitButton'
+            name='submitButton'
+            type='submit'
+          >
+            Submit
+          </button>
+      </form>
+      <br/>
+      <Link to='/account'>Back to Account</Link>
+    </>
   );
 }
 

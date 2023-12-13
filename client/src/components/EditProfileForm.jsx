@@ -81,7 +81,6 @@ function CategoryForm(e) {
         )
     }
     else {
-        console.log(user)
         return (
             <>
                 <Link to='/changePassword'>Change password</Link>
@@ -188,6 +187,9 @@ function CategoryForm(e) {
                     Submit
                     </button>
                 </form>
+                
+                <br/>
+                <Link to='/account'>Back to Account</Link>
             </>
           );
     }
