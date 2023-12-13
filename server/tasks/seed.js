@@ -37,7 +37,7 @@ import {
 import { dbConnection, closeConnection } from '../config/mongoConnection.js';
 
 const db = await dbConnection();
-await db.dropDatabase();
+// await db.dropDatabase();
 
 let user1 = undefined;
 let user2 = undefined;
@@ -51,18 +51,7 @@ try {
 } catch (e) {
 	console.log(e);
 }
-// try {
-// 	let signedIn = await login('ibelLArose1 ', 'Password123!');
-// 	console.log('succesfully logged in user 1');
-// } catch (e) {
-// 	console.log(e);
-// }
-// try {
-// 	// let failedSignIn  = await login("ibellarose1", "Paord123!"); //wrong password
-// 	let failedSignIn = await login('iblarose1', 'Password123!'); //wrong username
-// } catch (e) {
-// 	console.log('successfully FAILED to sign in user 1');
-// }
+
 try {
 	let newUser1 = await editUserInfo(user1._id, 'BellaStone', 'ibellarose1', 21);
 	console.log(newUser1);

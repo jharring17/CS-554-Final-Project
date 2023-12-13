@@ -252,17 +252,17 @@ router
         }
     })
 
-	router
-		.route('/:userId/getUserInfo')
-		.get(async (req, res) => {
-			//validate the id
-			let id = req.params.userId;
-			try {
-				let data = await users.getUser(id)
-				return res.status(200).json(data);
-			} catch (e) {
-				return res.status(404).json({ error: e });
-			}
-		});
+router
+	.route('/:userId/getUserInfo')
+	.get(async (req, res) => {
+		//validate the id
+		let id = req.params.userId;
+		try {
+			let data = await users.getUser(id)
+			return res.status(200).json(data);
+		} catch (e) {
+			return res.status(404).json({ error: e });
+		}
+	});
 
 export default router;
