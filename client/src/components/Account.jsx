@@ -41,24 +41,23 @@ function Account() {
 
         <div className='card'>
           <h2>Dashboard</h2>
-          {/* <Card> */}
-          <CardMedia
+          
+        <div className='mini-nav'>
+            <Link to='./createCategory'>Create Category</Link>
+            <br/>
+            <Link to='./makeGoal'>Add goal</Link>
+            <br/>
+            <Link to='./editProfile'>Edit Profile</Link>
+        </div>
+
+        <CardMedia
               component='img'
               image={userData.profilePic}
               title='art image'
               style={{ maxWidth: '200px', height: '200px', marginLeft: 'auto', marginRight: 'auto' }}
-          />
-        {/* </Card> */}
-          <Link to='./createCategory'>Create Category</Link>
-          <br/>
-          <Link to='./makeGoal'>Add goal</Link>
-          <br/>
-          <Link>Report Expense</Link>
-          <br/>
-          <Link to='./editProfile'>Edit Profile</Link>
-          <br/>
-          {/* <ChangePassword /> */}
-          <SignOutButton />
+        />
+          
+          {/* <SignOutButton /> */}
         </div>
 
         {(goals.length != 0) ? <div className='card'>

@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {useParams} from 'react-router-dom';
+import {useParams, Link} from 'react-router-dom';
 import {doGetUID} from '../firebase/FirebaseFunctions';
 import '../App.css';
 import axios from 'axios';
@@ -25,13 +25,17 @@ function FriendProfile() {
     }
     else {
         return (
-            <div className='card'>
-              <h2>{user.displayName}</h2>
-              <img src={user.profilePic} style={{width:"120px", height:"120px", borderRadius: "100%" }}/>
-              <p>{user.username}</p>
-              <p>{user.email}</p>
-              <p>{user.age}</p>
-            </div>
+            <>
+                <div className='card'>
+                <h2>{user.displayName}</h2>
+                <img src={user.profilePic} style={{width:"120px", height:"120px", borderRadius: "100%" }}/>
+                <p>{user.username}</p>
+                <p>{user.email}</p>
+                <p>{user.age}</p>
+                </div>
+                <br/>
+                <Link to='/friends'>Back to Friends</Link>
+            </>
           );
     }
 }
