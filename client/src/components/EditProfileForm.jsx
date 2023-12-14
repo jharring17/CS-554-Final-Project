@@ -11,10 +11,37 @@ function CategoryForm(e) {
     const {currentUser} = useContext(AuthContext);
     const [errorState, setErrorState] = useState('');
     const [user, setUser] = useState(null);
-
+    const [error, setError] = useState(null);
     const [photo, setPhoto] = useState('');
 
     let displayName, username, email, profilePic;
+
+    function stringChecker(string) {
+        if(typeof string != 'string') throw `Input must be a string`;
+        string = string.trim();
+        if(string.length === 0) throw `String cannot be empty`;
+        return string;
+    }
+
+    function checkName(name, stringName) {
+        name = stringChecker(name);
+        if (stringName.toLowerCase().trim() === "username") {
+          name = name.toLowerCase();
+        }
+        if (!(/^[a-zA-Z0-9]+$/.test(name)) || name.length < 8 || name.length > 20) {
+          throw `${stringName} is invalid :: checkName`;
+        }
+        return name;
+    }
+
+    function checkEmail(email) {
+        email = stringChecker(email);
+        let isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!isValid) {
+          throw "Invalid email address";
+        }
+        return email;
+    };
 
     useEffect( () => {
         setUser(null)
@@ -42,24 +69,24 @@ function CategoryForm(e) {
             newLink = user.profilePic
         }
 
-
+        let hasErrors = false;
         let displayName = document.getElementById('displayName').value;
         let username = document.getElementById('username').value;
         let email = document.getElementById('email').value;
-        // let age = document.getElementById('age').value;
+        
         try {
-          //error check
+            displayName = checkName(displayName, "displayName");
+            username = checkName(username, "username");
+            email = checkEmail(email);
         }
-        catch (error)
-        {
-          console.log(error);
-          setErrorState(error);
+        catch (e) {
+            setError(e);
+            hasErrors = true;
+            return;
+        }
 
-          return false;
-        }
         try {
           const fire_id = doGetUID();
-        //   let pic = document.getElementById('image').value;
           console.log("fireid", fire_id)
           await axios.post(`http://localhost:3000/userProfile/${fire_id}/editProfile`, 
                             {displayName: displayName,
@@ -83,6 +110,7 @@ function CategoryForm(e) {
     else {
         return (
             <>
+                {error && <p className='error'>{error}</p>}
                 <Link to='/changePassword'>Change password</Link>
                 <p></p>
                 <form onSubmit={handleSubmit}>
@@ -105,6 +133,9 @@ function CategoryForm(e) {
                         defaultValue={user.displayName}
                         />
                     </label>
+                    <p className="input-requirements">
+                        Min 8 characters, max 20 characters. Only letters and numbers.
+                    </p>
                     </div>
         
                     <div className='form-group'>
@@ -125,6 +156,9 @@ function CategoryForm(e) {
                         defaultValue={user.username}
                         />
                     </label>
+                    <p className="input-requirements">
+                        Min 8 characters, max 20 characters. Only letters and numbers.
+                    </p>
                     </div>
         
                     <div className='form-group'>
