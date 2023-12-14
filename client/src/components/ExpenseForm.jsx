@@ -98,6 +98,8 @@ function ExpenseForm(props) {
 				<button type="submit" onClick={handleSubmit}>
 					Add Expense
 				</button>
+				<button onClick={()=>props.close()}>Cancel Expense</button>
+
 			</form>
 		</div>
 	);
