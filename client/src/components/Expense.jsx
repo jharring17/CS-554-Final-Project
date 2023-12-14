@@ -29,8 +29,7 @@ function Expense(props){
       }else{
         return(
             <div>
-              <h5>{expenseInfo.description}</h5>
-              <h6>Spent ${expenseInfo.amount} on {expenseInfo.date}</h6>
+              <h5>{expenseInfo.description}: spent ${expenseInfo.amount} on {expenseInfo.date}</h5>
             </div>
           )   
       }
