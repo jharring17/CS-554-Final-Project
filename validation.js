@@ -19,6 +19,14 @@ export function checkFireId(id) {
     }
 }
 
+export function isFireIdArr(arr){
+  for(let i = 0; i < arr.length; i++){
+    let curr = /^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*$/.test(arr[i]);
+    if(!curr) throw 'Must have an array of valid fire ids'
+  }
+  return arr;
+}
+
 export function checkAge(age) {
   if (Number.isNaN(Number(age)) || age < 13) {
     throw 'Invalid age :: checkAge()';

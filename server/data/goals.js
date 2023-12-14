@@ -168,9 +168,9 @@ const updateGoal = async (
     //check to make sure successful is a boolean
     successful = helper.isBoolean(successful);
 
-    //check to make sure expenses / likes are arrays of objectIds
+    //check to make sure expenses / likes are arrays of proper ids
     expenses = helper.isIdArray(expenses);
-    // likes = helper.isIdArray(likes);
+    likes = helper.isFireIdArr(likes);
 
     //make sure that at least one attribute has changed
     let curr = await getGoalById(id);

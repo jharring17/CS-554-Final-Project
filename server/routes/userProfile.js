@@ -262,7 +262,7 @@ router
         }
         if(req.body.likes){
             try{
-                // req.body.likes = validate.isIdArray(req.body.likes)
+                req.body.likes = validate.isFireIdArr(req.body.likes)
             }catch(e){
                 return res.status(400).json({error: e})
             }
