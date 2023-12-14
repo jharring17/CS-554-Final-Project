@@ -25,6 +25,7 @@ function SignIn() {
     setSignedIn(false);
     let {email, password} = event.target.elements;
 
+    let fire_id;
     try {
       //email
       let newEmail = email.value;
@@ -58,22 +59,31 @@ function SignIn() {
       if (!/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)) {
           throw `Password must contain at least one special character :: SignIn.jsx`;
       }
+
+      const createdUser = await doSignInWithEmailAndPassword(email.value, password.value);
+      console.log(createdUser);
+      fire_id = doGetUID();
     }
     catch (error)
     {
       // console.log(error);
-      setErrorState(error);
+      setErrorState("Either password or email is invalid");
       return false;
     }
-    let fire_id;
-    try {
-      const createdUser = await doSignInWithEmailAndPassword(email.value, password.value);
-      console.log(createdUser);
-      fire_id = doGetUID();
-    } catch (error) {
-      setErrorState(error);
-      return false;
-    }
+
+
+    // let fire_id;
+    // try {
+    //   const createdUser = await doSignInWithEmailAndPassword(email.value, password.value);
+    //   console.log(createdUser);
+    //   fire_id = doGetUID();
+    // } catch (error) {
+    //   setErrorState(error);
+    //   return false;
+    // }
+
+
+
     try {
       let isFireId = /^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*$/.test(fire_id);
       if (!isFireId) {
@@ -86,7 +96,6 @@ function SignIn() {
       setErrorState(error);
       setSignedIn(false);
       return false;
-      
     }
   };
 
@@ -109,7 +118,7 @@ function SignIn() {
     <div>
       <div className='card'>
         <h1>Log-In</h1>
-        {errorState && <h4 className='error'>{errorState}</h4>}
+        {errorState && <h4 className='error'>{errorState.toString()}</h4>}
         <form className='form' onSubmit={handleLogin}>
           <div className='form-group'>
             <label>
