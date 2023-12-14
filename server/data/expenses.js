@@ -68,7 +68,7 @@ const addExpense = async (goalId, description, amount, date) => {
 
 	// Create the expense object.
 	let expense = {
-		goalId: goalId,
+		goalId: new ObjectId(goalId),
 		description: description,
 		amount: amount,
 		date: date,

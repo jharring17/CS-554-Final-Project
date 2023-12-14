@@ -4,10 +4,13 @@ import axios from 'axios';
 import * as firebase from '../firebase/FirebaseFunctions.js';
 import { useThemeProps } from '@mui/material';
 
+function handleCancel(props) {
+	props.close();
+}
+
 function ExpenseForm(props) {
 	// Define navigate for page redirection.
 	let [errors, setErrors] = useState([]);
-
 	const handleSubmit = async (e) => {
 		// Prevent default action.
 		e.preventDefault();
@@ -34,6 +37,20 @@ function ExpenseForm(props) {
 		// Remove the dollar sign from the amount.
 		if (amount.includes('$')) amount = amount.replaceAll('$', '');
 
+		// If the amount contains values that are not numbers, error.
+		if (!/^[0-9]+(.[0-9]+)?$/.test(amount)) {
+			errors.push(`Error: Inputs must contain positve numbers and decimals.`);
+		}
+
+		// If there is a decimal place, there can only be two trailing values.
+		if (amount.includes('.')) {
+			let amountComponents = amount.split('.');
+			if (amountComponents[1].length !== 2) {
+				errors.push(`Error: Input must only contain two numbers trailing the decimal.`);
+			}
+		}
+
+		console.log(errors);
 		setErrors(errors);
 
 		// If there are no errors, perform the request.
@@ -50,21 +67,24 @@ function ExpenseForm(props) {
 			try {
 				console.log('User ID: ', userId);
 				console.log('Goal ID: ', props.goalId);
-				let expense = await axios.post(`http://localhost:3000/user/${userId}/${props.goalId}`, {
-					description: description,
-					amount: amount,
-					date: date,
-				});
+				let expense = await axios.post(
+					`http://localhost:3000/user/${userId}/${props.goalId}`,
+					{
+						description: description,
+						amount: amount,
+						date: date,
+					}
+				);
 				console.log('Posted expense: ', expense);
-				document.getElementById('addExpense').reset()
-				alert("Expense Updated")
-				props.close()
+				document.getElementById('addExpense').reset();
+				//alert("Expense Updated")
+				props.close();
 			} catch (e) {
 				console.log(e);
 			}
 		}
-		document.getElementById('expenseForm').reset();
-		alert('Added Expense');
+		//document.getElementById('expenseForm').reset();
+		//alert('Added Expense');
 	};
 
 	// Return the form.
@@ -99,6 +119,9 @@ function ExpenseForm(props) {
 				<br />
 				<button type="submit" onClick={handleSubmit}>
 					Add Expense
+				</button>
+				<button type="submit" onClick={handleCancel}>
+					Cancel
 				</button>
 			</form>
 		</div>
