@@ -1,5 +1,5 @@
-import React, {useContext, useState} from 'react';
-import {Navigate, Link} from 'react-router-dom';
+import React, {useContext, useEffect, useState} from 'react';
+import {Navigate, Link, useNavigate} from 'react-router-dom';
 import {AuthContext} from '../context/AuthContext';
 import {
   doGetUID,
@@ -11,7 +11,16 @@ function SignIn() {
   const {currentUser} = useContext(AuthContext);
   const [errorState, setErrorState] = useState('');
   const [signedIn, setSignedIn] = useState('');
-  const handleLogin = async (event) => {
+  let navigate = useNavigate();
+
+  useEffect(()=>{
+    if(currentUser != null){
+      navigate('/feed')
+      return
+    }
+  }, [])
+
+    const handleLogin = async (event) => {
     event.preventDefault();
     setSignedIn(false);
     let {email, password} = event.target.elements;
