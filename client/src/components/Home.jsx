@@ -39,7 +39,7 @@ function Home() {
 	if (feedData.feed.length == 0)
 		return (
 			<div className="card">
-				<h2>Nothing to be shown</h2>
+				<h2>No activity yet</h2>
 			</div>
 		);
 
