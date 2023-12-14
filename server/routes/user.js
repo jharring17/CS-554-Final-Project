@@ -4,6 +4,9 @@ import * as expenses from "../data/expenses.js";
 import * as validate from "../../validation.js";
 import { Router } from "express";
 const router = Router();
+import redis from 'redis';
+const client = redis.createClient();
+client.connect().then(()=>{})
 
 router.route("/:userId/getUserInfo").get(async (req, res) => {
 	//validate the id
@@ -144,6 +147,7 @@ router.route("/:userId/:goalId").post(async (req, res) => {
 	}
 	try {
 		let expense = await expenses.addExpense(goalId, description, amount, date);
+		let remove = await client.del(`goals-for-user-${userId}`)
 		return res.status(200).json({ expense: expense });
 	} catch (e) {
 		return res.status(404).json({ error: e });

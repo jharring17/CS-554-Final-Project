@@ -2,8 +2,9 @@ import { useState } from 'react';
 import '../App.css';
 import axios from 'axios';
 import * as firebase from '../firebase/FirebaseFunctions.js';
+import { useThemeProps } from '@mui/material';
 
-function ExpenseForm({ goalId }) {
+function ExpenseForm(props) {
 	// Define navigate for page redirection.
 	let [errors, setErrors] = useState([]);
 
@@ -48,13 +49,15 @@ function ExpenseForm({ goalId }) {
 			// Call the route to add an expense with the form data.
 			try {
 				console.log('User ID: ', userId);
-				console.log('Goal ID: ', goalId);
-				let expense = await axios.post(`http://localhost:3000/user/${userId}/${goalId}`, {
+				console.log('Goal ID: ', props.goalId);
+				let expense = await axios.post(`http://localhost:3000/user/${userId}/${props.goalId}`, {
 					description: description,
 					amount: amount,
 					date: date,
 				});
 				console.log('Posted expense: ', expense);
+				document.getElementById('addExpense').reset()
+				props.close()
 			} catch (e) {
 				console.log(e);
 			}
@@ -74,7 +77,7 @@ function ExpenseForm({ goalId }) {
 					</p>
 				);
 			})}
-			<form onSubmit={handleSubmit} id="expenseForm">
+			<form id="addExpense">
 				<label>
 					Description
 					<input id="description" placeholder="I bought..." />

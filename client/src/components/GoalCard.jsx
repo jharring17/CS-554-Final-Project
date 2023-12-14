@@ -1,5 +1,4 @@
 import { React } from 'react'
-import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import {
   Card,
@@ -11,6 +10,7 @@ import axios from 'axios'
 import { doGetUID } from "../firebase/FirebaseFunctions";
 import EditGoal from './EditGoal';
 import ExpenseForm from './ExpenseForm';
+import Expense from './Expense';
 
 function GoalCard(props){
     const [goal, setGoal] = useState({});
@@ -26,6 +26,7 @@ function GoalCard(props){
     }
     function handleClose(){
       setShowEdit(false)
+      setShowExpenseForm(false)
     }
 
     useEffect( () => {
@@ -59,18 +60,13 @@ function GoalCard(props){
                 <>
                   <h4>Expenses:</h4>
                   {goal.expenses.map((expense) => {
-                    return(
-                      <>
-                        <h5>{expense.description}</h5>
-                        <br/>
-                        <h6>Spent ${expense.amount} on {expense.date}</h6>
-                      </>
-                    )
+                    console.log(goal._id)
+                    return <Expense key={expense} expense={expense} goal={goal._id} />
                   })}
                 </>
               }
               <button onClick={()=>{openEdit()}}>Edit Goal</button>
-              {showEdit && <EditGoal isOpen={openEdit} close={handleClose} goal={goal._id} />}
+              {showEdit && <EditGoal isOpen={openEdit} close={handleClose} goalId ={goal._id} />}
               <button onClick={()=>{openExpense()}}>Add Expense</button>
               {showExpenseForm && <ExpenseForm isOpen={openExpense} close={handleClose} goalId={goal._id} />}
               <br/>

@@ -170,7 +170,7 @@ const updateGoal = async (
 
     //check to make sure expenses / likes are arrays of objectIds
     expenses = helper.isIdArray(expenses);
-    likes = helper.isIdArray(likes);
+    // likes = helper.isIdArray(likes);
 
     //make sure that at least one attribute has changed
     let curr = await getGoalById(id);
