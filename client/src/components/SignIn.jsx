@@ -152,6 +152,8 @@ function SignIn() {
           <button className='button' type='submit'>
             Log in
           </button>
+          
+          <br/>
 
           <button className='forgotPassword' onClick={passwordReset}>
             Forgot Password
