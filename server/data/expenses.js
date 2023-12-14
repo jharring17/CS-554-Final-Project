@@ -68,7 +68,7 @@ const addExpense = async (goalId, description, amount, date) => {
 
 	// Create the expense object.
 	let expense = {
-		goalId: goalId,
+		goalId: new ObjectId(goalId),
 		description: description,
 		amount: amount,
 		date: date,
@@ -108,7 +108,7 @@ const delExpense = async (expenseId) => {
 	let goalCollection = await goals();
 	let updateInfo = await goalCollection.updateOne(
 		{ _id: new ObjectId(deletedExpense.goalId) },
-		{ $pull: { expenses: expenseId } }
+		{ $pull: { expenses: new ObjectId(expenseId) } }
 	);
 
 	// Return the deleted expense.
