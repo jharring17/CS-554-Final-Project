@@ -4,6 +4,7 @@ import { PropTypes } from "prop-types"
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { AuthContext } from "../context/AuthContext";
+import { doGetUID } from "../firebase/FirebaseFunctions";
 
 const backend = axios.create({baseURL: "http://localhost:3000"})
 
@@ -12,6 +13,7 @@ const FeedItem = (props) => {
     const [itemData, setItemData] = useState(props.itemData)
     const [loading, setLoading] = useState(true)
     const [user, setUser] = useState({})
+    const [expenses, setExpenses] = useState();
 
     const toggleLike = async () => {
         const {data} = await backend.post(`/user/${currentUser.uid}/${itemData._id}/like`)
@@ -24,14 +26,25 @@ const FeedItem = (props) => {
             setUser(userData)
             setLoading(false)
         }
+        const getExpenseData = async (goalId) => {
+            let expenseValues = [];
+            let uid = doGetUID();
+            for(let i = 0; i < itemData.expenses.length; i++){
+                let expenseData = await axios.get(`http://localhost:3000/user/${uid}/${goalId}/${itemData.expenses[i]}`)
+                expenseValues.push(parseFloat(expenseData.data.expense.amount))
+            }
+            setExpenses(expenseValues)
+        }
         getData()
+        getExpenseData(itemData._id);
         }, []
     )
+    if(loading || expenses === undefined) return (<p>Loading...</p>)
 
-    if(loading) return (<p>Loading...</p>)
-
-    let totalExpenses = itemData.expenses.reduce((total, expense)=>total += expense.amount, 0)
-
+    let totalExpenses = 0;
+    expenses.map((expense)=>{
+        totalExpenses += expense;
+    })
     return (
         <div className="card" style={{position: "relative", overflow: "hidden"}}>
             <div className="user-feed-card" style={{display:"flex", gap:"15px", alignItems: "center", position: "absolute", top: 0, left: 0, boxSizing:"border-box", width: "100%", paddingLeft: "20px", paddingRight: "20px", paddingTop: "5px"}}>

@@ -38,7 +38,7 @@ function GoalCard(props) {
 		setShowEdit(false);
 		setShowExpenseForm(false);
 	}
-
+  
 	useEffect(() => {
 		setShowExpenses(false);
 		setDeletedExpense(false);
