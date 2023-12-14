@@ -61,9 +61,8 @@ function SignIn() {
     }
     catch (error)
     {
-      console.log(error);
+      // console.log(error);
       setErrorState(error);
-      // alert(error);
       return false;
     }
     let fire_id;
@@ -72,7 +71,8 @@ function SignIn() {
       console.log(createdUser);
       fire_id = doGetUID();
     } catch (error) {
-      alert(error);
+      setErrorState(error);
+      return false;
     }
     try {
       let isFireId = /^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*$/.test(fire_id);
@@ -82,9 +82,8 @@ function SignIn() {
       setSignedIn(true);
     }
     catch (error) {
-      console.log(error);
-      // setErrorState(error);
-      alert(error);
+      // console.log(error);
+      setErrorState(error);
       setSignedIn(false);
       return false;
       
