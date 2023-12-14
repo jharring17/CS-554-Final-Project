@@ -125,8 +125,9 @@ router
     .get(async (req, res) => {
         //validate the id
         let id = req.params.userId;
+        console.log(id);
         try{
-            id = validate.validId(id);
+            id = validate.checkFireId(id);
         }catch(e){
             return res.status(400).json({error: e})
         }
