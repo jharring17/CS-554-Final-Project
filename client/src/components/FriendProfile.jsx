@@ -28,7 +28,7 @@ function FriendProfile() {
             <>
                 <div className='card'>
                 <h2>{user.displayName}</h2>
-                <img src={user.profilePic} style={{width:"120px", height:"120px", borderRadius: "100%" }}/>
+                <img src={user.profilePic} alt={`${user.username} profile pic`} style={{width:"120px", height:"120px", borderRadius: "100%" }}/>
                 <p>{user.username}</p>
                 <p>{user.email}</p>
                 <p>{user.age}</p>
