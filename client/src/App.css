@@ -111,3 +111,10 @@ input {
   font-size: 10px;
   color: gray;
 }
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
