@@ -19,7 +19,7 @@ function ExpenseForm(props) {
 
 		// Get the values from the form.
 		let userId = firebase.doGetUID();
-		let description = document.getElementById('description').value;
+		let description = document.getElementById('des').value;
 		let amount = document.getElementById('amount').value;
 		let date = document.getElementById('date').value;
 
@@ -101,7 +101,7 @@ function ExpenseForm(props) {
 			<form id="addExpense">
 				<label>
 					Description
-					<input id="description" placeholder="I bought..." />
+					<input id="des" placeholder="I bought..." />
 				</label>
 				<br />
 				<br />

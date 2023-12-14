@@ -237,8 +237,9 @@ function EditGoal(props){
                     />
                     </label>
                     <br/>
-
+                    <button onClick={()=>props.close()}>Cancel Update</button>
                     <button type='submit'>Update Goal</button>
+
                 </form>
             </div>
         )
