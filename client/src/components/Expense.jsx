@@ -27,7 +27,6 @@ function Expense(props){
       if(!expenseInfo){
         return <>Loading...</>
       }else{
-        console.log(expenseInfo)
         return(
             <div>
               <h5>{expenseInfo.description}</h5>

@@ -46,7 +46,6 @@ function GoalCard(props){
           currMonth = `0${currMonth}`
         }
         let currYear = curr.getFullYear();
-        console.log(currDay)
         let dateOfGoal = data.data.goalDate.split("/")
         //0 = month, 1 = day, 2 = year
         if(currYear > parseInt(dateOfGoal[2])){
@@ -92,7 +91,6 @@ function GoalCard(props){
                   <>
                     <h4>Expenses:</h4>
                     {goal.expenses.map((expense) => {
-                      console.log(goal._id)
                       return <Expense key={expense} expense={expense} goal={goal._id} />
                     })}
                   </>
