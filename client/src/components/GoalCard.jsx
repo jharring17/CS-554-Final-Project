@@ -97,7 +97,7 @@ function GoalCard(props) {
 					<Card
 						variant="outlined"
 						sx={{
-							maxWidth: 300,
+							maxWidth: 700,
 							height: 'auto',
 							marginLeft: 'auto',
 							marginRight: 'auto',
