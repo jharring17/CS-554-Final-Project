@@ -19,11 +19,11 @@ router
             return res.status(400).json({error: e})
         }
         //check to see if it's in the cache
-        let stored = await client.exists(`user/${id}`);
+        let stored = await client.exists(`goals-for-user-${id}`);
         if(stored){
             //get the data from the cache
             console.log("data was in the cache")
-            let userPageInfo = await client.get(`user/${id}`);
+            let userPageInfo = await client.get(`goals-for-user-${id}`);
             userPageInfo = JSON.parse(userPageInfo);
             return res.status(200).json(userPageInfo);
         }else{
@@ -32,7 +32,7 @@ router
             try{
                 let allGoals = await goals.getGoalsByUserId(id);
                 let asString = JSON.stringify(allGoals)
-                let addedToCache = await client.setEx(`user/${id}`, 3600, asString)
+                let addedToCache = await client.setEx(`goals-for-user-${id}`, 3600, asString)
                 return res.status(200).json(allGoals);
             }catch(e){
                 return res.status(404).json({error: e})
@@ -112,7 +112,7 @@ router
         //now try to add the goal
         try{
             let added = await goals.addGoal(id, req.body.title, req.body.description, req.body.category, req.body.limit, req.body.goalDate);
-            let removeFromCache = await client.del(`user/${id}`);
+            let removeFromCache = await client.del(`goals-for-user-${id}`);
             return res.status(200).json(added)
         }catch(e){
             console.log(e);
@@ -262,7 +262,7 @@ router
         }
         if(req.body.likes){
             try{
-                req.body.likes = validate.isIdArray(req.body.likes)
+                // req.body.likes = validate.isIdArray(req.body.likes)
             }catch(e){
                 return res.status(400).json({error: e})
             }
@@ -272,7 +272,7 @@ router
         //now update the goal
         try{
             let updated = await goals.updateGoal(goalId, id, req.body.title, req.body.description, req.body.category, req.body.limit, req.body.goalDate, req.body.successful, req.body.expenses, req.body.likes);
-            let removeFromCache = await client.del(`user/${id}`);
+            let removeFromCache = await client.del(`goals-for-user-${id}`);
             return res.status(200).json(updated)
         }catch(e){
             return res.status(500).json({error: e})
