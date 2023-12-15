@@ -57,7 +57,6 @@ function ExpenseForm(props) {
 				});
 				console.log('Posted expense: ', expense);
 				document.getElementById('addExpense').reset()
-				alert("Expense Updated")
 				props.close()
 			} catch (e) {
 				console.log(e);

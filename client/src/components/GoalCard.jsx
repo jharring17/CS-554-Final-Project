@@ -1,6 +1,6 @@
 import { React } from 'react';
 import { useState, useEffect } from 'react';
-import { Card, Grid } from '@mui/material';
+import { Card, Grid, typographyClasses } from '@mui/material';
 import axios from 'axios';
 import { doGetUID } from '../firebase/FirebaseFunctions';
 import EditGoal from './EditGoal';
@@ -16,6 +16,7 @@ function GoalCard(props) {
 	const [showExpenseForm, setShowExpenseForm] = useState(false);
 	const [deletedExpense, setDeletedExpense] = useState(false);
 	const [showDeleteGoalForm, setShowDeleteGoalForm] =useState(false);
+	const [deleted, setDeleted] = useState(null)
 
 	const deleteExpense = async (expenseId, goalId) => {
 		try {
@@ -45,58 +46,67 @@ function GoalCard(props) {
 		setShowExpenseForm(false);
 		setShowDeleteGoalForm(false);
 	}
+	async function deleteGoal(goalId){
+        let id = doGetUID();
+        let data = await axios.delete(`http://localhost:3000/userProfile/${id}/${goalId}`)
+		handleClose();
+		setShowDeleteGoalForm(false)
+    }
   
 	useEffect(() => {
 		setShowExpenses(false);
 		setDeletedExpense(false);
 		async function getGoalInfo() {
 			let id = doGetUID();
-			let data = await axios.get(`http://localhost:3000/userProfile/${id}/${props.id}`);
-			setGoal(data.data);
+			try{
+				let data = await axios.get(`http://localhost:3000/userProfile/${id}/${props.id}`);
+				setGoal(data.data);
+				//we need to check if the curr date is past the goal date
+				let curr = new Date();
+				let currDay = curr.getDate();
+				if (currDay < 10) {
+					currDay = `0${currDay}`;
+				}
+				let currMonth = curr.getMonth() + 1;
+				if (currMonth < 10) {
+					currMonth = `0${currMonth}`;
+				}
+				let currYear = curr.getFullYear();
+				let dateOfGoal = data.data.goalDate.split('/');
+				//0 = month, 1 = day, 2 = year
+				if (currYear > parseInt(dateOfGoal[2])) {
+					//if the current year is older than the goal year
+					setGoal('expired');
+				} else if (
+					currYear === parseInt(dateOfGoal[2]) &&
+					currMonth > parseInt(dateOfGoal[0])
+				) {
+					//if the year is the same, but month is older than goal month
+					setGoal('expired');
+				} else if (
+					currYear === parseInt(dateOfGoal[2]) &&
+					currMonth === parseInt(dateOfGoal[0]) &&
+					currDay > parseInt(dateOfGoal[1])
+				) {
+					//if the year and month are the same, but day is older than goal day
+					setGoal('expired');
+				}
 
-			//we need to check if the curr date is past the goal date
-			let curr = new Date();
-			console.log(curr);
-			let currDay = curr.getDate();
-			if (currDay < 10) {
-				currDay = `0${currDay}`;
-			}
-			let currMonth = curr.getMonth() + 1;
-			if (currMonth < 10) {
-				currMonth = `0${currMonth}`;
-			}
-			let currYear = curr.getFullYear();
-			let dateOfGoal = data.data.goalDate.split('/');
-			//0 = month, 1 = day, 2 = year
-			if (currYear > parseInt(dateOfGoal[2])) {
-				//if the current year is older than the goal year
-				setGoal('expired');
-			} else if (
-				currYear === parseInt(dateOfGoal[2]) &&
-				currMonth > parseInt(dateOfGoal[0])
-			) {
-				//if the year is the same, but month is older than goal month
-				setGoal('expired');
-			} else if (
-				currYear === parseInt(dateOfGoal[2]) &&
-				currMonth === parseInt(dateOfGoal[0]) &&
-				currDay > parseInt(dateOfGoal[1])
-			) {
-				//if the year and month are the same, but day is older than goal day
-				setGoal('expired');
-			}
-
-			if (data.data.expenses.length != 0) {
-				setShowExpenses(true);
+				if (data.data.expenses.length != 0) {
+					setShowExpenses(true);
+				}
+				setDeleted(false)
+			}catch(e){
+				setDeleted(true)
 			}
 		}
-		getGoalInfo();
+		getGoalInfo()
 	}, [showEdit, showExpenseForm, deletedExpense, showDeleteGoalForm]);
 
-	if (goal === null) {
+	if (goal === null || deleted === null) {
 		return <>Loading...</>;
-	} else if (goal === 'expired') {
-		return;
+	} else if (goal === 'expired' || deleted === true) {
+		return <></>
 	} else {
 		return (
 			<>
@@ -185,7 +195,12 @@ function GoalCard(props) {
 						)}
 						<button onClick={() => openDeleteGoal()} >Delete Goal</button>
 						{showDeleteGoalForm && 
-							<DeleteGoal isOpen={openDeleteGoal} close={handleClose} goalId={goal._id} />
+							// <DeleteGoal isOpen={openDeleteGoal} close={handleClose} goalId={goal._id} />
+							<div>
+								<p>Are you sure you want to delete?</p>
+								<button onClick={()=> deleteGoal(goal._id)}>Yes</button>
+								<button onClick={()=>handleClose()}>No</button>
+							</div>
 						}
 						<br />
 						<br />
