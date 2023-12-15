@@ -68,7 +68,7 @@ router.route("/:userId/getUserInfo").get(async (req, res) => {
 router.route("/:userId/addCategory").post(async (req, res) => {
 	//validate the ids
 	let fire_id = req.body.fire_id;
-	let category = req.body.category;
+	let category = req.body.category;//might need to be req.params.userId
 	try {
 		fire_id = validate.checkFireId(fire_id);
 		category = validate.checkCategory(category);
@@ -79,6 +79,33 @@ router.route("/:userId/addCategory").post(async (req, res) => {
 	}
 	try {
 		let updatedCategories = await users.addCategory(fire_id, category);
+		await client.del(`goals-for-user-${fire_id}`)
+		return res.status(200).json(updatedCategories);
+	} catch (e) {
+		console.log(e);
+		return res.status(400).json({ error: e });
+	}
+});
+
+router.route("/:userId/removeCategory").delete(async (req, res) => {
+	//validate the ids
+	let fire_id = req.params.userId;
+	let category = req.body.category;
+	console.log(fire_id)
+	console.log(category);
+	try {
+		fire_id = validate.checkFireId(fire_id);
+		category = validate.checkCategory(category);
+		if (category == "food" || category == "utilities" || category == "entertainment")
+		{
+			throw "cannot remove default category"
+		}
+	} catch (e) {
+		console.log(e);
+		return res.status(400).json({ error: e });
+	}
+	try {
+		let updatedCategories = await users.removeCategory(fire_id, category);
 		await client.del(`goals-for-user-${fire_id}`)
 		return res.status(200).json(updatedCategories);
 	} catch (e) {
@@ -314,55 +341,6 @@ router.route("/:userId/:goalId/:expenseId").put(async (req, res) => {
 		return res.status(200).json({ expense: expense });
 	} catch (e) {
 		return res.status(404).json({ error: e });
-	}
-});
-
-router.route("/:userId/addCategory").post(async (req, res) => {
-	//validate the ids
-	let fire_id = req.body.fire_id;
-	let category = req.body.category;
-	try {
-		fire_id = validate.checkFireId(fire_id);
-		category = validate.checkCategory(category);
-		// ensure cannot add duplicate category here:
-	} catch (e) {
-		console.log(e);
-		return res.status(400).json({ error: e });
-	}
-	try {
-		let updatedCategories = await users.addCategory(fire_id, category);
-		await client.del(`goals-for-user-${fire_id}`)
-		return res.status(200).json(updatedCategories);
-	} catch (e) {
-		console.log(e);
-		return res.status(500).json({ error: e });
-	}
-});
-
-router.route("/:userId/removeCategory").delete(async (req, res) => {
-	//validate the ids
-	let fire_id = req.params.userId;//addcategory should be req.params.userId
-	let category = req.body.category;
-	console.log(fire_id)
-	console.log(category);
-	try {
-		fire_id = validate.checkFireId(fire_id);
-		category = validate.checkCategory(category);
-		if (category == "food" || category == "utilities" || category == "entertainment")
-		{
-			throw "cannot remove default category"
-		}
-	} catch (e) {
-		console.log(e);
-		return res.status(400).json({ error: e });
-	}
-	try {
-		let updatedCategories = await users.removeCategory(fire_id, category);
-		await client.del(`goals-for-user-${fire_id}`)
-		return res.status(200).json(updatedCategories);
-	} catch (e) {
-		console.log(e);
-		return res.status(500).json({ error: e });
 	}
 });
 
