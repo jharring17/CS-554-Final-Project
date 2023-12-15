@@ -43,7 +43,7 @@ function Account() {
 
         <div className='card'>
           
-          <h2 style={{marginBottom: "10px"}}>Dashboard</h2>
+          <h1 style={{marginBottom: "10px", fontSize: '45px', marginTop: "10px"}}>Dashboard</h1>
 
         <CardMedia
               component='img'
@@ -51,6 +51,8 @@ function Account() {
               title='art image'
               style={{ maxWidth: '200px', height: '200px', marginLeft: 'auto', marginRight: 'auto' }}
           />
+
+        <h2 style={{margin: "10px 0"}}>{userData.displayName}</h2>
         {/* </Card> */}
           {/* <ChangePassword /> */}
 
