@@ -53,7 +53,6 @@ function Account() {
           />
         {/* </Card> */}
           {/* <ChangePassword /> */}
-          <SignOutButton />
 
           <div className='mini-nav' style={{display: "flex", gap: "5px", marginTop: "15px"}}>
               <Link to='./createCategory' style={{...buttonStyle, marginLeft: "auto"}}>Create Category</Link>
