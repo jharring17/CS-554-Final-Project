@@ -5,8 +5,7 @@ import {useNavigate, Link} from 'react-router-dom';
 import '../App.css';
 import axios from 'axios';
 
-function CategoryForm(e) {
-    const navigate = useNavigate();
+function CategoryForm({closeForm}) {
     const {currentUser} = useContext(AuthContext);
     const [errorState, setErrorState] = useState('');
 
@@ -41,7 +40,7 @@ function CategoryForm(e) {
           setErrorState("This category already exists");
           return false;
         }
-        navigate('/account');
+        closeForm();
     };
 
   return (
@@ -75,8 +74,7 @@ function CategoryForm(e) {
             Submit
           </button>
       </form>
-      <br/>
-      <Link to='/account'>Back to Account</Link>
+      {/* <Link to='/account'>Back to Account</Link> */}
     </>
   );
 }
