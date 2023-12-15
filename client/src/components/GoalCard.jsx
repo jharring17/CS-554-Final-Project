@@ -6,6 +6,8 @@ import { doGetUID } from '../firebase/FirebaseFunctions';
 import EditGoal from './EditGoal';
 import ExpenseForm from './ExpenseForm';
 import Expense from './Expense';
+import DeleteGoal from './DeleteGoal';
+import '../App.css';
 
 function GoalCard(props) {
 	const [goal, setGoal] = useState({});
@@ -13,6 +15,7 @@ function GoalCard(props) {
 	const [showEdit, setShowEdit] = useState(false);
 	const [showExpenseForm, setShowExpenseForm] = useState(false);
 	const [deletedExpense, setDeletedExpense] = useState(false);
+	const [showDeleteGoalForm, setShowDeleteGoalForm] =useState(false);
 
 	const deleteExpense = async (expenseId, goalId) => {
 		try {
@@ -34,9 +37,13 @@ function GoalCard(props) {
 	function openExpense() {
 		setShowExpenseForm(true);
 	}
+	function openDeleteGoal(){
+		setShowDeleteGoalForm(true)
+	}
 	function handleClose() {
 		setShowEdit(false);
 		setShowExpenseForm(false);
+		setShowDeleteGoalForm(false);
 	}
   
 	useEffect(() => {
@@ -84,7 +91,7 @@ function GoalCard(props) {
 			}
 		}
 		getGoalInfo();
-	}, [showEdit, showExpenseForm, deletedExpense]);
+	}, [showEdit, showExpenseForm, deletedExpense, showDeleteGoalForm]);
 
 	if (goal === null) {
 		return <>Loading...</>;
@@ -97,7 +104,7 @@ function GoalCard(props) {
 					<Card
 						variant="outlined"
 						sx={{
-							maxWidth: 300,
+							maxWidth: 700,
 							height: 'auto',
 							marginLeft: 'auto',
 							marginRight: 'auto',
@@ -118,22 +125,35 @@ function GoalCard(props) {
 									console.log(goal._id);
 									console.log('Expense: ', expense);
 									return (
-										<>
-											<Expense
-												key={expense}
-												expense={expense}
-												goal={goal._id}
-											/>
-											<button
-												onClick={() => {
-													deleteExpense(expense, goal._id);
-												}}
-											>
-												Delete Expense
-											</button>
+										<div key={expense}>
+											<div className='row'>
+												<Expense
+													key={expense}
+													expense={expense}
+													goal={goal._id}
+												/>
+												<br/>
+												<button
+													onClick={() => {
+														deleteExpense(expense, goal._id);
+													}}
+													style={{
+														backgroundImage: 'url("https://cdn-icons-png.flaticon.com/512/535/535246.png")',
+														backgroundSize: 'cover', 
+														backgroundRepeat: 'no-repeat', 
+														backgroundColor: 'white',
+														cursor: 'pointer',
+														border: 'none',
+														width: '20px',
+														height: '20px',
+														margin: '10px'
+													}}
+												>
+												</button>
+											</div>
 											<br />
 											<br />
-										</>
+										</div>
 									);
 								})}
 							</>
@@ -163,6 +183,10 @@ function GoalCard(props) {
 								goalId={goal._id}
 							/>
 						)}
+						<button onClick={() => openDeleteGoal()} >Delete Goal</button>
+						{showDeleteGoalForm && 
+							<DeleteGoal isOpen={openDeleteGoal} close={handleClose} goalId={goal._id} />
+						}
 						<br />
 						<br />
 					</Card>

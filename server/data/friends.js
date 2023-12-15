@@ -1,4 +1,5 @@
 import { users } from "../config/mongoCollections.js";
+import { removeFromLikesList } from './goals.js';
 
 const sendFriendRequest = async (fromUserId, toUserId) => {
     if(!fromUserId || !toUserId) throw `Ids are required: sendFriendRequest`
@@ -142,6 +143,8 @@ const removeFriend = async (fromUserId, toUserId) => {
 
     await userCollection.updateOne({fire_id: fromUserId}, {$set: user1})
     await userCollection.updateOne({fire_id: toUserId}, {$set: user2})
+
+    await removeFromLikesList(fromUserId, toUserId);
 
     return {code: code, from: fromUserId, to: toUserId}
 }

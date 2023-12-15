@@ -15,6 +15,7 @@ import {
 	getGoalsByUserId,
 	likePost,
 	updateGoal,
+	removeFromLikesList
 } from '../data/goals.js';
 import {
 	getExpenseById,
@@ -293,6 +294,14 @@ try {
 		console.log(sent1);
 		received1 = await acceptRequest(user2.fire_id.toString(),user1.fire_id.toString());
 		console.log(received1);
+		await likePost(user2.fire_id.toString(),goal3._id.toString());
+		await likePost(user2.fire_id.toString(),goal4._id.toString());
+		await likePost(user1.fire_id.toString(),goal2._id.toString());
+		if (user3)
+		{
+			await likePost(user3.fire_id.toString(),goal3._id.toString());
+			await likePost(user3.fire_id.toString(),goal2._id.toString());
+		}
 	}
 }
 catch (e)
@@ -346,6 +355,14 @@ try {
 	console.log("getFeed: ")
 	let feed1 = await getFeed(user2.fire_id.toString());
     console.log(feed1);
+} catch (e) {
+	console.log(e);
+}
+
+try {
+	// let removeFromLikesList1 = await removeFromLikesList(user2.fire_id.toString(),user1.fire_id.toString());
+	let unfriend = await removeFriend(user2.fire_id.toString(),user1.fire_id.toString());
+	console.log(unfriend);
 } catch (e) {
 	console.log(e);
 }

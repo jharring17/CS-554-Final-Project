@@ -265,6 +265,7 @@ const likePost = async (userId, goalId) => {
     for(let i = 0; i < goal.likes.length; i++){
         if((user.fire_id).toString() === (goal.likes[i]).toString()){
             liked = true;
+            index = i;
             break;
         }
     }
@@ -289,4 +290,48 @@ const likePost = async (userId, goalId) => {
     return updatedGoal;
 };
 
-export {addGoal, deleteGoal, updateGoal, getAllGoals, getGoalById, getGoalsByUserId, likePost}
+const removeFromLikesList = async (fire_id1, fire_id2) => {
+    //after unfriending, removes all likes from each other's goal posts
+    //if testing change settings to localhost to seed.
+    fire_id1 = helper.checkFireId(fire_id1);
+    fire_id2 = helper.checkFireId(fire_id2);
+
+    let goalsOfUser1 = await getGoalsByUserId(fire_id1);
+    let goalsOfUser2 = await getGoalsByUserId(fire_id2);
+
+    //user1 goals
+    for(let i = 0; i < goalsOfUser1.length; i++)
+    {
+        let goalId = goalsOfUser1[i]._id.toString();
+
+        let goalCollection = await goals();
+        let originalGoal = await getGoalById(goalId);
+        let updatedGoal = await goalCollection.findOneAndUpdate(
+            {_id: new ObjectId(goalId)},
+            {$pull: {likes: fire_id2}},
+            {returnDocument: "after"}
+        );
+        if (originalGoal.likes.length != updatedGoal.likes.length) {
+            console.log(`Removed ${fire_id2}'s like from goal with _id ${goalId} from ${fire_id1}'s goal`);
+        }
+    }
+    //user2 goals
+    for(let i = 0; i < goalsOfUser2.length; i++)
+    {
+        let goalId = goalsOfUser2[i]._id.toString();
+
+        let goalCollection = await goals();
+        let originalGoal = await getGoalById(goalId);
+        let updatedGoal = await goalCollection.findOneAndUpdate(
+            {_id: new ObjectId(goalId)},
+            {$pull: {likes: fire_id1}},
+            {returnDocument: "after"}
+        );
+        if (originalGoal.likes.length != updatedGoal.likes.length) {
+            console.log(`Removed ${fire_id1}'s like from goal with _id ${goalId} from ${fire_id2}'s goal`);
+        }
+    }
+    return true;
+};
+
+export {addGoal, deleteGoal, updateGoal, getAllGoals, getGoalById, getGoalsByUserId, likePost, removeFromLikesList}

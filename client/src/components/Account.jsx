@@ -48,6 +48,9 @@ function Account() {
             <Link to='./makeGoal'>Add goal</Link>
             <br/>
             <Link to='./editProfile'>Edit Profile</Link>
+            <br/>
+            <Link to='./history'>History</Link>
+            <br/>
         </div>
 
         <CardMedia
@@ -55,9 +58,10 @@ function Account() {
               image={userData.profilePic}
               title='art image'
               style={{ maxWidth: '200px', height: '200px', marginLeft: 'auto', marginRight: 'auto' }}
-        />
-          
-          {/* <SignOutButton /> */}
+          />
+        {/* </Card> */}
+          {/* <ChangePassword /> */}
+          <SignOutButton />
         </div>
 
         {(goals.length != 0) ? <div className='card'>

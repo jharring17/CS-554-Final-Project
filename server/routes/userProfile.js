@@ -74,6 +74,7 @@ router
 
         try {
             let newUser = await users.editUserInfo(req.params.userId, displayName, username, email, photo);
+            let removeFromCache = await client.del(`goals-for-user-${req.params.userId}`)
             return res.status(200).json(newUser)
         }
         catch (e) {
@@ -125,8 +126,9 @@ router
     .get(async (req, res) => {
         //validate the id
         let id = req.params.userId;
+        console.log(id);
         try{
-            id = validate.validId(id);
+            id = validate.checkFireId(id);
         }catch(e){
             return res.status(400).json({error: e})
         }
@@ -275,6 +277,25 @@ router
             let updated = await goals.updateGoal(goalId, id, req.body.title, req.body.description, req.body.category, req.body.limit, req.body.goalDate, req.body.successful, req.body.expenses, req.body.likes);
             let removeFromCache = await client.del(`goals-for-user-${id}`);
             return res.status(200).json(updated)
+        }catch(e){
+            return res.status(500).json({error: e})
+        }
+    })
+    .delete(async (req, res) =>{
+        let id = req.params.userId;
+        let goalId = req.params.goalId;
+        try{
+            id = validate.checkFireId(id);
+            goalId = validate.validId(goalId);
+        }catch(e){
+            return res.status(400).json({error: e})
+        }        
+        //now delete the goal
+        try{
+            let deleted = await goals.deleteGoal(goalId);
+            let removeFromCache = await client.del(`goals-for-user-${id}`);
+
+            return res.status(200).json(deleted)
         }catch(e){
             return res.status(500).json({error: e})
         }
