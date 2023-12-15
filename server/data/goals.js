@@ -265,6 +265,7 @@ const likePost = async (userId, goalId) => {
     for(let i = 0; i < goal.likes.length; i++){
         if((user.fire_id).toString() === (goal.likes[i]).toString()){
             liked = true;
+            index = i;
             break;
         }
     }
