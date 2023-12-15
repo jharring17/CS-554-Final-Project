@@ -14,6 +14,7 @@ import ChangePassword from './ChangePassword.jsx';
 import Friends from './Friends';
 import FriendProfile from './FriendProfile.jsx';
 import History from './History.jsx';
+import ManageCategories from './MaganageCategories.jsx';
 
 function App() {
   return (
@@ -27,7 +28,9 @@ function App() {
           <Route path='/account' element={<PrivateRoute />}>
             <Route path='/account' element={<Account />} />
             <Route path='/account/makeGoal' element={<AddGoalForm />} />
+            <Route path='/account/manageCategories' element={<ManageCategories />} />
             <Route path='/account/createCategory' element={<CategoryForm />} />
+            {/* <Route path='/account/deleteCategory' element={<DeleteCategoryForm />} /> */}
             <Route path='/account/editProfile' element={<EditProfileForm />} />
             <Route path='/account/history' element={<History />} />
           </Route>

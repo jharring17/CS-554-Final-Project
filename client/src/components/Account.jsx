@@ -51,11 +51,9 @@ function Account() {
               title='art image'
               style={{ maxWidth: '200px', height: '200px', marginLeft: 'auto', marginRight: 'auto' }}
           />
-        {/* </Card> */}
-          {/* <ChangePassword /> */}
 
           <div className='mini-nav' style={{display: "flex", gap: "5px", marginTop: "15px"}}>
-              <Link to='./createCategory' style={{...buttonStyle, marginLeft: "auto"}}>Create Category</Link>
+              <Link to='./manageCategories' style={{...buttonStyle, marginLeft: "auto"}}>Manage Categories</Link>
               <br/>
               <Link to='./makeGoal' style={buttonStyle}>Add goal</Link>
               <br/>
