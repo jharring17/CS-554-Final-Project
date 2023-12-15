@@ -59,7 +59,7 @@ const FeedItem = (props) => {
             </div>
             <div className="footer-feed-card" style={{display:"flex", gap:"5px", alignItems: "center", position: "absolute", bottom: 10, left: 10, height: "25px"}}>
                 <button style={{backgroundColor: "rgba(0,0,0,0)", border: "none", display:"inline-flex", fontSize:"25px"}} onClick={() => toggleLike()}>{(itemData.likes.includes(currentUser.uid)) ? <FavoriteIcon fontSize="inherit"/> : <FavoriteBorderIcon fontSize="inherit"/>}</button>
-                <p>{(itemData.likes.length == 1) ? "1 like" : (itemData.likes.length == 0) ? "No likes" : `${itemData.likes.length}`}</p>
+                <p>{(itemData.likes.length == 1) ? "1 like" : (itemData.likes.length == 0) ? "No likes" : `${itemData.likes.length} likes`}</p>
             </div>
         </div>
     )
