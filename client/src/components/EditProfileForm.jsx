@@ -100,7 +100,6 @@ function CategoryForm({closeForm}) {
           console.log(error);
           alert(error);
         }
-        // navigate('/account');
         closeForm()
     };
 
@@ -121,7 +120,7 @@ function CategoryForm({closeForm}) {
                     <label>
                         Display name:
                         <br />
-                        <input
+                        <input style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}
                         className='form-control'
                         required
                         name='displayName'
@@ -144,7 +143,7 @@ function CategoryForm({closeForm}) {
                     <label>
                         Username:
                         <br />
-                        <input
+                        <input style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}
                         className='form-control'
                         required
                         name='username'
@@ -167,7 +166,7 @@ function CategoryForm({closeForm}) {
                     <label>
                         Email:
                         <br />
-                        <input
+                        <input style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}
                         className='form-control'
                         required
                         name='email'
@@ -186,7 +185,7 @@ function CategoryForm({closeForm}) {
                     <label >
                         Profile Pic:
                         <br />
-                        <input
+                        <input style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}
                         className='form-control'
                         type='file'
                         id="image"
@@ -226,9 +225,6 @@ function CategoryForm({closeForm}) {
                     Submit
                     </button>
                 </form>
-                
-                <br/>
-                <Link to='/account'>Back to Account</Link>
             </>
           );
     }

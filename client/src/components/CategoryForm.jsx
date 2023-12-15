@@ -48,16 +48,17 @@ function CategoryForm({closeForm}) {
       <form onSubmit={handleSubmit}>
           {errorState && <h4 className='error'>{errorState}</h4>}
           <div className='form-group'>
+            <h1>Add Category!</h1>
             <label>
-              Enter a category you would like to add:
+              Category Name:
               <br />
-              <input
+              <input style={{marginTop: "3px", marginBottom: "8px", padding: "10px"}}
                 className='form-control'
                 required
                 name='category'
                 id='category'
                 type='text'
-                placeholder='category'
+                placeholder='Category'
                 autoFocus={true}
               />
             </label>
