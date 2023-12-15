@@ -268,4 +268,39 @@ const addCategory = async (fire_id, category) => {
     return newUser;
 }
 
-export { register, editUserInfo, getUser, getFeed, getHistory, updateHistory, getUserByMongoId, getUserByUsername, addCategory }
+const removeCategory = async (fire_id, category) => {
+    if(!fire_id || !category) throw `Not enough inputs: removeCategory`
+    // fire_id = helper.checkFireId(fire_id);
+    category = helper.checkCategory(category);
+    if (category == "food" || category == "utilities" || category == "entertainment")
+    {
+        throw "cannot remove default category"
+    }
+
+    const userCollection = await users();
+    let user = await userCollection.findOne({fire_id: fire_id});
+    let newCategories = user.categories;
+    if (newCategories.includes(category)) {
+        let originalUser = await getUser(fire_id);
+        let updatedUser = await userCollection.findOneAndUpdate(
+            {fire_id: fire_id},
+            {$pull: {categories: category}},
+            {returnDocument: "after"}
+        );
+        if (originalUser.categories.length != updatedUser.categories.length) {
+            console.log(`Removed ${category} from user`);
+        }
+        else
+        {
+            throw `user does not have the category ${category}`;
+        }
+    }
+    else {
+        throw `user does not have category ${category}`;
+    }
+    let newUser = await userCollection.findOne({fire_id: fire_id});
+
+    return newUser;
+}
+
+export { register, editUserInfo, getUser, getFeed, getHistory, updateHistory, getUserByMongoId, getUserByUsername, addCategory, removeCategory }

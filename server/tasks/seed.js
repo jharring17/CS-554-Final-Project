@@ -6,6 +6,8 @@ import {
 	getFeed,
 	getHistory,
 	updateHistory,
+	addCategory,
+	removeCategory
 } from '../data/users.js';
 import {
 	addGoal,
@@ -363,6 +365,19 @@ try {
 	// let removeFromLikesList1 = await removeFromLikesList(user2.fire_id.toString(),user1.fire_id.toString());
 	let unfriend = await removeFriend(user2.fire_id.toString(),user1.fire_id.toString());
 	console.log(unfriend);
+} catch (e) {
+	console.log(e);
+}
+
+try {
+	await addCategory(user2.fire_id.toString(), "testing");
+	await addCategory(user2.fire_id.toString(), "chicken");
+	await addCategory(user2.fire_id.toString(), "sushi");
+	let removalCat = await removeCategory(user2.fire_id.toString(), "testing");
+	let removalCat2 = await removeCategory(user2.fire_id.toString(), "sushi     ");
+	console.log(removalCat);
+	console.log(removalCat2);
+
 } catch (e) {
 	console.log(e);
 }

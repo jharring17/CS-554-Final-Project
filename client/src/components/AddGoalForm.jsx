@@ -164,16 +164,15 @@ function AddGoal({closeForm}){
             <h1>Make a New Goal!</h1>
             <form id="addGoal" onSubmit={submitGoal}>
                 <label>
-                    Title: <input id="title" required />
+                    Title: <input id="title" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
                 </label>
                 <br/>
                 <label>
-                    Description: <input id="description" required />
+                    Description: <input id="description" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
                 </label>
                 <br/>
                 <label>
-                    Category:  
-                    <select id="category">
+                    Category: <select id="category" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}>
                         <option>...</option>
                         {categories.map((category) => {
                             return (
@@ -186,18 +185,16 @@ function AddGoal({closeForm}){
                 </label>
                 <br/>
                 <label>
-                    Budget for this Goal: $<input id="limit" required />
+                    Budget for this Goal: $<input id="limit" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
                 </label>
                 <br/>
                 <label>
-                    Goal Date (mm/dd/yyyy): <input id="date" required />
+                    Goal Date (mm/dd/yyyy): <input id="date" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
                 </label>
                 <br/>
-                <button type="submit">Create Goal</button>
+                <button className="button" type="submit">Create Goal</button>
             </form>
         </div>
-        <br/>
-        <Link to='/account'>Back to Account</Link>
         </div>
  
     )
