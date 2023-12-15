@@ -62,7 +62,7 @@ function Account() {
 
         <h2 style={{margin: "10px 0"}}>{userData.displayName}</h2>
           <div className='mini-nav' style={{display: "flex", gap: "5px", marginTop: "15px"}}>
-              <Link onClick={()=>setOpenedForm(1)} style={{...buttonStyle, marginLeft: "auto"}}>Create Category</Link>
+              <Link onClick={()=>setOpenedForm(1)} style={{...buttonStyle, marginLeft: "auto"}}>Manage Categories</Link>
               <Link onClick={()=>setOpenedForm(2)} style={buttonStyle}>Add goal</Link>
               <Link onClick={()=>setOpenedForm(3)} style={buttonStyle}>Edit Profile</Link>
               <Link to="./history" style={{...buttonStyle, marginRight: "auto"}}>History</Link> 
