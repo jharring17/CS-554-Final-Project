@@ -280,5 +280,24 @@ router
             return res.status(500).json({error: e})
         }
     })
+    .delete(async (req, res) =>{
+        let id = req.params.userId;
+        let goalId = req.params.goalId;
+        try{
+            id = validate.checkFireId(id);
+            goalId = validate.validId(goalId);
+        }catch(e){
+            return res.status(400).json({error: e})
+        }        
+        //now delete the goal
+        try{
+            let deleted = await goals.deleteGoal(goalId);
+            let removeFromCache = await client.del(`goals-for-user-${id}`);
+
+            return res.status(200).json(deleted)
+        }catch(e){
+            return res.status(500).json({error: e})
+        }
+    })
 
 export default router;
