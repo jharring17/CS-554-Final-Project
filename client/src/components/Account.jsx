@@ -6,7 +6,7 @@ import ChangePassword from './ChangePassword';
 import axios from 'axios';
 import { doGetUID } from '../firebase/FirebaseFunctions';
 import GoalCard from './GoalCard';
-import CategoryForm from './CategoryForm';
+import ManageCategories from './ManageCategories';
 import AddGoal from './AddGoalForm';
 import EditProfileForm from './EditProfileForm'
 import {
@@ -43,7 +43,7 @@ function Account() {
     const buttonStyle = {background: "#282c34", width: "20%", color: "white", padding: "10px", textDecoration: "none", fontWeight: '400', borderRadius: "10px"}
 
     const overlay = (openedForm == 0) ? <></> : <div className='card'>
-    {(openedForm == 1) ? <CategoryForm closeForm={()=>setOpenedForm(0)} /> : (openedForm == 2) ? <AddGoal closeForm={()=>setOpenedForm(0)} /> : (openedForm == 3) ? <EditProfileForm closeForm={()=>setOpenedForm(0)} /> : <></>}
+    {(openedForm == 1) ? <ManageCategories closeForm={()=>setOpenedForm(0)} /> : (openedForm == 2) ? <AddGoal closeForm={()=>setOpenedForm(0)} /> : (openedForm == 3) ? <EditProfileForm closeForm={()=>setOpenedForm(0)} /> : <></>}
     <p onClick={()=>setOpenedForm(0)}>Close</p>
     </div>
 
