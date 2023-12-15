@@ -6,6 +6,7 @@ import { doGetUID } from '../firebase/FirebaseFunctions';
 import EditGoal from './EditGoal';
 import ExpenseForm from './ExpenseForm';
 import Expense from './Expense';
+import DeleteGoal from './DeleteGoal';
 import '../App.css';
 
 function GoalCard(props) {
@@ -14,6 +15,7 @@ function GoalCard(props) {
 	const [showEdit, setShowEdit] = useState(false);
 	const [showExpenseForm, setShowExpenseForm] = useState(false);
 	const [deletedExpense, setDeletedExpense] = useState(false);
+	const [showDeleteGoalForm, setShowDeleteGoalForm] =useState(false);
 
 	const deleteExpense = async (expenseId, goalId) => {
 		try {
@@ -35,9 +37,13 @@ function GoalCard(props) {
 	function openExpense() {
 		setShowExpenseForm(true);
 	}
+	function openDeleteGoal(){
+		setShowDeleteGoalForm(true)
+	}
 	function handleClose() {
 		setShowEdit(false);
 		setShowExpenseForm(false);
+		setShowDeleteGoalForm(false);
 	}
   
 	useEffect(() => {
@@ -85,7 +91,7 @@ function GoalCard(props) {
 			}
 		}
 		getGoalInfo();
-	}, [showEdit, showExpenseForm, deletedExpense]);
+	}, [showEdit, showExpenseForm, deletedExpense, showDeleteGoalForm]);
 
 	if (goal === null) {
 		return <>Loading...</>;
@@ -119,7 +125,7 @@ function GoalCard(props) {
 									console.log(goal._id);
 									console.log('Expense: ', expense);
 									return (
-										<>
+										<div key={expense}>
 											<div className='row'>
 												<Expense
 													key={expense}
@@ -147,7 +153,7 @@ function GoalCard(props) {
 											</div>
 											<br />
 											<br />
-										</>
+										</div>
 									);
 								})}
 							</>
@@ -177,6 +183,10 @@ function GoalCard(props) {
 								goalId={goal._id}
 							/>
 						)}
+						<button onClick={() => openDeleteGoal()} >Delete Goal</button>
+						{showDeleteGoalForm && 
+							<DeleteGoal isOpen={openDeleteGoal} close={handleClose} goalId={goal._id} />
+						}
 						<br />
 						<br />
 					</Card>
