@@ -66,7 +66,7 @@ function FriendProfile() {
                 <p>{user.username}</p>
                 <p>{user.displayName} has created a total of {user.goals.length} goals</p>
                 <p> {user.displayName} has {(user.goals.length - goalsExpired)} goals in progress</p>
-                <p>{user.displayName} has completed {((goalsCompleted/goalsExpired)*100).toFixed(0)}% of past goals</p>
+                {(goalsCompleted) ? <p>{user.displayName} has completed {((goalsCompleted/goalsExpired)*100).toFixed(0)}% of past goals</p> : <></>}
                 </div>
                 <br/>
                 <Link to='/friends'>Back to Friends</Link>
