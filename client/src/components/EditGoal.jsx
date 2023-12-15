@@ -160,7 +160,6 @@ function EditGoal(props){
             }
         )
         document.getElementById('editGoal').reset()
-        alert("Goal Updated")
         props.close()
 
     }

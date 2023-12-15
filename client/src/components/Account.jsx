@@ -66,7 +66,7 @@ function Account() {
           </div>
         </div>
 
-        {(goals.length != 0) ? <div className='card'>
+        {(goals.length != 0) ? <div>
           {goals.map((goal) => {
             return <GoalCard key={goal._id} id={goal._id}/>
           })}
