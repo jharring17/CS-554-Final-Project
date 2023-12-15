@@ -32,6 +32,7 @@ function DeleteCategory() {
                     })}
                 </select>
             </label>
+            <button className="button" type="submit">Delete category</button>
         </form>
     </div>
   );
