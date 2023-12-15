@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, {useState, useContext, useEffect} from "react"
 import '../App.css';
 import { doGetUID } from "../firebase/FirebaseFunctions";
@@ -38,3 +39,10 @@ function DeleteCategory() {
 }
 
 export default DeleteCategory;
+=======
+const DeleteCategory = () => {
+    return (<></>)
+}
+
+export default DeleteCategory
+>>>>>>> 52e1d1f77b610c80e61c456552cdbe1d6fef0edb
