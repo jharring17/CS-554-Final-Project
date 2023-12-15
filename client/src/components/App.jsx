@@ -16,6 +16,7 @@ import FriendProfile from './FriendProfile.jsx';
 import History from './History.jsx';
 import ManageCategories from './ManageCategories.jsx';
 import Error from './Error.jsx';
+import DeleteCategory from './DeleteCategory.jsx';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <div className='App'>
         <Routes>
           <Route path='/' element={<SignIn />} />
+          <Route path='/signup' element={<SignUp />} />
 
           <Route path='/feed' element={<PrivateRoute />}>
             <Route path='/feed' element={<Home />} />
@@ -30,9 +32,9 @@ function App() {
 
           <Route path='/account' element={<PrivateRoute />}>
             <Route path='/account' element={<Account />} />
-            {/* <Route path='/account/makeGoal' element={<AddGoalForm />} />
+            <Route path='/account/makeGoal' element={<AddGoalForm />} />
             <Route path='/account/createCategory' element={<CategoryForm />} />
-            <Route path='/account/editProfile' element={<EditProfileForm />} /> */}
+            <Route path='/account/editProfile' element={<EditProfileForm />} />
             <Route path='/account/history' element={<History />} />
           </Route>
 
@@ -41,9 +43,7 @@ function App() {
             <Route path='/friends/userprofile/:fireId' element={<FriendProfile />} />
           </Route>
 
-          <Route path='/signup' element={<SignUp />} />
           <Route path='*' element={<Error status='404' message='Page Not Found'/>} />
-
         </Routes>
       </div>
     </AuthProvider>
