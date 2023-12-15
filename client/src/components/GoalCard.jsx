@@ -52,6 +52,7 @@ function GoalCard(props) {
 		setShowEdit(false);
 		setShowExpenseForm(false);
 		setShowDeleteGoalForm(false);
+    setShowEditExpenseForm(false);
 	}
 	async function deleteGoal(goalId){
         let id = doGetUID();
