@@ -2,6 +2,9 @@
   text-align: center;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -51,7 +54,7 @@
 
 .active {
   font-weight: bold;
-  color: red !important;
+  /* color: red !important; */
 }
 
 .error {
