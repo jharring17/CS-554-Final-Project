@@ -34,7 +34,7 @@ function Account() {
 
     }
     getGoals()
-  }, [])
+  }, [openedForm])
 
   if(!userData){
     return (<>Loading...</>)
