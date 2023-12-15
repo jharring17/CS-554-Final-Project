@@ -36,16 +36,17 @@ function Account() {
     getGoals()
   }, [])
 
-  const overlay = (openedForm == 0) ? <></> : <div className='card'>
-    {(openedForm == 1) ? <CategoryForm closeForm={()=>setOpenedForm(0)} /> : (openedForm == 2) ? <AddGoal closeForm={()=>setOpenedForm(0)} /> : (openedForm == 3) ? <EditProfileForm closeForm={()=>setOpenedForm(0)} /> : <></>}
-    <p onClick={()=>setOpenedForm(0)}>Close</p>
-    </div>
-
   if(!userData){
     return (<>Loading...</>)
   }
   else{
     const buttonStyle = {background: "#282c34", width: "20%", color: "white", padding: "10px", textDecoration: "none", fontWeight: '400', borderRadius: "10px"}
+
+    const overlay = (openedForm == 0) ? <></> : <div className='card'>
+    {(openedForm == 1) ? <CategoryForm closeForm={()=>setOpenedForm(0)} /> : (openedForm == 2) ? <AddGoal closeForm={()=>setOpenedForm(0)} /> : (openedForm == 3) ? <EditProfileForm closeForm={()=>setOpenedForm(0)} /> : <></>}
+    <p onClick={()=>setOpenedForm(0)}>Close</p>
+    </div>
+
     return (
       <>
         <div className='card'>
