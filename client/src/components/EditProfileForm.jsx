@@ -57,10 +57,11 @@ function CategoryForm(e) {
         e.preventDefault();
 
         let newLink = "";
-        if(photo[0] != undefined){
+        if(photo != ''){
+            console.log("here")
             let photoUploading = new FormData();
             //append the file custom key from cloudinary (gp0pimba)
-            photoUploading.append("file", photo[0]);
+            photoUploading.append("file", photo);
             photoUploading.append("upload_preset", "gp0pimba");
             //upload the photo to cloudinary (djllvfvts is my cloud name)
             let data = await axios.post('https://api.cloudinary.com/v1_1/djllvfvts/image/upload', photoUploading)
@@ -191,7 +192,10 @@ function CategoryForm(e) {
                         name="image"
                         accept=".img,.jpeg,.png,.jpg"
                         autoFocus={true}
-                        onChange={(e) => setPhoto(e.target.files)}
+                        onChange={(e) => {
+                            let currPhoto = e.target.files[0];
+                            setPhoto(currPhoto)
+                        }}
                         />
                     </label>
                     </div>

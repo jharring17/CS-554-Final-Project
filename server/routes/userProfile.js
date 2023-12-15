@@ -74,6 +74,7 @@ router
 
         try {
             let newUser = await users.editUserInfo(req.params.userId, displayName, username, email, photo);
+            let removeFromCache = await client.del(`goals-for-user-${req.params.userId}`)
             return res.status(200).json(newUser)
         }
         catch (e) {

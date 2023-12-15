@@ -55,6 +55,9 @@ function App() {
           <Route path='/friends' element={<PrivateRoute />}>
             <Route path='/friends' element={<Friends />} />
           </Route>
+          <Route path='/userprofile/:fireId' element={<PrivateRoute />}>
+            <Route path='/userprofile/:fireId' element={<FriendProfile />} />
+          </Route>
 
           {/* <Route path='/signin' element={<SignIn />} /> */}
           <Route path='/signup' element={<SignUp />} />
