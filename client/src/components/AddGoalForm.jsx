@@ -50,7 +50,6 @@ function AddGoal({closeForm}){
         else{
           if(parseInt(date.substring(3,5)) > 28 || parseInt(date.substring(3,5)) < 0) return `Invalid day for date`;
         }
-        //used this link to get the current date: https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript
         let currDate = new Date();
         let month = currDate.getMonth() + 1;
         let day = currDate.getDate();
