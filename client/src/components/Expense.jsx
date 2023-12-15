@@ -18,6 +18,7 @@ function Expense(props){
         async function getExpense(id){
             let uid = doGetUID();
             let expenseData = await axios.get(`http://localhost:3000/user/${uid}/${props.goal}/${props.expense}`)
+            console.log(expenseData)
             setExpenseInfo(expenseData.data.expense)
         }
         getExpense(props.expense);
