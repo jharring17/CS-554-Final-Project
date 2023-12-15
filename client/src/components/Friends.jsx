@@ -38,7 +38,7 @@ const Friends = () => {
                     <div key={friend} className="card" style={{display:"flex", gap: "25px", alignItems: "center", padding: "2px 10px", margin: "10px auto", maxWidth: "500px", minWidth: "fit-content", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1)"}}>
                         <img src={data.profilePic} alt={`${data.username}'s profile pic`} style={{width:"45px", height:"45px", borderRadius: "100%" }}/>
                         <div style={{margin: "4px", textAlign: "left"}}>
-                            <NavLink to={`/userprofile/${friend}`} style={{margin: "0 0", fontSize:"16px", cursor: "pointer", color: "black", fontWeight: "normal", textDecoration: "none"}} onMouseEnter={(e)=>(e.currentTarget.style.color = "darkblue")} onMouseLeave={(e)=>(e.currentTarget.style.color = "black")}>{data.displayName}</NavLink>
+                            <NavLink to={`/friends/userprofile/${friend}`} style={{margin: "0 0", fontSize:"16px", cursor: "pointer", color: "black", fontWeight: "normal", textDecoration: "none"}} onMouseEnter={(e)=>(e.currentTarget.style.color = "darkblue")} onMouseLeave={(e)=>(e.currentTarget.style.color = "black")}>{data.displayName}</NavLink>
                             <p style={{margin: "0 0", fontSize: "12px"}}>{data.username}</p>
                         </div>
                         <button style={{marginLeft:"auto", backgroundColor: "#282c34", color: "white", padding: "7px 15px", border: "none", borderRadius: "5px"}} onClick={()=>{removeFriend(friend)}}>Remove</button>
