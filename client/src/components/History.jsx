@@ -44,8 +44,11 @@ const History = (props) => {
 		</>
 	);
 
+    const historySucceeded = historyList.reduce((total, item) => {if(item.successful == true) return total+1; else return total}, 0)
+
 	return (
 		<>
+            <h2>{historySucceeded / historyList.length * 100}% Succeeding Goals</h2>
 			{feed}
 		</>
 	);
