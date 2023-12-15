@@ -23,6 +23,7 @@ function App() {
       <div className='App'>
         <Routes>
           <Route path='/' element={<SignIn />} />
+          <Route path='/signup' element={<SignUp />} />
 
           <Route path='/feed' element={<PrivateRoute />}>
             <Route path='/feed' element={<Home />} />
@@ -42,9 +43,7 @@ function App() {
             <Route path='/friends/userprofile/:fireId' element={<FriendProfile />} />
           </Route>
 
-          <Route path='/signup' element={<SignUp />} />
           <Route path='*' element={<Error status='404' message='Page Not Found'/>} />
-
         </Routes>
       </div>
     </AuthProvider>
