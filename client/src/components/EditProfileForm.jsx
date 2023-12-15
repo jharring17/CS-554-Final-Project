@@ -6,8 +6,8 @@ import '../App.css';
 import axios from 'axios';
 import ChangePassword from './ChangePassword';
 
-function CategoryForm(e) {
-    const navigate = useNavigate();
+function CategoryForm({closeForm}) {
+    // const navigate = useNavigate();
     const {currentUser} = useContext(AuthContext);
     const [errorState, setErrorState] = useState('');
     const [user, setUser] = useState(null);
@@ -100,7 +100,7 @@ function CategoryForm(e) {
           console.log(error);
           alert(error);
         }
-        navigate('/account');
+        closeForm()
     };
 
     if(user === null){
@@ -120,7 +120,7 @@ function CategoryForm(e) {
                     <label>
                         Display name:
                         <br />
-                        <input
+                        <input style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}
                         className='form-control'
                         required
                         name='displayName'
@@ -143,7 +143,7 @@ function CategoryForm(e) {
                     <label>
                         Username:
                         <br />
-                        <input
+                        <input style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}
                         className='form-control'
                         required
                         name='username'
@@ -166,7 +166,7 @@ function CategoryForm(e) {
                     <label>
                         Email:
                         <br />
-                        <input
+                        <input style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}
                         className='form-control'
                         required
                         name='email'
@@ -185,7 +185,7 @@ function CategoryForm(e) {
                     <label >
                         Profile Pic:
                         <br />
-                        <input
+                        <input style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}
                         className='form-control'
                         type='file'
                         id="image"
@@ -225,9 +225,6 @@ function CategoryForm(e) {
                     Submit
                     </button>
                 </form>
-                
-                <br/>
-                <Link to='/account'>Back to Account</Link>
             </>
           );
     }

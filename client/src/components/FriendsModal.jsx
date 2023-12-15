@@ -169,7 +169,7 @@ function FriendsModal() {
         </>
     )
     return (
-        <button style={{borderRadius:"50%", border:"none", width: "6vw", height:"6vw", backgroundColor:"#282c34", position:"absolute", bottom: 20, right: 60}} onClick={()=>setModalOpened(true)}>
+        <button style={{borderRadius:"50%", border:"none", width: "6vw", height:"6vw", backgroundColor:"#282c34", position:"fixed", bottom: 20, right: 60}} onClick={()=>setModalOpened(true)}>
             {(incoming.length > 0) ? <span style={{position: "absolute", top: -5, left: -5, width: "25px", height: "25px", borderRadius: "50%", backgroundColor: "red", display:"flex", alignItems:"center", justifyContent:"center", fontWeight: "bold", color:"white", zIndex: 1}}>{incoming.length}</span> : <></>}
             <img src={friendSVG} alt="Friend Requests" style={{position:"absolute", width:"95%", height:"95%", top: "3%", left: "5%", color:"white"}}/>
         </button>

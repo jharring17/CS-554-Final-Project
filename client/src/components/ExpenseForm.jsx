@@ -84,9 +84,8 @@ function ExpenseForm(props) {
 					}
 				);
 				console.log('Posted expense: ', expense);
-				document.getElementById('addExpense').reset();
-				alert('Expense Updated');
-				props.close();
+				document.getElementById('addExpense').reset()
+				props.close()
 			} catch (e) {
 				console.log(e);
 			}
