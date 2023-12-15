@@ -152,7 +152,7 @@ function FriendsModal() {
         pauseOnHover
         theme="light"
         />
-        <div style={{position: 'absolute', right: 60, bottom: 20, backgroundColor: "white", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", width: "250px", display: "flex", flexDirection: "column"}}>
+        <div style={{position: 'fixed', right: 60, bottom: 20, backgroundColor: "white", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", width: "250px", display: "flex", flexDirection: "column"}}>
             <button onClick={()=>setModalOpened(false)} style={{border: "none", backgroundColor: "rgba(0,0,0,0)", fontWeight: "bolder", position: 'absolute', top: 0, right: 0, cursor: "pointer"}}>X</button>
             <div style={{borderBottom: "solid 2px rgba(0,0,0,0.55)"}}>
                 <button style={{...tabButtonStyle, backgroundColor: (tab == 0) ? "rgba(0,0,0,0.05)" : "white"}} onClick={()=>setTab(0)}><span style={{cursor: "pointer"}}>Incoming</span></button>

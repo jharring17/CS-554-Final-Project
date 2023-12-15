@@ -14,7 +14,7 @@ import ChangePassword from './ChangePassword.jsx';
 import Friends from './Friends';
 import FriendProfile from './FriendProfile.jsx';
 import History from './History.jsx';
-import ManageCategories from './MaganageCategories.jsx';
+import ManageCategories from './ManageCategories.jsx';
 import Error from './Error.jsx';
 import DeleteCategory from './DeleteCategory.jsx';
 
