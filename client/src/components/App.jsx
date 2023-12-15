@@ -30,9 +30,9 @@ function App() {
 
           <Route path='/account' element={<PrivateRoute />}>
             <Route path='/account' element={<Account />} />
-            {/* <Route path='/account/makeGoal' element={<AddGoalForm />} />
+            <Route path='/account/makeGoal' element={<AddGoalForm />} />
             <Route path='/account/createCategory' element={<CategoryForm />} />
-            <Route path='/account/editProfile' element={<EditProfileForm />} /> */}
+            <Route path='/account/editProfile' element={<EditProfileForm />} />
             <Route path='/account/history' element={<History />} />
           </Route>
 
