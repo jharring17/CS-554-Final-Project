@@ -10,9 +10,9 @@ function FriendProfile() {
 
     useEffect( () => {
         setUser(null);
-
         async function getUserInfo(){
-            let userData = await axios.get(`http://localhost:3000/user/${fireId}/getUserInfo`)
+            let userData = await axios.get(`http://localhost:3000/user/${fireId}/getFriendInfo`)
+
             setUser(userData.data);
         }
         getUserInfo();

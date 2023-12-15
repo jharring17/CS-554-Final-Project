@@ -12,6 +12,30 @@ router.route("/:userId/getUserInfo").get(async (req, res) => {
 	//validate the id
 	let id = req.params.userId;
 
+	// let stored = await client.exists(`friend-${id}`);
+	// if(stored){
+	// 	console.log("friend data was in cache");
+	// 	let friendPageInfo = await client.get(`friend-${id}`);
+	// 	friendPageInfo = JSON.parse(friendPageInfo);
+	// 	return res.status(200).json(friendPageInfo)
+	//}else{
+		// console.log("friend data was not in cache")
+		try {
+			let data = await users.getUser(id);
+			// let asString = JSON.stringify(data);
+			// let addedToCache = await client.setEx(`friend-${id}`, 3600, asString);
+			return res.status(200).json(data);
+		} catch (e) {
+			return res.status(404).json({ error: e });
+		}
+	//}
+
+});
+
+router.route("/:userId/getFriendInfo").get(async (req, res) => {
+	//validate the id
+	let id = req.params.userId;
+
 	let stored = await client.exists(`friend-${id}`);
 	if(stored){
 		console.log("friend data was in cache");
@@ -29,8 +53,7 @@ router.route("/:userId/getUserInfo").get(async (req, res) => {
 			return res.status(404).json({ error: e });
 		}
 	}
-
-});
+})
 
 router.route("/register").post(async (req, res) => {
 	let fire_id = req.body.fire_id;
