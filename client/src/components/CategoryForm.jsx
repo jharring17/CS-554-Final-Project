@@ -5,8 +5,7 @@ import {useNavigate, Link} from 'react-router-dom';
 import '../App.css';
 import axios from 'axios';
 
-function CategoryForm(e) {
-    const navigate = useNavigate();
+function CategoryForm({closeForm}) {
     const {currentUser} = useContext(AuthContext);
     const [errorState, setErrorState] = useState('');
 
@@ -20,30 +19,28 @@ function CategoryForm(e) {
           if(category.length === 0) throw `Category cannot be empty`;
           category = category.toLowerCase();
           if (category.length > 30) {
-            throw 'Category name too long: CategoryForm.jsx';
+            throw 'Category name too long';
           }
           if (!/^[a-zA-Z0-9_.-]*[a-zA-Z][a-zA-Z0-9_. -]*$/.test(category)) { 
             //rn this takes multi word categories with numbers and _.-
-            throw 'Invalid category: CategoryForm.jsx';
+            throw 'Invalid category';
           }
         }
         catch (error)
         {
-          console.log(error);
           setErrorState(error);
           return false;
         }
         try {
           const fire_id = doGetUID();
-          console.log("fireid", fire_id)
           await axios.post(`http://localhost:3000/user/${fire_id}/addCategory`, 
                             {fire_id: fire_id, category: category})
         } 
         catch (error) {
-          console.log(error);
-          alert(error);
+          setErrorState("This category already exists");
+          return false;
         }
-        navigate('/account');
+        closeForm();
     };
 
   return (
@@ -64,6 +61,9 @@ function CategoryForm(e) {
                 autoFocus={true}
               />
             </label>
+            <p className="input-requirements">
+            Max 30 characters. Only letters and _.-
+          </p>
           </div>
           <button
             className='button'
@@ -74,8 +74,7 @@ function CategoryForm(e) {
             Submit
           </button>
       </form>
-      <br/>
-      <Link to='/account'>Back to Account</Link>
+      {/* <Link to='/account'>Back to Account</Link> */}
     </>
   );
 }

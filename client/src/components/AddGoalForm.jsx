@@ -4,10 +4,10 @@ import { doGetUID } from "../firebase/FirebaseFunctions";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
-function AddGoal(){
+function AddGoal({closeForm}){
     const [categories, setCategories] = useState([]);
     const [error, setError] = useState(null);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     useEffect( ()=>{
         async function getUserInfo(){
@@ -153,7 +153,7 @@ function AddGoal(){
                 goalDate: date
             }
         )
-        navigate('/account')
+        closeForm()
     } 
     return(
         <div>
