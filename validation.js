@@ -195,14 +195,6 @@ export function expenseDateChecker(date){
   let day = currDate.getDate();
   let year = currDate.getFullYear();
 
-  //now we have to compare to make sure that the goalDate is later than the curr date
-  let expMonth = parseInt(date.substring(0, 2));
-  let expDay = parseInt(date.substring(3,5));
-  let expYear = parseInt(date.substring(6));
-  if(year < expYear) throw `Goal Date must be a past date (invalid year)`
-  if(year === expYear && month < expMonth) throw `Goal Date must be a past date (invalid month)`
-  if(year === expYear && month === expMonth && day < expDay) throw `Goal Date must be a past date (invalid day)`
-
   return date;
 }
 
