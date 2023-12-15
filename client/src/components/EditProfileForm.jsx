@@ -6,8 +6,8 @@ import '../App.css';
 import axios from 'axios';
 import ChangePassword from './ChangePassword';
 
-function CategoryForm(e) {
-    const navigate = useNavigate();
+function CategoryForm({closeForm}) {
+    // const navigate = useNavigate();
     const {currentUser} = useContext(AuthContext);
     const [errorState, setErrorState] = useState('');
     const [user, setUser] = useState(null);
@@ -100,7 +100,8 @@ function CategoryForm(e) {
           console.log(error);
           alert(error);
         }
-        navigate('/account');
+        // navigate('/account');
+        closeForm()
     };
 
     if(user === null){
