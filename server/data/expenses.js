@@ -132,7 +132,7 @@ const editExpense = async (expenseId, description, amount, date) => {
 	amount = helper.limitChecker(amount);
 
 	// Validate the date.
-	date = helper.goalDateChecker(date);
+	date = helper.expenseDateChecker(date);
 	const expenseCollection = await expenses();
 	const goalCollection = await goals();
 	let expense = await expenseCollection.findOne({ _id: new ObjectId(expenseId) });
@@ -152,7 +152,11 @@ const editExpense = async (expenseId, description, amount, date) => {
 	if (updateInfo.modifiedCount === 0) throw 'Could not update expense: editExpense';
 
 	// Return the updated expense.
-	return updateInfo.value;
+	console.log('Updated Information: ', updateInfo);
+
+	// Return the updated expense.
+	let updatedExpense = getExpenseById(expenseId);
+	return updatedExpense;
 };
 
 export { getExpenseById, getExpensesByGoalId, addExpense, delExpense, editExpense };

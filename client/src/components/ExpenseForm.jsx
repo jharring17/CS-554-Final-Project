@@ -6,13 +6,11 @@ import { useThemeProps } from '@mui/material';
 
 function ExpenseForm(props) {
 	// Define navigate for page redirection.
-	let [errors, setErrors] = useState([]);
+	let [error, setError] = useState('');
 
 	const handleSubmit = async (e) => {
 		// Prevent default action.
 		e.preventDefault();
-
-		let errors = [];
 
 		// Get the values from the form.
 		let userId = firebase.doGetUID();
@@ -20,24 +18,51 @@ function ExpenseForm(props) {
 		let amount = document.getElementById('amount').value;
 		let date = document.getElementById('date').value;
 
-		// Check that form values are not empty.
-		if (description.trim() == '') {
-			errors.push('Description is required.');
-		}
-		if (amount.trim() == '') {
-			errors.push('Amount is required.');
-		}
-		if (date.trim() == '') {
-			errors.push('Date is required.');
-		}
+		// Error checking for form values.
+		try {
+			// Check that form values are not empty.
+			if (description.trim() == '') {
+				throw 'Description is required.';
+			}
+			if (amount.trim() == '') {
+				throw 'Amount is required.';
+			}
+			if (date.trim() == '') {
+				throw 'Date is required.';
+			}
 
-		// Remove the dollar sign from the amount.
-		if (amount.includes('$')) amount = amount.replaceAll('$', '');
+			// Description can only be 500 characters.
+			if (description.length > 500) {
+				throw `Description cannot exceed 500 characters.`;
+			}
 
-		setErrors(errors);
+			// Check that the amount field only contains numbers and decimals.
+			if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
+				throw `Amount field can only contain numbers and decimals.`;
+			}
+
+			// Check that amount is positive, non-zero number.
+			if (parseFloat(amount) < 0) {
+				throw `Cannot have a negative amount.`;
+			}
+			if (parseFloat(amount) === 0) {
+				throw 'Amount must be non-zero.';
+			}
+
+			// If the amount contains a decimal, check for two decimal places.
+			if (amount.includes('.')) {
+				let amountComponents = amount.split('.');
+				if (amountComponents[1].length !== 2) {
+					throw `Must have two numbers trailing a decimal.`;
+				}
+			}
+		} catch (e) {
+			console.log(e);
+			setError(e);
+		}
 
 		// If there are no errors, perform the request.
-		if (errors.length === 0) {
+		if (error === '') {
 			// Format date value from form for submission
 			date = date.split('-');
 			date = date[1] + '/' + date[2] + '/' + date[0];
@@ -50,11 +75,14 @@ function ExpenseForm(props) {
 			try {
 				console.log('User ID: ', userId);
 				console.log('Goal ID: ', props.goalId);
-				let expense = await axios.post(`http://localhost:3000/user/${userId}/${props.goalId}`, {
-					description: description,
-					amount: amount,
-					date: date,
-				});
+				let expense = await axios.post(
+					`http://localhost:3000/user/${userId}/${props.goalId}`,
+					{
+						description: description,
+						amount: amount,
+						date: date,
+					}
+				);
 				console.log('Posted expense: ', expense);
 				document.getElementById('addExpense').reset()
 				props.close()
@@ -68,13 +96,7 @@ function ExpenseForm(props) {
 	return (
 		<div className="expenseForm">
 			<h1>Track an Expense</h1>
-			{errors.map((error, index) => {
-				return (
-					<p key={index} className="error">
-						{error}
-					</p>
-				);
-			})}
+			<p className="error">{error}</p>
 			<form id="addExpense">
 				<label>
 					Description
@@ -97,8 +119,7 @@ function ExpenseForm(props) {
 				<button type="submit" onClick={handleSubmit}>
 					Add Expense
 				</button>
-				<button onClick={()=>props.close()}>Cancel Expense</button>
-
+				<button onClick={() => props.close()}>Cancel Expense</button>
 			</form>
 		</div>
 	);
