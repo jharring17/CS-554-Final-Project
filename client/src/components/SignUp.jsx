@@ -42,7 +42,7 @@ function SignUp() {
       if(typeof newEmail != 'string') throw `Email must be a string :: SignUp.jsx`;
       newEmail = newEmail.trim();
       if(newEmail.length === 0) throw `Email cannot be empty :: SignUp.jsx`;
-      let isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail);
+      let isValid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(newEmail);
       if (!isValid) {
         throw "Invalid email address :: SignUp.jsx";
       }
@@ -71,27 +71,7 @@ function SignUp() {
       }
       //password 2
       let newPasswordTwo = passwordTwo.value;
-      if (typeof newPasswordTwo != 'string') {
-        throw `Confirm password must be a string :: SignUp.jsx`;
-      }
-      if (newPasswordTwo.length === 0) {
-        throw `Confirm password cannot be empty :: SignUp.jsx`;
-      }
-      if (newPasswordTwo.split(" ").length > 1) {
-          throw `Confirm password cannot contain spaces :: SignUp.jsx`;
-      }
-      if (newPasswordTwo.length < 8) {
-          throw `Confirm password length must be at least 8 :: SignUp.jsx`;
-      }
-      if (!/[A-Z]/.test(newPasswordTwo)) {
-          throw `Confirm password must contain at least one uppercase character :: SignUp.jsx`;
-      }
-      if (!/\d/.test(newPasswordTwo)) {
-          throw `Confirm password must contain at least one number :: SignUp.jsx`;
-      }
-      if (!/[!@#$%^&*(),.?":{}|<>]/.test(newPasswordTwo)) {
-          throw `Confirm password must contain at least one special character :: SignUp.jsx`;
-      }
+      
       //age
       let newAge = age.value;
       if (Number.isNaN(Number(newAge)) || newAge < 13) {
