@@ -40,44 +40,57 @@ function ExpenseEditForm(props) {
 		let date = document.getElementById('date').value.trim();
 
 		// Error checking for form values.
-		try {
+		let waiting = false;
+
 			// Check that form values are not empty.
 			if (description.trim() == '') {
-				throw 'Description is required.';
+				setError('Description is required.');
+				waiting = true;
 			}
 			if (amount.trim() == '') {
-				throw 'Amount is required.';
+				setError('Amount is required.');
+				waiting = true;
 			}
 			if (date.trim() == '') {
-				throw 'Date is required.';
+				setError('Date is required.');
+				waiting = true;
 			}
-
-			// Description can only be 500 characters.
-			if (description.length > 500) {
-				throw `Description cannot exceed 500 characters.`;
+			// Description can only be 200 characters.
+			if (description.length > 200) {
+				setError(`Description cannot exceed 200 characters.`);
+				waiting = true;
 			}
 
 			// Check that the amount field only contains numbers and decimals.
 			if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
-				throw `Amount field can only contain numbers and decimals.`;
+				setError(`Amount field can only contain numbers and decimals.`);
+				waiting = true;
 			}
 
 			// Check that amount is positive, non-zero number.
 			if (parseFloat(amount) < 0) {
-				throw `Cannot have a negative amount.`;
+				setError(`Cannot have a negative amount.`);
+				waiting = true;
 			}
 			if (parseFloat(amount) === 0) {
-				throw 'Amount must be non-zero.';
+				setError('Amount must be non-zero.');
+				waiting = true;
 			}
-
+			if (parseFloat(amount) > 1000000) {
+				setError('Amount must be non-zero.');
+				waiting = true;
+			}
 			// If the amount contains a decimal, check for two decimal places.
 			if (amount.includes('.')) {
 				let amountComponents = amount.split('.');
 				if (amountComponents[1].length !== 2) {
-					throw `Must have two numbers trailing a decimal.`;
+					setError(`Must have two numbers trailing a decimal.`);
+					waiting = true;
 				}
 			}
-
+			if(waiting){
+				return;
+			}
 			// Update the date.
 			date = date.split('-');
 			date = date[1] + '/' + date[2] + '/' + date[0];
@@ -102,10 +115,6 @@ function ExpenseEditForm(props) {
 				console.log(e);
 			}
 			props.close();
-		} catch (e) {
-			console.log(e);
-			setError(e);
-		}
 	}
 
 	if (expense === null) {

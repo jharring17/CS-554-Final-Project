@@ -93,6 +93,10 @@ function AddGoal({closeForm}){
             setError(`Title length must be at least 3`);
             waiting = true;
         }
+        if (title.length > 50) {
+            setError(`Title length cannot exceed 50 characters`);
+            waiting = true;
+        }
         if (!/[A-Za-z]/.test(title)) {
             setError(`Title must contain at least one letter`);
             waiting = true;
@@ -115,6 +119,10 @@ function AddGoal({closeForm}){
             setError(`Description length must be at least 5`);
             waiting = true;
         }
+        if (description.length > 200) {
+            setError(`Description length cannot exceed 200 characters`);
+            waiting = true;
+        }
         if (!/[A-Za-z]/.test(description)) {
             setError(`Description must contain at least one letter`);
             waiting = true;
@@ -126,6 +134,10 @@ function AddGoal({closeForm}){
             setError("Limit must be a valid dollar amount");
             waiting = true;
         }
+        if(limit > 1000000){
+            setError("Limit cannot exceed $1000000");
+            waiting = true;
+        }
         if(date.length === 0){
             setError("Date Cannot Be An Empty String");
             waiting = true;
@@ -135,9 +147,6 @@ function AddGoal({closeForm}){
             setError(result);
             waiting = true;
         }
-        // if(error != null){
-        //     return
-        // }
         if(waiting){
             return;
         }

@@ -33,6 +33,7 @@ router
                 let allGoals = await goals.getGoalsByUserId(id);
                 let asString = JSON.stringify(allGoals)
                 let addedToCache = await client.setEx(`goals-for-user-${id}`, 3600, asString)
+                let removeFromCache = await client.del(`friend-${id}`);
                 return res.status(200).json(allGoals);
             }catch(e){
                 return res.status(404).json({error: e})
@@ -75,6 +76,7 @@ router
         try {
             let newUser = await users.editUserInfo(req.params.userId, displayName, username, email, photo);
             let removeFromCache = await client.del(`goals-for-user-${req.params.userId}`)
+            let removeFriendFromCache = await client.del(`friend-${req.params.userId}`)
             return res.status(200).json(newUser)
         }
         catch (e) {
@@ -294,7 +296,7 @@ router
         try{
             let deleted = await goals.deleteGoal(goalId);
             let removeFromCache = await client.del(`goals-for-user-${id}`);
-
+            let removeFriendFromCache = await client.del(`friend-${id}`)
             return res.status(200).json(deleted)
         }catch(e){
             return res.status(500).json({error: e})

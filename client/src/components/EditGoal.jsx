@@ -91,6 +91,10 @@ function EditGoal(props){
             setError(`Title length must be at least 3`);
             waiting = true;
         }
+        if (title.length > 50) {
+            setError(`Title length cannot exceed 50 characters`);
+            waiting = true;
+        }
         if (!/[A-Za-z]/.test(title)) {
             setError(`Title must contain at least one letter`);
             waiting = true;
@@ -118,6 +122,10 @@ function EditGoal(props){
             setError(`Description length must be at least 5`);
             waiting = true;
         }
+        if (description.length > 200) {
+            setError(`Description length cannot exceed 200 characters`);
+            waiting = true;
+        }
         if (!/[A-Za-z]/.test(description)) {
             setError(`Description must contain at least one letter`);
             waiting = true;
@@ -128,6 +136,10 @@ function EditGoal(props){
         let temp = (limit * 1000)%10;
         if(temp != 0){
             setError("Limit must be a valid dollar amount")
+            waiting = true;
+        }
+        if(limit > 1000000){
+            setError("Limit cannot exceed $1000000");
             waiting = true;
         }
         let goalDate = document.getElementById('goalDate').value.trim();

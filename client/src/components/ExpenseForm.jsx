@@ -19,46 +19,56 @@ function ExpenseForm(props) {
 		let date = document.getElementById('date').value;
 
 		// Error checking for form values.
-		try {
-			// Check that form values are not empty.
-			if (description.trim() == '') {
-				throw 'Description is required.';
-			}
-			if (amount.trim() == '') {
-				throw 'Amount is required.';
-			}
-			if (date.trim() == '') {
-				throw 'Date is required.';
-			}
+		let waiting = false;
+		// Check that form values are not empty.
+		if (description.trim() == '') {
+			setError('Description is required.')
+			waiting = true;
+		}
+		if (amount.trim() == '') {
+			setError('Amount is required.')
+			waiting = true;
+		}
+		if (date.trim() == '') {
+			setError('Date is required.')
+			waiting = true;
+		}
+		// Description can only be 200 characters.
+		if (description.length > 200) {
+			setError(`Description cannot exceed 200 characters.`)
+			waiting = true;
+		}
 
-			// Description can only be 500 characters.
-			if (description.length > 500) {
-				throw `Description cannot exceed 500 characters.`;
-			}
+		// Check that the amount field only contains numbers and decimals.
+		if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
+			setError(`Amount field can only contain numbers and decimals.`)
+			waiting = true;
+		}
 
-			// Check that the amount field only contains numbers and decimals.
-			if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
-				throw `Amount field can only contain numbers and decimals.`;
-			}
+		// Check that amount is positive, non-zero number.
+		if (parseFloat(amount) < 0) {
+			setError(`Cannot have a negative amount.`);
+			waiting = true;
+		}
+		if (parseFloat(amount) === 0) {
+			setError('Amount must be non-zero.');
+			waiting = true;
+		}
+		if(parseFloat(amount) > 1000000){
+			setError('Amount cannot exceed $1000000')
+			waiting = true;
+		}
 
-			// Check that amount is positive, non-zero number.
-			if (parseFloat(amount) < 0) {
-				throw `Cannot have a negative amount.`;
+		// If the amount contains a decimal, check for two decimal places.
+		if (amount.includes('.')) {
+			let amountComponents = amount.split('.');
+			if (amountComponents[1].length !== 2) {
+				setError(`Must have two numbers trailing a decimal.`);
+				waiting = true;
 			}
-			if (parseFloat(amount) === 0) {
-				throw 'Amount must be non-zero.';
-			}
-
-			// If the amount contains a decimal, check for two decimal places.
-			if (amount.includes('.')) {
-				let amountComponents = amount.split('.');
-				if (amountComponents[1].length !== 2) {
-					throw `Must have two numbers trailing a decimal.`;
-				}
-			}
-		} catch (e) {
-			console.log(e);
-			setError(e);
+		}
+		if(waiting){
+			return
 		}
 
 		// If there are no errors, perform the request.
