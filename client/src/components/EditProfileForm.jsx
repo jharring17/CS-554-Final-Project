@@ -45,15 +45,21 @@ function CategoryForm({closeForm}) {
         return name;
     }
 
-    function checkEmail(email) {
-        email = stringChecker(email);
-        let isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        if (!isValid) {
-          throw "Invalid email address";
-        }
-        return email;
-    };
-
+    function checkEmail(emailVal) {
+        let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (!emailVal) throw `Error: You must supply an email.`;
+        if (typeof emailVal !== 'string')
+            throw `Error: email should be a string.`;
+        emailVal = emailVal.trim();
+        if (emailVal.length === 0)
+            throw `Error: email cannot be an empty string or string with just spaces`;
+        if (!emailVal.includes('@'))
+            throw `Error: email is not a valid email.`;
+        if (!emailVal.match(mailformat))
+            throw `Error: email is not a valid email.`;
+        return emailVal;
+    }
+    
     useEffect( () => {
         setUser(null)
         async function getUserInfo(){

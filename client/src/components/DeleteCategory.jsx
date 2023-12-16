@@ -54,12 +54,10 @@ function DeleteCategory() {
         try {
           const fire_id = doGetUID();
           console.log(category)
-        //   console.log("fireid", fire_id)
             let deleted = axios.post(`http://localhost:3000/user/${fire_id}/removeCategory`, 
                             {category: category})
         } 
         catch (error) {
-        //   console.log(error);
           alert(error); //shouldn't reach this bc dropdown
           return;
         }
