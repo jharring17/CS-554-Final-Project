@@ -17,9 +17,9 @@ function GoalCard(props) {
 	const [showExpenseForm, setShowExpenseForm] = useState(false);
 	const [showEditExpenseForm, setShowEditExpenseForm] = useState(false);
 	const [deletedExpense, setDeletedExpense] = useState(false);
-	const [showDeleteGoalForm, setShowDeleteGoalForm] =useState(false);
-	const [deleted, setDeleted] = useState(null)
-	const [currentExpenseForm, setCurrentExpenseForm] = useState("")
+	const [showDeleteGoalForm, setShowDeleteGoalForm] = useState(false);
+	const [deleted, setDeleted] = useState(null);
+	const [currentExpenseForm, setCurrentExpenseForm] = useState('');
 
 	const deleteExpense = async (expenseId, goalId) => {
 		try {
@@ -56,19 +56,19 @@ function GoalCard(props) {
 		setCurrentExpenseForm(false)
     	setShowEditExpenseForm(false);
 	}
-	async function deleteGoal(goalId){
-        let id = doGetUID();
-        let data = await axios.delete(`http://localhost:3000/userProfile/${id}/${goalId}`)
+	async function deleteGoal(goalId) {
+		let id = doGetUID();
+		let data = await axios.delete(`http://localhost:3000/userProfile/${id}/${goalId}`);
 		handleClose();
-		setShowDeleteGoalForm(false)
-    }
-  
+		setShowDeleteGoalForm(false);
+	}
+
 	useEffect(() => {
 		setShowExpenses(false);
 		setDeletedExpense(false);
 		async function getGoalInfo() {
 			let id = doGetUID();
-			try{
+			try {
 				let data = await axios.get(`http://localhost:3000/userProfile/${id}/${props.id}`);
 				setGoal(data.data);
 				//we need to check if the curr date is past the goal date
@@ -105,9 +105,9 @@ function GoalCard(props) {
 				if (data.data.expenses.length != 0) {
 					setShowExpenses(true);
 				}
-				setDeleted(false)
-			}catch(e){
-				setDeleted(true)
+				setDeleted(false);
+			} catch (e) {
+				setDeleted(true);
 			}
 		}
 		getGoalInfo();
@@ -116,7 +116,7 @@ function GoalCard(props) {
 	if (goal === null || deleted === null) {
 		return <>Loading...</>;
 	} else if (goal === 'expired' || deleted === true) {
-		return <></>
+		return <></>;
 	} else {
 		return (
 			<>
@@ -218,15 +218,15 @@ function GoalCard(props) {
 								goalId={goal._id}
 							/>
 						)}
-						<button onClick={() => openDeleteGoal()} >Delete Goal</button>
-						{showDeleteGoalForm && 
+						<button onClick={() => openDeleteGoal()}>Delete Goal</button>
+						{showDeleteGoalForm && (
 							// <DeleteGoal isOpen={openDeleteGoal} close={handleClose} goalId={goal._id} />
 							<div>
 								<p>Are you sure you want to delete?</p>
-								<button onClick={()=> deleteGoal(goal._id)}>Yes</button>
-								<button onClick={()=>handleClose()}>No</button>
+								<button onClick={() => deleteGoal(goal._id)}>Yes</button>
+								<button onClick={() => handleClose()}>No</button>
 							</div>
-						}
+						)}
 						<br />
 						<br />
 					</Card>
