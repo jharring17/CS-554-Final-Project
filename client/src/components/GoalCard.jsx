@@ -19,6 +19,7 @@ function GoalCard(props) {
 	const [deletedExpense, setDeletedExpense] = useState(false);
 	const [showDeleteGoalForm, setShowDeleteGoalForm] =useState(false);
 	const [deleted, setDeleted] = useState(null)
+	const [currentExpenseForm, setCurrentExpenseForm] = useState("")
 
 	const deleteExpense = async (expenseId, goalId) => {
 		try {
@@ -170,12 +171,12 @@ function GoalCard(props) {
 												></button>
 												<button
 													onClick={() => {
-														openEditExpense();
+														setCurrentExpenseForm(expense);
 													}}
 												>
 													Edit
 												</button>
-												{showEditExpenseForm && (
+												{currentExpenseForm == expense && (
 													<ExpenseEditForm
 														isOpen={openEditExpense}
 														close={handleClose}
