@@ -267,6 +267,7 @@ router.route("/:userId/:goalId/:expenseId").put(async (req, res) => {
 			amount,
 			date
 		);
+		console.log(expense)
 		return res.status(200).json({ expense: expense });
 	} catch (e) {
 		return res.status(404).json({ error: e });
