@@ -53,9 +53,11 @@ const FeedItem = (props) => {
                 <p style={{marginLeft:"auto", marginRight: 0}}>{itemData.goalDate}</p>
             </div>
             <div style={{marginTop: 50, marginBottom: 25, borderBottom: "2px solid black", borderTop: "2px solid black", paddingBottom: "5px", paddingTop: "15px"}}>
-                <p style={{margin: 0}}>I have met my <span style={{fontWeight: "bold"}}>{itemData.category}</span> goal: <span style={{fontWeight: "bold"}}>{itemData.title}</span></p>
-                <p style={{fontSize:"medium"}}>{itemData.description}</p>
-                <p>I only used {((totalExpenses/itemData.limit) * 100).toFixed(0)}% of my budget!</p>
+                <p style={{margin: 0}}>I have met my goal...</p>
+                <p style={{fontSize:"large"}}>{itemData.title}</p>
+                <p style={{fontSize:"medium"}}>Category: {itemData.category}</p>
+                <p style={{fontSize:"medium"}}>Description: {itemData.description}</p>
+                <p>I used {((totalExpenses/itemData.limit) * 100).toFixed(0)}% of my budget!</p>
             </div>
             <div className="footer-feed-card" style={{display:"flex", gap:"5px", alignItems: "center", position: "absolute", bottom: 10, left: 10, height: "25px"}}>
                 <button style={{backgroundColor: "rgba(0,0,0,0)", border: "none", display:"inline-flex", fontSize:"25px"}} onClick={() => toggleLike()}>{(itemData.likes.includes(currentUser.uid)) ? <FavoriteIcon fontSize="inherit"/> : <FavoriteBorderIcon fontSize="inherit"/>}</button>
