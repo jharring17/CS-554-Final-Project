@@ -55,7 +55,7 @@ function DeleteCategory() {
           const fire_id = doGetUID();
           console.log(category)
         //   console.log("fireid", fire_id)
-            let deleted = axios.delete(`http://localhost:3000/user/${fire_id}/removeCategory`, 
+            let deleted = axios.post(`http://localhost:3000/user/${fire_id}/removeCategory`, 
                             {category: category})
         } 
         catch (error) {
@@ -67,7 +67,8 @@ function DeleteCategory() {
 
   return (
     <div >
-        <form onSubmit={handleSubmit}>
+        {categories.length > 3 ? 
+            <form onSubmit={handleSubmit}>
             <label>
                 Pick a custom category: <select id="category" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}>
                     {categories.map((category) => {
@@ -83,6 +84,9 @@ function DeleteCategory() {
             </label>
             <button className="button" type="submit">Delete category</button>
         </form>
+        :
+        <p>You have no custom categories to delete</p>
+        }
     </div>
   );
 }
