@@ -270,7 +270,13 @@ const likePost = async (userId, goalId) => {
         }
     }
     if(liked){
-        goal.likes.splice(index);
+        let temp = [];
+        for(let i = 0; i < goal.likes.length; i++){
+            if(i != index){
+                temp.push(goal.likes[i])
+            }
+        }
+        goal.likes = temp;
     }else{
         goal.likes.push(userId);
     }
