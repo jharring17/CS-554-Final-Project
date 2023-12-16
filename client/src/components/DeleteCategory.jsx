@@ -3,7 +3,7 @@ import '../App.css';
 import { doGetUID } from "../firebase/FirebaseFunctions";
 import axios from "axios";
 
-function DeleteCategory() {
+function DeleteCategory(props) {
     const [categories, setCategories] = useState([]);
 
     function stringChecker(string) {
@@ -61,6 +61,7 @@ function DeleteCategory() {
           alert(error); //shouldn't reach this bc dropdown
           return;
         }
+        props.closeForm();
     };
 
   return (
