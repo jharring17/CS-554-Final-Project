@@ -45,7 +45,6 @@ function DeleteCategory() {
         
         try {
             category = checkCategory(category);
-            console.log(category)
         }
         catch (e) {
             alert(e); //shouldn't reach this bc dropdown
@@ -70,14 +69,15 @@ function DeleteCategory() {
     <div >
         <form onSubmit={handleSubmit}>
             <label>
-                Pick one: <select id="category" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}>
-                    <option>...</option>
+                Pick a custom category: <select id="category" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}>
                     {categories.map((category) => {
-                        return (
-                            <option value={category} key={category}>
-                            {category}
-                        </option>
-                        )
+                        if (category != 'food' && category != 'entertainment' && category != 'utilities') {
+                            return ( 
+                                <option value={category} key={category}>
+                                {category}    
+                                </option>
+                            )
+                        }
                     })}
                 </select>
             </label>
