@@ -172,7 +172,6 @@ function AddGoal({closeForm}){
                 <br/>
                 <label>
                     Category: <select id="category" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}>
-                        <option>...</option>
                         {categories.map((category) => {
                             return (
                                 <option value={category} key={category}>

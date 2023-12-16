@@ -58,7 +58,6 @@ function CategoryForm({closeForm}) {
 
         let newLink = "";
         if(photo != ''){
-            console.log("here")
             let photoUploading = new FormData();
             //append the file custom key from cloudinary (gp0pimba)
             photoUploading.append("file", photo);
