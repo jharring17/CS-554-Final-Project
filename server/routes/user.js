@@ -89,6 +89,7 @@ router.route("/:userId/addCategory").post(async (req, res) => {
 
 router.route("/:userId/removeCategory").delete(async (req, res) => {
 	//validate the ids
+	console.log(req.body)
 	let fire_id = req.params.userId;
 	let category = req.body.category;
 	console.log(fire_id)
@@ -275,6 +276,7 @@ router.route("/:userId/:goalId/:expenseId").put(async (req, res) => {
 // DELETE: delete an expense.
 router.route("/:userId/:goalId/:expenseId").delete(async (req, res) => {
 	// Gather the input parameters.
+	console.log("whore")
 	let userId = req.params.userId;
 	let goalId = req.params.goalId;
 	let expenseId = req.params.expenseId;

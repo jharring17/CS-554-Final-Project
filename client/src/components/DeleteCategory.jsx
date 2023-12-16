@@ -6,6 +6,27 @@ import axios from "axios";
 function DeleteCategory() {
     const [categories, setCategories] = useState([]);
 
+    function stringChecker(string) {
+        if(typeof string != 'string') throw `Input must be a string`;
+        string = string.trim();
+        if(string.length === 0) throw `String cannot be empty`;
+        return string;
+    }
+
+    function checkCategory(category) {
+        //checks if a category is a valid input (does not check if user already has that category)
+        category = stringChecker(category);
+        category = category.toLowerCase();
+        if (category.length > 30) {
+          throw 'category name too long: checkCategory';
+        }
+        if (!/^[a-zA-Z0-9_.-]*[a-zA-Z][a-zA-Z0-9_. -]*$/.test(category)) { 
+          //rn this takes multi word categories with numbers and _.-
+          throw 'invalid category';
+        }
+        return category;
+    }
+
     useEffect( ()=>{
         async function getUserInfo(){
             let id = doGetUID();
@@ -17,9 +38,37 @@ function DeleteCategory() {
         }, []
     )
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        let category = document.getElementById('category').value;
+        
+        try {
+            category = checkCategory(category);
+            console.log(category)
+        }
+        catch (e) {
+            alert(e); //shouldn't reach this bc dropdown
+            return;
+        }
+
+        try {
+          const fire_id = doGetUID();
+          console.log(category)
+        //   console.log("fireid", fire_id)
+            let deleted = axios.delete(`http://localhost:3000/user/${fire_id}/removeCategory`, 
+                            {category: category})
+        } 
+        catch (error) {
+        //   console.log(error);
+          alert(error); //shouldn't reach this bc dropdown
+          return;
+        }
+    };
+
   return (
     <div >
-        <form>
+        <form onSubmit={handleSubmit}>
             <label>
                 Pick one: <select id="category" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}>
                     <option>...</option>
