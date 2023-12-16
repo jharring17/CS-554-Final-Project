@@ -45,13 +45,24 @@ export function checkEmail(email) {
 
 //can be used for displayName and userName
 export function checkName(name, stringName) {
+    console.log(stringName)
     name = stringChecker(name);
+
     if (stringName.toLowerCase().trim() === "username") {
       name = name.toLowerCase();
+      if (!(/^[a-zA-Z0-9]+$/.test(name)) || name.length < 8 || name.length > 20) {
+        throw `username is invalid :: checkName`;
+      }
     }
-    if (!(/^[a-zA-Z0-9]+$/.test(name)) || name.length < 8 || name.length > 20) {
-      throw `${stringName} is invalid :: checkName`;
+    else { //display name
+      if (!(/^[a-zA-Z]+(?: [a-zA-Z]+)?$/.test(name)) || name.length < 8 || name.length > 20) {
+        throw `displayname is invalid :: checkName`;
+      }
     }
+    // else {
+    //   throw `invalid input :: checkName`;
+    // }
+    
     return name;
 }
 
