@@ -7,6 +7,7 @@ import { doGetUID } from '../firebase/FirebaseFunctions';
 
 function ExpenseEditForm(props) {
 	const [expense, setExpense] = useState('');
+	const [fillDate, setFillDate] = useState('');
 	const [error, setError] = useState('');
 
 	let description, amount, date;
@@ -22,6 +23,18 @@ function ExpenseEditForm(props) {
 				);
 				console.log('This is the fetched expense: ', expenseData);
 				setExpense(expenseData.data.expense);
+
+				let expenseDate = expenseData.data.expense.date;
+				console.log(expenseDate);
+				let expenseDateComponents = expenseDate.split('/');
+				let fillDateValue =
+					expenseDateComponents[2] +
+					'-' +
+					expenseDateComponents[0] +
+					'-' +
+					expenseDateComponents[1];
+				console.log(fillDateValue);
+				setFillDate(fillDateValue);
 			} catch (e) {
 				`Error: cannot get expense.`;
 			}
@@ -42,79 +55,78 @@ function ExpenseEditForm(props) {
 		// Error checking for form values.
 		let waiting = false;
 
-			// Check that form values are not empty.
-			if (description.trim() == '') {
-				setError('Description is required.');
-				waiting = true;
-			}
-			if (amount.trim() == '') {
-				setError('Amount is required.');
-				waiting = true;
-			}
-			if (date.trim() == '') {
-				setError('Date is required.');
-				waiting = true;
-			}
-			// Description can only be 200 characters.
-			if (description.length > 200) {
-				setError(`Description cannot exceed 200 characters.`);
-				waiting = true;
-			}
+		// Check that form values are not empty.
+		if (description.trim() == '') {
+			setError('Description is required.');
+			waiting = true;
+		}
+		if (amount.trim() == '') {
+			setError('Amount is required.');
+			waiting = true;
+		}
+		if (date.trim() == '') {
+			setError('Date is required.');
+			waiting = true;
+		}
+		// Description can only be 200 characters.
+		if (description.length > 200) {
+			setError(`Description cannot exceed 200 characters.`);
+			waiting = true;
+		}
 
-			// Check that the amount field only contains numbers and decimals.
-			if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
-				setError(`Amount field can only contain numbers and decimals.`);
-				waiting = true;
-			}
+		// Check that the amount field only contains numbers and decimals.
+		if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
+			setError(`Amount field can only contain numbers and decimals.`);
+			waiting = true;
+		}
 
-			// Check that amount is positive, non-zero number.
-			if (parseFloat(amount) < 0) {
-				setError(`Cannot have a negative amount.`);
+		// Check that amount is positive, non-zero number.
+		if (parseFloat(amount) < 0) {
+			setError(`Cannot have a negative amount.`);
+			waiting = true;
+		}
+		if (parseFloat(amount) === 0) {
+			setError('Amount must be non-zero.');
+			waiting = true;
+		}
+		if (parseFloat(amount) > 1000000) {
+			setError('Amount must be non-zero.');
+			waiting = true;
+		}
+		// If the amount contains a decimal, check for two decimal places.
+		if (amount.includes('.')) {
+			let amountComponents = amount.split('.');
+			if (amountComponents[1].length !== 2) {
+				setError(`Must have two numbers trailing a decimal.`);
 				waiting = true;
 			}
-			if (parseFloat(amount) === 0) {
-				setError('Amount must be non-zero.');
-				waiting = true;
-			}
-			if (parseFloat(amount) > 1000000) {
-				setError('Amount must be non-zero.');
-				waiting = true;
-			}
-			// If the amount contains a decimal, check for two decimal places.
-			if (amount.includes('.')) {
-				let amountComponents = amount.split('.');
-				if (amountComponents[1].length !== 2) {
-					setError(`Must have two numbers trailing a decimal.`);
-					waiting = true;
+		}
+		if (waiting) {
+			return;
+		}
+		date = date.split('-');
+		date = date[1] + '/' + date[2] + '/' + date[0];
+
+		//TODO: Error checking so you cannot make a day after the goalCompleted date.
+
+		try {
+			// After all data is validated, try to update the expense.
+			console.log('Getting Expense UserId: ', uid);
+			console.log('Getting Goal Props: ', props.goal);
+			console.log('Getting Expense Props: ', expense._id);
+			let patchedExpense = await axios.put(
+				`http://localhost:3000/user/${uid}/${props.goal}/${expense._id}`,
+				{
+					description: description,
+					amount: parseFloat(amount),
+					date: date,
 				}
-			}
-			if(waiting){
-				return;
-			}
-			// Update the date.
-			date = date.split('-');
-			date = date[1] + '/' + date[2] + '/' + date[0];
-
-            //TODO: Error checking so you cannot make a day after the goalCompleted date.
-
-			try {
-				// After all data is validated, try to update the expense.
-				console.log('Getting Expense UserId: ', uid);
-				console.log('Getting Goal Props: ', props.goal);
-				console.log('Getting Expense Props: ', expense._id);
-				let patchedExpense = await axios.put(
-					`http://localhost:3000/user/${uid}/${props.goal}/${expense._id}`,
-					{
-						description: description,
-						amount: parseFloat(amount),
-						date: date,
-					}
-				);
-				console.log('Patched Expense: ', patchedExpense);
-			} catch (e) {
-				console.log(e);
-			}
-			props.close();
+			);
+			console.log('Patched Expense: ', patchedExpense);
+		} catch (e) {
+			console.log(e);
+		}
+		props.close();
 	}
 
 	if (expense === null) {
@@ -143,7 +155,7 @@ function ExpenseEditForm(props) {
 					<br />
 					<label>
 						Date
-						<input type="date" id="date" defaultValue={expense.date} />
+						<input type="date" id="date" defaultValue={fillDate} />
 					</label>
 					<br />
 					<br />
