@@ -25,7 +25,7 @@ function SignUp() {
       }
       newDisplayName = newDisplayName.trim();
       if(newDisplayName.length === 0) throw `Display Name cannot be empty :: SignUp.jsx`;
-      if (!(/^[a-zA-Z0-9]+$/.test(newDisplayName)) || newDisplayName.length < 8 || newDisplayName.length > 20) {
+      if (!(/^[a-zA-Z]+(?: [a-zA-Z]+)?$/.test(newDisplayName)) || newDisplayName.length < 8 || newDisplayName.length > 20) {
         throw `Display Name ${newDisplayName} is invalid :: SignUp.jsx`;
       }
       //username
@@ -108,8 +108,7 @@ function SignUp() {
     catch (error)
     {
       console.log(error);
-      setErrorState(error);
-      // alert(error);
+      setErrorState(error.toString());
       return false;
     }
     let fire_id;
@@ -121,7 +120,6 @@ function SignUp() {
     }
     catch (error) {
       setErrorState(error.toString());
-      alert(error);
       return false;
     }
     try {
@@ -133,7 +131,6 @@ function SignUp() {
     catch (error) {
       console.log(error);
       // setErrorState(error);
-      alert(error);
       return false;
     }
     try {
@@ -147,8 +144,7 @@ function SignUp() {
     } 
     catch (error) {
       console.log(error);
-      setErrorState(error);
-      alert(error);
+      setErrorState(error.toString());
       setSignedUp(false);
     }
   };
@@ -176,7 +172,7 @@ function SignUp() {
             />
           </label>
           <p className="input-requirements">
-            Min 8 characters, max 20 characters. Only letters and numbers.
+            Min 8 characters, max 20 characters. Only letters. May include one space.
           </p>
         </div>
         <div className='form-group'>

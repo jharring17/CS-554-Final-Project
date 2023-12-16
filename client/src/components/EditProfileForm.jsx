@@ -24,13 +24,24 @@ function CategoryForm({closeForm}) {
     }
 
     function checkName(name, stringName) {
+        console.log(stringName)
         name = stringChecker(name);
+    
         if (stringName.toLowerCase().trim() === "username") {
           name = name.toLowerCase();
+          if (!(/^[a-zA-Z0-9]+$/.test(name)) || name.length < 8 || name.length > 20) {
+            throw `username is invalid :: checkName`;
+          }
         }
-        if (!(/^[a-zA-Z0-9]+$/.test(name)) || name.length < 8 || name.length > 20) {
-          throw `${stringName} is invalid :: checkName`;
+        else { //display name
+          if (!(/^[a-zA-Z]+(?: [a-zA-Z]+)?$/.test(name)) || name.length < 8 || name.length > 20) {
+            throw `displayname is invalid :: checkName`;
+          }
         }
+        // else {
+        //   throw `invalid input :: checkName`;
+        // }
+        
         return name;
     }
 
@@ -134,7 +145,7 @@ function CategoryForm({closeForm}) {
                         />
                     </label>
                     <p className="input-requirements">
-                        Min 8 characters, max 20 characters. Only letters and numbers.
+                        Min 8 characters, max 20 characters. Only letters. May include one space.
                     </p>
                     </div>
         
