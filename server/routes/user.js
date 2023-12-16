@@ -87,13 +87,14 @@ router.route("/:userId/addCategory").post(async (req, res) => {
 	}
 });
 
-router.route("/:userId/removeCategory").delete(async (req, res) => {
+router.route("/:userId/removeCategory").post(async (req, res) => {
 	//validate the ids
 	console.log(req.body)
+	console.log('params', req.params)
 	let fire_id = req.params.userId;
 	let category = req.body.category;
-	console.log(fire_id)
-	console.log(category);
+	// console.log(fire_id)
+	// console.log(category);
 	try {
 		fire_id = validate.checkFireId(fire_id);
 		category = validate.checkCategory(category);
