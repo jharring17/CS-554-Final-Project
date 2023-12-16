@@ -53,6 +53,7 @@ function GoalCard(props) {
 		setShowEdit(false);
 		setShowExpenseForm(false);
 		setShowDeleteGoalForm(false);
+		setCurrentExpenseForm(false)
     	setShowEditExpenseForm(false);
 	}
 	async function deleteGoal(goalId){
@@ -110,7 +111,7 @@ function GoalCard(props) {
 			}
 		}
 		getGoalInfo();
-	}, [showEdit, showExpenseForm, deletedExpense, showDeleteGoalForm, showEditExpenseForm]);
+	}, [showEdit, showExpenseForm, deletedExpense, showDeleteGoalForm, showEditExpenseForm, currentExpenseForm]);
 
 	if (goal === null || deleted === null) {
 		return <>Loading...</>;
