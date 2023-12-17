@@ -48,7 +48,7 @@ const FeedItem = (props) => {
     return (
         <div className="card" style={{position: "relative", overflow: "hidden"}}>
             <div className="user-feed-card" style={{display:"flex", gap:"15px", alignItems: "center", position: "absolute", top: 0, left: 0, boxSizing:"border-box", width: "100%", paddingLeft: "20px", paddingRight: "20px", paddingTop: "5px"}}>
-                <img src={user.profilePic} style={{width:"45px", height:"45px", borderRadius: "100%" }}/>
+                <img alt={"profile picture"} src={user.profilePic} style={{width:"45px", height:"45px", borderRadius: "100%" }}/>
                 <a>{user.displayName}</a>
                 <p style={{marginLeft:"auto", marginRight: 0}}>{itemData.goalDate}</p>
             </div>

@@ -96,8 +96,9 @@ function ExpenseEditForm(props) {
 		// If the amount contains a decimal, check for two decimal places.
 		if (amount.includes('.')) {
 			let amountComponents = amount.split('.');
-			if (amountComponents[1].length !== 2) {
-				setError(`Must have two numbers trailing a decimal.`);
+			if (amountComponents[1].length != 2 && amountComponents[1].length != 1) {
+				console.log("nsklandklas")
+				setError(`Must have one or two numbers trailing a decimal.`);
 				waiting = true;
 			}
 		}
