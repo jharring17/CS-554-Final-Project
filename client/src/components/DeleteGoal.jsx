@@ -22,3 +22,4 @@ function DeleteGoal(props){
 }
 
 export default DeleteGoal;
+

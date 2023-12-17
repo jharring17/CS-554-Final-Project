@@ -56,7 +56,7 @@ function Account() {
         <CardMedia
               component='img'
               image={userData.profilePic}
-              title='art image'
+              title='profile picture'
               style={{ maxWidth: '200px', height: '200px', marginLeft: 'auto', marginRight: 'auto' }}
           />
 

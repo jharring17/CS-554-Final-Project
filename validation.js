@@ -43,7 +43,7 @@ export function checkAge(age) {
 //   return email;
 // };
 
-function checkEmail(emailVal) {
+export function checkEmail(emailVal) {
 	let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	if (!emailVal) throw `Error: You must supply an email.`;
 	if (typeof emailVal !== 'string')
