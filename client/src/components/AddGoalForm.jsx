@@ -173,35 +173,56 @@ function AddGoal({closeForm}){
         }
         <div>
             <h1>Make a New Goal!</h1>
-            <form id="addGoal" onSubmit={submitGoal}>
-                <label>
-                    Title: <input id="title" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
-                </label>
-                <br/>
-                <label>
-                    Description: <input id="description" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
-                </label>
-                <br/>
-                <label>
-                    Category: <select id="category" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}>
-                        {categories.map((category) => {
-                            return (
-                                <option value={category} key={category}>
-                                {category}
-                            </option>
-                            )
-                        })}
-                    </select>
-                </label>
-                <br/>
-                <label>
-                    Budget for this Goal: $<input id="limit" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
-                </label>
-                <br/>
-                <label>
-                    Goal Date (mm/dd/yyyy): <input id="date" type="date" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
-                </label>
-                <br/>
+            <form id="addGoal" className='form' onSubmit={submitGoal}>
+                <div className='form-group'>
+                    <label>
+                        Title: 
+                        <br/>
+                        <input id="title" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
+                    </label>
+                    <p className="input-requirements">Min 3 characters, max 50 characters. Cannot include only special characters.</p>
+                </div>
+                <div className="form">
+                    <div className="form-group"></div>
+                    <label>
+                        Description: 
+                        <br/>
+                        <input id="description" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
+                    </label>
+                    <p className="input-requirements">Min 5 characters, max 200 characters. Cannot include only special characters.</p>
+                </div>
+                <div className='form-group'>
+                    <label>
+                        Category: 
+                        <br/>
+                        <select id="category" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}>
+                            {categories.map((category) => {
+                                return (
+                                    <option value={category} key={category}>
+                                    {category}
+                                </option>
+                                )
+                            })}
+                        </select>
+                    </label>
+                </div>
+                <div className="form-group">
+                    <label>
+                        Budget for this Goal:
+                        <br/>
+                        $
+                        <input id="limit" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
+                    </label>
+                </div>
+                <div className="form-group">
+                    <label>
+                        Goal Date: 
+                        <br/>
+                        <input id="date" type="date" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
+                    </label>
+                    <p className="input-requirements">Must be in the format MM/DD/YYYY</p>
+                </div>
+
                 <button className="button" type="submit">Create Goal</button>
             </form>
         </div>
