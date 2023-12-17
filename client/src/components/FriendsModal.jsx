@@ -59,8 +59,9 @@ function FriendsModal() {
             toast(`Request Sent To ${data.displayName}`)
             setRefresh(!refresh)
         } catch (e) {
-            if(e.response.status == 404) toast.error("User Not Found")
-            if(e.response.status == 400) toast.error("Invalid Entry")
+            if(e.response.data == 'User already in friends list: sendFriendRequest') toast.error("User is already your friend!")
+            else if(e.response.status == 404) toast.error("User Not Found")
+            else if(e.response.status == 400) toast.error("Bad Username")
         }
     }
 
