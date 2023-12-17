@@ -6,6 +6,7 @@ function EditGoal(props){
     const [goal, setGoal] = useState(null);
     const [categories, setCategories] = useState(null);
     const [error, setError] = useState(null);
+    const [fillDate, setFillDate] = useState('')
 
     let title, description, category, limit, goalDate;
 
@@ -17,6 +18,12 @@ function EditGoal(props){
             let id = doGetUID();
             let data = await axios.get(`http://localhost:3000/userProfile/${id}/${props.goal}`)
             setGoal(data.data)
+
+            //change the date to fill the format of the form
+            let currDate = data.data.goalDate;
+            currDate = currDate.split('/')
+            currDate = currDate[2] + '-' + currDate[0] + '-' + currDate[1];
+            setFillDate(currDate)
 
             let userData = await axios.get(`http://localhost:3000/user/${id}/getUserInfo`)
             setCategories(userData.data.categories)
@@ -143,6 +150,9 @@ function EditGoal(props){
             waiting = true;
         }
         let goalDate = document.getElementById('goalDate').value.trim();
+        //change the format of the date to check it
+        goalDate = goalDate.split('-')
+        goalDate = goalDate[1] + '/' + goalDate[2] + '/' + goalDate[0];
         if(goalDate.length === 0){
             setError("Date Cannot Be An Empty String")
             waiting = true;
@@ -176,11 +186,12 @@ function EditGoal(props){
 
     }
 
-    if(goal === null || categories === null){
+    if(goal === null || categories === null || fillDate === ''){
         return (
             <div>Loading...</div>
         )
     }else{
+        console.log(fillDate)
         return (
             <div>
                 {error && 
@@ -240,11 +251,11 @@ function EditGoal(props){
                     <label>
                     Date:
                     <br />
-                    <input id="goalDate" 
-                    ref={(node) => {
-                        goalDate = node;
-                    }}
-                    defaultValue={goal.goalDate}
+                    <input id="goalDate" type="date" defaultValue={fillDate}
+                    // ref={(node) => {
+                    //     goalDate = node;
+                    // }}
+                    // defaultValue={goal.goalDate}
                     />
                     </label>
                     <br/>
