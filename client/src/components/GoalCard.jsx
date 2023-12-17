@@ -139,6 +139,11 @@ function GoalCard(props) {
 							marginRight: 'auto',
 						}}
 					>
+						<div className='goal-buttons'>
+							<button className='button' onClick={() => {openEdit();}}>Edit Goal</button>
+							<button className='button' onClick={() => openDeleteGoal()}>Delete Goal</button>
+						</div>
+
 						<h2>{goal.title}</h2>
 						<h3>Description: {goal.description}</h3>
 						{/* <br /> */}
@@ -146,7 +151,18 @@ function GoalCard(props) {
 						<h4>
 							limit ${goal.limit} by {goal.goalDate}
 						</h4>
-						
+						{showEdit && (
+							<EditGoal isOpen={openEdit} close={handleClose} goal={goal._id} />
+							)}					
+						{showDeleteGoalForm && (
+							// <DeleteGoal isOpen={openDeleteGoal} close={handleClose} goalId={goal._id} />
+							<div>
+								<p>Are you sure you want to delete?</p>
+								<button className='button' onClick={() => deleteGoal(goal._id)}>Yes</button>
+								<button className='button' onClick={() => handleClose()}>No</button>
+							</div>
+						)}
+						<br/>
 						<div class='expenses-list'>
 							<h4>Expenses:</h4>
 							{!showExpenses && (
@@ -160,23 +176,22 @@ function GoalCard(props) {
 										// console.log('Expense: ', expense);
 										return (
 											<div key={expense}>
-												<div className="row">
+												<div>
 													<Expense
 														key={expense}
 														expense={expense}
 														goal={goal._id}
 													/>
-													{/* <br /> */}
 													<button
 														onClick={() => {
 															deleteExpense(expense, goal._id);
 														}}
 														style={{
 															backgroundImage:
-																'url("https://cdn-icons-png.flaticon.com/512/535/535246.png")',
+																'url("https://freepngimg.com/thumb/trash_can/164913-trash-free-clipart-hq.png")',
 															backgroundSize: 'cover',
 															backgroundRepeat: 'no-repeat',
-															backgroundColor: 'white',
+															backgroundColor: 'transparent',
 															cursor: 'pointer',
 															border: 'none',
 															width: '20px',
@@ -188,8 +203,19 @@ function GoalCard(props) {
 														onClick={() => {
 															setCurrentExpenseForm(expense);
 														}}
+														style={{
+															backgroundImage:
+																'url("https://www.freeiconspng.com/thumbs/edit-icon-png/edit-new-icon-22.png")',
+															backgroundSize: 'cover',
+															backgroundRepeat: 'no-repeat',
+															backgroundColor: 'transparent',
+															cursor: 'pointer',
+															border: 'none',
+															width: '20px',
+															height: '20px',
+															margin: '10px',
+														}}
 													>
-														Edit
 													</button>
 													{currentExpenseForm == expense && (
 														<ExpenseEditForm
@@ -206,42 +232,21 @@ function GoalCard(props) {
 								</>
 							)}
 							<button
+							className='button'
 							onClick={() => {
 								openExpense();
 							}}
 							>
 								Add Expense
 							</button>
-						</div>
-						
-						<button
-							onClick={() => {
-								openEdit();
-							}}
-						>
-							Edit Goal
-						</button>
-						{showEdit && (
-							<EditGoal isOpen={openEdit} close={handleClose} goal={goal._id} />
-						)}
-
-						
-						{showExpenseForm && (
+							{showExpenseForm && (
 							<ExpenseForm
 								isOpen={openExpense}
 								close={handleClose}
 								goalId={goal._id}
 							/>
 						)}
-						<button onClick={() => openDeleteGoal()}>Delete Goal</button>
-						{showDeleteGoalForm && (
-							// <DeleteGoal isOpen={openDeleteGoal} close={handleClose} goalId={goal._id} />
-							<div>
-								<p>Are you sure you want to delete?</p>
-								<button onClick={() => deleteGoal(goal._id)}>Yes</button>
-								<button onClick={() => handleClose()}>No</button>
-							</div>
-						)}
+						</div>
 						<br />
 						<br />
 					</Card>
