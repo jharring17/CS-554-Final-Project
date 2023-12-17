@@ -1,6 +1,7 @@
 import {users, goals} from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import * as helper from "../../validation.js"
+import { delExpense } from './expenses.js';
 
 const addGoal = async (
     userId,
@@ -92,6 +93,11 @@ const deleteGoal = async (id) => {
     const goalCollection = await goals();
     let deleted = await goalCollection.findOneAndDelete({_id: new ObjectId(id)});
 
+    //now that we deleted a goal, we need to remove the expenses from mongo
+    let expenses = deleted.expenses;
+    for(let i = 0; i < expenses.length; i++){
+        await delExpense(expenses[i]);
+    }
     //now that we have deleted a goal, we want to remove the id from the user
     const userCollection = await users();
     let user = await userCollection.findOne({fire_id: deleted.userId});
@@ -111,6 +117,7 @@ const deleteGoal = async (id) => {
         categories: user.categories,
         goals: goalsList
     }
+
     const updatedUser = await userCollection.findOneAndUpdate({fire_id: deleted.userId}, {$set: updated}, {returnDocument: "after"});
 
     //return the goal that was deleted
