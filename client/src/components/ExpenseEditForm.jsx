@@ -60,6 +60,10 @@ function ExpenseEditForm(props) {
 			setError('Description is required.');
 			waiting = true;
 		}
+		if (!/[A-Za-z]/.test(description)) {
+            setError(`Description must contain at least one letter`);
+            waiting = true;
+        }
 		if (amount.trim() == '') {
 			setError('Amount is required.');
 			waiting = true;
