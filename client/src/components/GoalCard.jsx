@@ -118,9 +118,14 @@ function GoalCard(props) {
 	} else if (goal === 'expired' || deleted === true) {
 		return <></>;
 	} else {
-		goal.limit = parseFloat(goal.limit)
-		if(goal.limit == (goal.limit).toFixed(1)){
-			goal.limit = `${goal.limit}0`
+		goal.limit = (goal.limit).toString();
+		if((goal.limit).includes(".")){
+			goal.limit = parseFloat(goal.limit)
+			if(goal.limit == (goal.limit).toFixed(1)){
+				goal.limit = `${goal.limit}0`
+			}
+		}else{
+			goal.limit = parseFloat(goal.limit)
 		}
 		return (
 			<>
