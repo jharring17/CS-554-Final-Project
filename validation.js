@@ -100,10 +100,19 @@ export function limitChecker(limit){
     if(limit <= 0) throw `Limit must be a valid number greater than 0`;
     if (Number.isInteger(limit))
       return limit;
-    if (limit.toFixed(2) != limit.toString())
-    {
-      throw `Limit must have 0 or 2 decimal points`;
+    // if (limit.toFixed(2) != limit.toString() || limit.toFixed(1) != limit.toString())
+    if(limit.toFixed(1) === limit){
+      console.log(`${limit}0`)
+      limit = parseInt(`${limit}0`)
     }
+    if((limit * 1000)%10 != 0)
+    {
+      throw `Limit must have 0, 1, or 2 decimal points`;
+    }
+    // if(limit.toFixed(1) === limit.toString()){
+
+    //   limit = parseInt(`${limit}0`)
+    // }
     return limit;
 }
 

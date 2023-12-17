@@ -265,7 +265,6 @@ router.route("/:userId/:goalId/:expenseId").put(async (req, res) => {
 // DELETE: delete an expense.
 router.route("/:userId/:goalId/:expenseId").delete(async (req, res) => {
 	// Gather the input parameters.
-	console.log("whore")
 	let userId = req.params.userId;
 	let goalId = req.params.goalId;
 	let expenseId = req.params.expenseId;

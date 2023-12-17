@@ -118,6 +118,10 @@ function GoalCard(props) {
 	} else if (goal === 'expired' || deleted === true) {
 		return <></>;
 	} else {
+		goal.limit = parseFloat(goal.limit)
+		if(goal.limit == (goal.limit).toFixed(1)){
+			goal.limit = `${goal.limit}0`
+		}
 		return (
 			<>
 				<Grid item sm={4} md={3} lg={2.25} alignItems={'center'} key={props.id}>
@@ -137,7 +141,10 @@ function GoalCard(props) {
 						<h4>
 							I want to spend at most ${goal.limit} by {goal.goalDate}
 						</h4>
-
+						{!showExpenses && (
+							<h4>You have no expenses for this goal</h4>
+						)
+						}
 						{showExpenses && (
 							<>
 								<h4>Expenses:</h4>

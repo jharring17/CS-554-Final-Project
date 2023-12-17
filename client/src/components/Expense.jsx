@@ -18,7 +18,6 @@ function Expense(props){
         async function getExpense(id){
             let uid = doGetUID();
             let expenseData = await axios.get(`http://localhost:3000/user/${uid}/${props.goal}/${props.expense}`)
-            console.log(expenseData)
             setExpenseInfo(expenseData.data.expense)
         }
         getExpense(props.expense);
@@ -28,6 +27,10 @@ function Expense(props){
       if(!expenseInfo){
         return <>Loading...</>
       }else{
+        expenseInfo.amount = parseFloat(expenseInfo.amount)
+        if(expenseInfo.amount == (expenseInfo.amount).toFixed(1)){
+          expenseInfo.amount = `${expenseInfo.amount}0`
+        }
         return(
             <div>
               <h5>{expenseInfo.description}: spent ${expenseInfo.amount} on {expenseInfo.date}</h5>
