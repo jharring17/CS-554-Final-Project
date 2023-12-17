@@ -128,7 +128,7 @@ function GoalCard(props) {
 			goal.limit = parseFloat(goal.limit)
 		}
 		return (
-			<>
+			<div className='goal-card'>
 				<Grid item sm={4} md={3} lg={2.25} alignItems={'center'} key={props.id}>
 					<Card
 						variant="outlined"
@@ -140,71 +140,80 @@ function GoalCard(props) {
 						}}
 					>
 						<h2>{goal.title}</h2>
-						<h3>{goal.description}</h3>
-						<br />
-						<h4>Goal Category: {goal.category}</h4>
+						<h3>Description: {goal.description}</h3>
+						{/* <br /> */}
+						<h4>Category: {goal.category}</h4>
 						<h4>
-							I want to spend at most ${goal.limit} by {goal.goalDate}
+							limit ${goal.limit} by {goal.goalDate}
 						</h4>
-						{!showExpenses && (
-							<h4>You have no expenses for this goal</h4>
-						)
-						}
-						{showExpenses && (
-							<>
-								<h4>Expenses:</h4>
-								{goal.expenses.map((expense) => {
-									console.log(goal._id);
-									console.log('Expense: ', expense);
-									return (
-										<div key={expense}>
-											<div className="row">
-												<Expense
-													key={expense}
-													expense={expense}
-													goal={goal._id}
-												/>
-												<br />
-												<button
-													onClick={() => {
-														deleteExpense(expense, goal._id);
-													}}
-													style={{
-														backgroundImage:
-															'url("https://cdn-icons-png.flaticon.com/512/535/535246.png")',
-														backgroundSize: 'cover',
-														backgroundRepeat: 'no-repeat',
-														backgroundColor: 'white',
-														cursor: 'pointer',
-														border: 'none',
-														width: '20px',
-														height: '20px',
-														margin: '10px',
-													}}
-												></button>
-												<button
-													onClick={() => {
-														setCurrentExpenseForm(expense);
-													}}
-												>
-													Edit
-												</button>
-												{currentExpenseForm == expense && (
-													<ExpenseEditForm
-														isOpen={openEditExpense}
-														close={handleClose}
-														goal={goal._id}
+						
+						<div class='expenses-list'>
+							<h4>Expenses:</h4>
+							{!showExpenses && (
+								<h4>You do not have any expenses for this goal yet</h4>
+							)
+							}
+							{showExpenses && (
+								<>
+									{goal.expenses.map((expense) => {
+										// console.log(goal._id);
+										// console.log('Expense: ', expense);
+										return (
+											<div key={expense}>
+												<div className="row">
+													<Expense
+														key={expense}
 														expense={expense}
+														goal={goal._id}
 													/>
-												)}
+													{/* <br /> */}
+													<button
+														onClick={() => {
+															deleteExpense(expense, goal._id);
+														}}
+														style={{
+															backgroundImage:
+																'url("https://cdn-icons-png.flaticon.com/512/535/535246.png")',
+															backgroundSize: 'cover',
+															backgroundRepeat: 'no-repeat',
+															backgroundColor: 'white',
+															cursor: 'pointer',
+															border: 'none',
+															width: '20px',
+															height: '20px',
+															margin: '10px',
+														}}
+													></button>
+													<button
+														onClick={() => {
+															setCurrentExpenseForm(expense);
+														}}
+													>
+														Edit
+													</button>
+													{currentExpenseForm == expense && (
+														<ExpenseEditForm
+															isOpen={openEditExpense}
+															close={handleClose}
+															goal={goal._id}
+															expense={expense}
+														/>
+													)}
+												</div>
 											</div>
-											<br />
-											<br />
-										</div>
-									);
-								})}
-							</>
-						)}
+										);
+									})}
+								</>
+							)}
+							<button
+							onClick={() => {
+								openExpense();
+							}}
+							>
+								Add Expense
+							</button>
+						</div>
+						
 						<button
 							onClick={() => {
 								openEdit();
@@ -216,13 +225,7 @@ function GoalCard(props) {
 							<EditGoal isOpen={openEdit} close={handleClose} goal={goal._id} />
 						)}
 
-						<button
-							onClick={() => {
-								openExpense();
-							}}
-						>
-							Add Expense
-						</button>
+						
 						{showExpenseForm && (
 							<ExpenseForm
 								isOpen={openExpense}
@@ -244,7 +247,7 @@ function GoalCard(props) {
 					</Card>
 				</Grid>
 				<br />
-			</>
+			</div>
 		);
 	}
 }

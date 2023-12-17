@@ -138,24 +138,36 @@ function ExpenseForm(props) {
 			<h1>Track an Expense</h1>
 			<p className="error">{error}</p>
 			<form id="addExpense">
-				<label>
-					Description
-					<input id="des" placeholder="I bought..." />
-				</label>
-				<br />
-				<br />
-				<label>
-					Amount
-					<input id="amount" placeholder="$$$" />
-				</label>
-				<br />
-				<br />
-				<label>
-					Date
-					<input type="date" id="date" />
-				</label>
-				<br />
-				<br />
+
+				<div className='form-group'>
+					<label>
+						Description:
+						<br/>
+						<input id="des" placeholder="I bought..." />
+					</label>
+					<p className="input-requirements">
+						Max 200 characters. Must include letters.
+					</p>
+				</div>
+
+				<div className='form-group'>
+					<label>
+						Amount:
+						<br/>
+						<input id="amount" placeholder="$" />
+					</label>
+				</div>
+
+				<div className='form-group'>
+					<label>
+						Date:
+						<br/>
+						<input type="date" id="date" />
+					</label>
+				</div>
+
+				<br/>
+			
 				<button type="submit" onClick={handleSubmit}>
 					Add Expense
 				</button>
