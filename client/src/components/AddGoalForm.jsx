@@ -77,6 +77,9 @@ function AddGoal({closeForm}){
         let category = document.getElementById('category').value.trim();
         let limit = document.getElementById('limit').value.trim();
         let date = document.getElementById('date').value.trim();
+        //change the format of the date to check it
+        date = date.split('-')
+        date = date[1] + '/' + date[2] + '/' + date[0];
 
         //checking input
         //title
@@ -196,7 +199,7 @@ function AddGoal({closeForm}){
                 </label>
                 <br/>
                 <label>
-                    Goal Date (mm/dd/yyyy): <input id="date" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
+                    Goal Date (mm/dd/yyyy): <input id="date" type="date" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
                 </label>
                 <br/>
                 <button className="button" type="submit">Create Goal</button>
