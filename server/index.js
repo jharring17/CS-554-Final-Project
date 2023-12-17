@@ -9,6 +9,13 @@ import configRoutes from './routes/index.js';
 
 app.use(express.json()); //***if you don't have this the request body will be undefined, this is what allows you to read the request body in a route
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
 configRoutes(app);
 
 app.listen(3000, () => {

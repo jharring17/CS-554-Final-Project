@@ -13,13 +13,41 @@ const History = (props) => {
     const [user, setUser] = useState({})
     const [historyList, setHistory] = useState({})
 
+    function sortByDate(list) {
+        const sortedArray = list.sort((a, b) => {
+            const monthA = parseInt(a.goalDate.substring(0,2));
+            const dayA = parseInt(a.goalDate.substring(3,5));
+            const yearA = parseInt(a.goalDate.substring(6));
+            const monthB = parseInt(b.goalDate.substring(0,2));
+            const dayB = parseInt(b.goalDate.substring(3,5));
+            const yearB = parseInt(b.goalDate.substring(6));
+
+            if (yearA !== yearB)
+            {
+                return yearB - yearA;
+            }
+            if (monthA !== monthB)
+            {
+                return monthB - monthA;
+            }
+            if (dayA !== dayB)
+            {
+                return dayB - dayA;
+            }
+            return 0;
+        });
+        return sortedArray;
+    }
+
     useEffect( () =>{
         const getData = async () => {
             let fire_id = currentUser.uid;
             const {data: userData} = await backend.get(`/getUserByFireAuth/${fire_id}`)
             setUser(userData)
             const {data: historyData} = await backend.get(`/userProfile/${fire_id}/history`)
-            setHistory(historyData.history);
+            let sortedHistory = sortByDate(historyData.history);
+            setHistory(sortedHistory);
+            // setHistory(historyData.history);
             setLoading(false)
         }
         getData()

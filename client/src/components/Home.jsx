@@ -12,10 +12,37 @@ function Home() {
 	const [loadingItems, setLoadingItems] = useState(true);
 	const [feedData, setFeedData] = useState([]);
 
+	function sortByDate(list) {
+        const sortedArray = list.sort((a, b) => {
+            const monthA = parseInt(a.goalDate.substring(0,2));
+            const dayA = parseInt(a.goalDate.substring(3,5));
+            const yearA = parseInt(a.goalDate.substring(6));
+            const monthB = parseInt(b.goalDate.substring(0,2));
+            const dayB = parseInt(b.goalDate.substring(3,5));
+            const yearB = parseInt(b.goalDate.substring(6));
+
+            if (yearA !== yearB)
+            {
+                return yearB - yearA;
+            }
+            if (monthA !== monthB)
+            {
+                return monthB - monthA;
+            }
+            if (dayA !== dayB)
+            {
+                return dayB - dayA;
+            }
+            return 0;
+        });
+        return sortedArray;
+    }
+
 	useEffect(() => {
 		const getData = async () => {
-			const { data } = await backend.get(`/user/${currentUser.uid}/feed`);
-			setFeedData(data);
+			const { data: feedGot } = await backend.get(`/user/${currentUser.uid}/feed`);
+			let sortedData = sortByDate(feedGot.feed);
+			setFeedData(sortedData);
 			setLoadingFeed(false);
 		};
 		if (currentUser.uid != "") getData();
@@ -36,7 +63,7 @@ function Home() {
 			</>
 		);
 
-	if (feedData.feed.length == 0)
+	if (feedData.length == 0)
 		return (
 			<div className="card">
 				<h2>No activity yet</h2>
@@ -45,7 +72,7 @@ function Home() {
 
 	const feed = (
 		<>
-			{feedData.feed.map((feedItem) => {
+			{feedData.map((feedItem) => {
 				return <FeedItem itemData={feedItem} key={feedItem._id} />;
 			})}
 		</>
