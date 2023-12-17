@@ -121,3 +121,19 @@ input {
   align-items: center;
   justify-content: center;
 }
+
+.expenses-list {
+  background-color: rgb(185, 179, 179);
+  /* border: solid; */
+  /* border-color: #069; */
+  /* max-width: 80%; */
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.goal-card {
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  /* height: 100vh; */
+}
