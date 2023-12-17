@@ -67,16 +67,42 @@ function ExpenseForm(props) {
 				waiting = true;
 			}
 		}
+		date = date.split('-');
+		let curr = new Date();
+		let currDay = curr.getDate();
+		if (currDay < 10) {
+			currDay = `0${currDay}`;
+		}
+		let currMonth = curr.getMonth() + 1;
+		if (currMonth < 10) {
+			currMonth = `0${currMonth}`;
+		}
+		let currYear = curr.getFullYear();
+		if (currYear < parseInt(date[0])) {
+			//if the expense year is past the current year
+			setError('The date cannot be a future date');
+			waiting = true;
+		} else if (currYear === parseInt(date[0]) && currMonth < parseInt(date[1])) {
+			//if the year is the same, expense month is past the current month
+			setError('The date cannot be a future date');
+			waiting = true;
+		} else if (
+			currYear === parseInt(date[0]) &&
+			currMonth === parseInt(date[1]) &&
+			currDay < parseInt(date[2])
+		) {
+			//if the year and month are the same, but the curr day is past the expense day
+			setError('The date cannot be a future date');
+			waiting = true;
+		}
 		if(waiting){
 			return
 		}
-
+		//format the date
+		date = date[1] + '/' + date[2] + '/' + date[0];
+		
 		// If there are no errors, perform the request.
 		if (error === '') {
-			// Format date value from form for submission
-			date = date.split('-');
-			date = date[1] + '/' + date[2] + '/' + date[0];
-
 			// Format the amount value from form for submission.
 			amount = parseFloat(amount);
 			console.log('Amount: ', amount);
