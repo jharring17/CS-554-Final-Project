@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../App.css';
 import axios from 'axios';
 import * as firebase from '../firebase/FirebaseFunctions.js';
@@ -8,10 +8,13 @@ function ExpenseForm(props) {
 	// Define navigate for page redirection.
 	let [error, setError] = useState('');
 
+	useEffect(()=> {
+		setError('')
+	}, [])
+
 	const handleSubmit = async (e) => {
 		// Prevent default action.
 		e.preventDefault();
-		setError('')
 		// Get the values from the form.
 		let userId = firebase.doGetUID();
 		let description = document.getElementById('des').value;
@@ -41,6 +44,7 @@ function ExpenseForm(props) {
 
 		// Check that the amount field only contains numbers and decimals.
 		if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
+			console.log("here")
 			setError(`Amount field can only contain numbers and decimals.`)
 			waiting = true;
 		}
