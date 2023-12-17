@@ -20,7 +20,7 @@ export const AuthProvider = ({children}) => {
   if (loadingUser) {
     return (
       <div>
-        <h1>Loading....Loading....Loading....Loading....Loading....</h1>
+        <h1>Loading...</h1>
       </div>
     );
   }

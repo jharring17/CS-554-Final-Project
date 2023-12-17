@@ -15,7 +15,7 @@ const getExpenseById = async (expenseId) => {
 
 	// Get the expense from expense collection.
 	const expenseCollection = await expenses();
-	let expense = expenseCollection.findOne({ _id: new ObjectId(expenseId) });
+	let expense = await expenseCollection.findOne({ _id: new ObjectId(expenseId) });
 
 	// Check if an expense was found.
 	if (expense) return expense;
@@ -34,7 +34,7 @@ const getExpensesByGoalId = async (goalId) => {
 
 	// Get the goal from goal collection.
 	const expenseCollection = await expenses();
-	let expenseArray = expenseCollection.find({ goalId: new ObjectId(goalId) }).toArray();
+	let expenseArray = await expenseCollection.find({ goalId: new ObjectId(goalId) }).toArray();
 
 	// Check if a goal was found.
 	if (expenseArray) return expenseArray;
