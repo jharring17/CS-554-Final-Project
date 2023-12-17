@@ -13,6 +13,7 @@ const HistoryItem = (props) => {
     const {currentUser} = useContext(AuthContext);
     const [itemData, setItemData] = useState(props.itemData)
     const [loading, setLoading] = useState(true)
+    // const [isSorted, setIsSorted] = useState(false)
     const [user, setUser] = useState({})
     const [expenses, setExpenses] = useState();
     const [expenseValues, setExpenseValues] = useState();
@@ -25,6 +26,31 @@ const HistoryItem = (props) => {
     function handleClose() {
 		setShowExpenses(false);
 	}
+    function sortByDate(list) {
+        const sortedArray = list.sort((a, b) => {
+            const monthA = parseInt(a.date.substring(0,2));
+            const dayA = parseInt(a.date.substring(3,5));
+            const yearA = parseInt(a.date.substring(6));
+            const monthB = parseInt(b.date.substring(0,2));
+            const dayB = parseInt(b.date.substring(3,5));
+            const yearB = parseInt(b.date.substring(6));
+
+            if (yearA !== yearB)
+            {
+                return yearB - yearA;
+            }
+            if (monthA !== monthB)
+            {
+                return monthB - monthA;
+            }
+            if (dayA !== dayB)
+            {
+                return dayB - dayA;
+            }
+            return 0;
+        });
+        return sortedArray;
+    }
 
     useEffect( () =>{
         const getData = async () => {
@@ -41,6 +67,7 @@ const HistoryItem = (props) => {
                 expenseList.push(expenseData2.data.expense);
                 expenseValues.push(parseFloat(expenseData2.data.expense.amount))
             }
+            expenseList = sortByDate(expenseList);
             setExpenses(expenseList);
             setExpenseValues(expenseValues);
             setGoalId(goalId);

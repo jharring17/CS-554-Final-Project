@@ -21,6 +21,52 @@ function GoalCard(props) {
 	const [deleted, setDeleted] = useState(null);
 	const [currentExpenseForm, setCurrentExpenseForm] = useState('');
 
+	async function sortByDate(goalObj) {
+		let newExpensesList = [];
+		let goalId = goalObj._id.toString();
+		let userId = goalObj.userId;
+		for (let i=0;i<goalObj.expenses.length;i++)
+		{
+			let expenseId = goalObj.expenses[i];
+			let currentExpenseObj = await axios.get(`http://localhost:3000/user/${userId}/${goalId}/${expenseId}`);
+			newExpensesList.push(currentExpenseObj.data.expense);
+		}
+		// console.log(newExpensesList);
+
+        const sortedArray = newExpensesList.sort((a, b) => {
+            const monthA = parseInt(a.date.substring(0,2));
+            const dayA = parseInt(a.date.substring(3,5));
+            const yearA = parseInt(a.date.substring(6));
+            const monthB = parseInt(b.date.substring(0,2));
+            const dayB = parseInt(b.date.substring(3,5));
+            const yearB = parseInt(b.date.substring(6));
+
+            if (yearA !== yearB)
+            {
+                return yearB - yearA;
+            }
+            if (monthA !== monthB)
+            {
+                return monthB - monthA;
+            }
+            if (dayA !== dayB)
+            {
+                return dayB - dayA;
+            }
+            return 0;
+        });
+		console.log(sortedArray)
+		let expenseIdList = [];
+		for (let i=0;i<sortedArray.length;i++)
+		{
+			expenseIdList.push(sortedArray[i]._id.toString());
+		}
+		goalObj.expenses = expenseIdList;
+		// console.log(goalObj.expenses);
+		// console.log(goalObj);
+        return goalObj;
+    }
+
 	const deleteExpense = async (expenseId, goalId) => {
 		try {
 			// Delete an expense from a goal.
@@ -70,7 +116,15 @@ function GoalCard(props) {
 			let id = doGetUID();
 			try {
 				let data = await axios.get(`http://localhost:3000/userProfile/${id}/${props.id}`);
-				setGoal(data.data);
+				let goal = data.data;
+				setGoal(goal);
+
+				// console.log(goal.title);
+				// console.log(goal.expenses);
+				// let goalWithSortedExpenses = await sortByDate(goal);
+				// console.log(goalWithSortedExpenses);
+				// setGoal(goalWithSortedExpenses);
+
 				//we need to check if the curr date is past the goal date
 				let curr = new Date();
 				let currDay = curr.getDate();

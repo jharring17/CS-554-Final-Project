@@ -23,11 +23,40 @@ function Account() {
   const [userData, setUserData] = useState()
   const [openedForm, setOpenedForm] = useState(0)
   
+  function sortByDate(list) {
+    const sortedArray = list.sort((a, b) => {
+        const monthA = parseInt(a.goalDate.substring(0,2));
+        const dayA = parseInt(a.goalDate.substring(3,5));
+        const yearA = parseInt(a.goalDate.substring(6));
+        const monthB = parseInt(b.goalDate.substring(0,2));
+        const dayB = parseInt(b.goalDate.substring(3,5));
+        const yearB = parseInt(b.goalDate.substring(6));
+
+        if (yearA !== yearB)
+        {
+            return yearA - yearB;
+        }
+        if (monthA !== monthB)
+        {
+            return monthA - monthB;
+        }
+        if (dayA !== dayB)
+        {
+            return dayA - dayB;
+        }
+        return 0;
+    });
+    return sortedArray;
+}
+
   useEffect(() => {
     async function getGoals(){
       let id = doGetUID();
       let data = await axios.get(`http://localhost:3000/userProfile/${id}`)
-      setGoals(data.data)
+      let sortedData = sortByDate(data.data);
+      // setGoals(data.data)
+      setGoals(sortedData)
+
 
       let userData = await axios.get(`http://localhost:3000/user/${id}/getUserInfo`)
       setUserData(userData.data)
