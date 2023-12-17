@@ -15,6 +15,9 @@ function ExpenseForm(props) {
 	const handleSubmit = async (e) => {
 		// Prevent default action.
 		e.preventDefault();
+		let waiting = false;
+		setError('')
+		console.log("error: " + error)
 		// Get the values from the form.
 		let userId = firebase.doGetUID();
 		let description = document.getElementById('des').value;
@@ -22,7 +25,6 @@ function ExpenseForm(props) {
 		let date = document.getElementById('date').value;
 
 		// Error checking for form values.
-		let waiting = false;
 		// Check that form values are not empty.
 		if (description.trim() == '') {
 			setError('Description is required.')
@@ -42,6 +44,7 @@ function ExpenseForm(props) {
 		}
 		// Description can only be 200 characters.
 		if (description.length > 200) {
+			console.log(description.length)
 			setError(`Description cannot exceed 200 characters.`)
 			waiting = true;
 		}
@@ -110,7 +113,7 @@ function ExpenseForm(props) {
 		date = date[1] + '/' + date[2] + '/' + date[0];
 		
 		// If there are no errors, perform the request.
-		if (error === '') {
+		// if (error === '') {
 			// Format the amount value from form for submission.
 			amount = parseFloat(amount);
 			console.log('Amount: ', amount);
@@ -133,7 +136,7 @@ function ExpenseForm(props) {
 			} catch (e) {
 				console.log(e);
 			}
-		}
+		//}
 	};
 
 	// Return the form.
