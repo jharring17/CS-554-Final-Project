@@ -188,10 +188,10 @@ function ExpenseEditForm(props) {
 					</label>
 					<br />
 					<br />
-					<button type="submit" onClick={editExpense}>
+					<button className='button' type="submit" onClick={editExpense}>
 						Submit
 					</button>
-					<button onClick={() => props.close()}>Cancel</button>
+					<button className='button' onClick={() => props.close()}>Cancel</button>
 				</form>
 			</div>
 		);

@@ -175,10 +175,10 @@ function ExpenseForm(props) {
 
 				<br/>
 			
-				<button type="submit" onClick={handleSubmit}>
+				<button className='button' type="submit" onClick={handleSubmit}>
 					Add Expense
 				</button>
-				<button onClick={() => props.close()}>Cancel Expense</button>
+				<button className='button' onClick={() => props.close()}>Cancel Expense</button>
 			</form>
 		</div>
 	);
