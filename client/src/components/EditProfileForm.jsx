@@ -24,18 +24,17 @@ function CategoryForm({closeForm}) {
     }
 
     function checkName(name, stringName) {
-        console.log(stringName)
         name = stringChecker(name);
     
         if (stringName.toLowerCase().trim() === "username") {
           name = name.toLowerCase();
           if (!(/^[a-zA-Z0-9]+$/.test(name)) || name.length < 8 || name.length > 20) {
-            throw `username is invalid :: checkName`;
+            throw `Username is invalid`;
           }
         }
         else { //display name
           if (!(/^[a-zA-Z]+(?: [a-zA-Z]+)?$/.test(name)) || name.length < 8 || name.length > 20) {
-            throw `displayname is invalid :: checkName`;
+            throw `Display name is invalid`;
           }
         }
         // else {
@@ -47,16 +46,16 @@ function CategoryForm({closeForm}) {
 
     function checkEmail(emailVal) {
         let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (!emailVal) throw `Error: You must supply an email.`;
+        if (!emailVal) throw `You must supply an email`;
         if (typeof emailVal !== 'string')
-            throw `Error: email should be a string.`;
+            throw `Email should be a string`;
         emailVal = emailVal.trim();
         if (emailVal.length === 0)
-            throw `Error: email cannot be an empty string or string with just spaces`;
+            throw `Email cannot be an empty string or string with just spaces`;
         if (!emailVal.includes('@'))
-            throw `Error: email is not a valid email.`;
+            throw `Email is not a valid email`;
         if (!emailVal.match(mailformat))
-            throw `Error: email is not a valid email.`;
+            throw `Email is not a valid email`;
         return emailVal;
     }
     
@@ -104,12 +103,17 @@ function CategoryForm({closeForm}) {
 
         try {
           const fire_id = doGetUID();
-          console.log("fireid", fire_id)
+          if (user.displayName === displayName.trim() && user.username === username.trim() 
+              && user.email === email.trim() && photo === "") {
+            setError("Must update at least one field to submit form");
+            hasErrors = true;
+            return;
+          }
           await axios.post(`http://localhost:3000/userProfile/${fire_id}/editProfile`, 
-                            {displayName: displayName,
-                            username: username,
-                            email: email,
-                            photo: newLink
+                            {displayName: displayName.trim(),
+                            username: username.trim(),
+                            email: email.trim(),
+                            photo: newLink.trim()
                         })
         } 
         catch (error) {
@@ -214,6 +218,9 @@ function CategoryForm({closeForm}) {
                         }}
                         />
                     </label>
+                    <p className="input-requirements">
+                        .img, .jpeg, .png, .jpg
+                    </p>
                     </div>
 
                     {/* <div className='form-group'>
