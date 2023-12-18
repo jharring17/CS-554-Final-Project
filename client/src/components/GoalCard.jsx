@@ -121,9 +121,9 @@ function GoalCard(props) {
 
 				// console.log(goal.title);
 				// console.log(goal.expenses);
-				// let goalWithSortedExpenses = await sortByDate(goal);
+				let goalWithSortedExpenses = await sortByDate(goal);
 				// console.log(goalWithSortedExpenses);
-				// setGoal(goalWithSortedExpenses);
+				setGoal(goalWithSortedExpenses);
 
 				//we need to check if the curr date is past the goal date
 				let curr = new Date();
