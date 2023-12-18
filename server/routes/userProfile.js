@@ -106,7 +106,7 @@ router
             req.body.category = validate.stringChecker(req.body.category);
             req.body.goalDate = validate.stringChecker(req.body.goalDate); 
             req.body.limit = validate.limitChecker(req.body.limit);
-            req.body.goalDate = validate.goalDateChecker(req.body.goalDate);
+            // req.body.goalDate = validate.goalDateChecker(req.body.goalDate);
         }catch(e){
             console.log(e)
             return res.status(400).json({error: e})
@@ -253,7 +253,7 @@ router
         if(req.body.goalDate){
             try{
                 req.body.goalDate = validate.stringChecker(req.body.goalDate);
-                req.body.goalDate = validate.goalDateChecker(req.body.goalDate);         
+                // req.body.goalDate = validate.goalDateChecker(req.body.goalDate);         
             }catch(e){
                 return res.status(400).json({error: e})
             }
