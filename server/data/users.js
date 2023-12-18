@@ -23,6 +23,11 @@ const register = async (fire_id, displayName, username, email, age) => {
     if (user != null) {
       throw `User already exists with this email :: register`;
     }
+
+    const user2 = await userCollection.findOne({username: username});
+    if (user2 != null) {
+      throw `User already exists with this username`;
+    }
     
     //actually insert
     let newUser = {

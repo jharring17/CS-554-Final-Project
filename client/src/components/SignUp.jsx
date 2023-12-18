@@ -14,13 +14,13 @@ function SignUp() {
     const {displayName, email, username, passwordOne, passwordTwo, age} = e.target.elements;
     try {
       if (!displayName.value || !username.value || !email.value || !passwordOne.value || !passwordTwo.value || !age.value) {
-        throw 'All input fields must be provided :: SignUp.jsx';
+        throw 'All input fields must be provided';
       }
       //Variable checks
       //display name
       let newDisplayName = displayName.value;
       if(typeof newDisplayName != 'string'){
-        throw `Display Name must be a string :: SignUp.jsx`;
+        throw `Display Name must be a string`;
 
       }
       newDisplayName = newDisplayName.trim();
@@ -87,13 +87,11 @@ function SignUp() {
     }
     catch (error)
     {
-      console.log(error);
       setErrorState(error.toString());
       return false;
     }
     let fire_id;
     try {
-      console.log("Firebase call")
       const createdUser = await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, displayName.value);
       console.log(createdUser);
       fire_id = doGetUID();
@@ -105,7 +103,7 @@ function SignUp() {
     try {
       let isFireId = /^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*$/.test(fire_id);
       if (!isFireId) {
-        throw 'Not valid fire_id: Signup.jsx';
+        throw 'Not valid fire_id';
       }
     }
     catch (error) {
@@ -123,8 +121,7 @@ function SignUp() {
       setSignedUp(true);
     } 
     catch (error) {
-      console.log(error);
-      setErrorState(error.toString());
+      setErrorState(error.response.data.e.toString());
       setSignedUp(false);
     }
   };
