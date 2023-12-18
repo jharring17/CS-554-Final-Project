@@ -110,12 +110,12 @@ const HistoryItem = (props) => {
 
                 {!showExpenses
                     ? expenses.length !== 0
-                        ? <button onClick={() => expandExpenses()}>Expand Expenses</button>
+                        ? <button className='button' onClick={() => expandExpenses()}>Expand Expenses</button>
                         : <div><h3>No Expenses</h3></div>
                     :
                         <div style={{marginTop: 25, marginBottom: 25, borderTop: "2px solid black", paddingBottom: "5px", paddingTop: "15px"}}>
                             <HistoryExpenseList close={handleClose} goalId={goalId} expenses={expenses}/>
-                            <button onClick={() => handleClose()} >Collapse Expenses</button>
+                            <button className='button' onClick={() => handleClose()} >Collapse Expenses</button>
                         </div>
                 }
             </div>
