@@ -99,8 +99,17 @@ function SignUp() {
       fire_id = doGetUID();
     }
     catch (error) {
-      setErrorState(error.toString());
-      return false;
+      let errorString = error.toString();
+      if (errorString.includes("auth/email-already-in-use"))
+      {
+        setErrorState("Account already exists with this email");
+        return false;
+      }
+      else
+      {
+        setErrorState(errorString);
+        return false;
+      }
     }
     try {
       let isFireId = /^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*$/.test(fire_id);
