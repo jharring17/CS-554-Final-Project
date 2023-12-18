@@ -30,7 +30,7 @@ const FeedItem = (props) => {
             let expenseValues = [];
             let uid = doGetUID();
             for(let i = 0; i < itemData.expenses.length; i++){
-                let expenseData = await axios.get(`http://54.175.184.234:3000//user/${uid}/${goalId}/${itemData.expenses[i]}`)
+                let expenseData = await axios.get(`http://54.175.184.234:3000/user/${uid}/${goalId}/${itemData.expenses[i]}`)
                 expenseValues.push(parseFloat(expenseData.data.expense.amount))
             }
             setExpenses(expenseValues)

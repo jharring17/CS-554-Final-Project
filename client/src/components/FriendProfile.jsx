@@ -11,14 +11,14 @@ function FriendProfile() {
     const {fireId} = useParams();
 
     async function getGoalInfo(goal){
-        let goalData = await axios.get(`http://54.175.184.234:3000//userProfile/${fireId}/${goal}`);
+        let goalData = await axios.get(`http://54.175.184.234:3000/userProfile/${fireId}/${goal}`);
         return goalData.data
     }
     
     useEffect( () => {
         setUser(null);
         async function getUserInfo(){
-            let userData = await axios.get(`http://54.175.184.234:3000//user/${fireId}/getFriendInfo`)
+            let userData = await axios.get(`http://54.175.184.234:3000/user/${fireId}/getFriendInfo`)
             setUser(userData.data);
             if(userData.data.goals.length === 0){
                 return
