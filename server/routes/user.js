@@ -99,6 +99,10 @@ router.route("/:userId/removeCategory").post(async (req, res) => {
 		return res.status(200).json(updatedCategories);
 	} catch (e) {
 		console.log(e);
+		if (e.includes("does not have category"))
+		{
+			return res.status(404).json({ error: e });
+		}
 		return res.status(500).json({ error: e });
 	}
 });

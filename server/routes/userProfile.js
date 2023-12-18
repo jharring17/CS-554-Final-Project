@@ -106,11 +106,18 @@ router
             req.body.category = validate.stringChecker(req.body.category);
             req.body.goalDate = validate.stringChecker(req.body.goalDate); 
             req.body.limit = validate.limitChecker(req.body.limit);
-            req.body.category = await validate.categoryChecker(id, req.body.category);
             req.body.goalDate = validate.goalDateChecker(req.body.goalDate);
         }catch(e){
             console.log(e)
             return res.status(400).json({error: e})
+        }
+        try {
+            req.body.category = await validate.categoryChecker(id, req.body.category);
+        }
+        catch (e)
+        {
+            console.log(e);
+            return res.status(404).json({error: e})
         }
         //now try to add the goal
         try{
@@ -220,9 +227,16 @@ router
         if(req.body.category){
             try{
                 req.body.category = validate.stringChecker(req.body.category);
-                req.body.category = await validate.categoryChecker(req.body.userId, req.body.category);            
             }catch(e){
                 return res.status(400).json({error: e})
+            }
+            try {
+                req.body.category = await validate.categoryChecker(req.body.userId, req.body.category);            
+            }
+            catch (e)
+            {
+                console.log(e);
+                return res.status(404).json({error: e})
             }
         }else{
             req.body.category = goal.category;
