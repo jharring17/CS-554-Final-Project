@@ -58,7 +58,7 @@ const addExpense = async (goalId, description, amount, date) => {
 	amount = helper.limitChecker(amount);
 
 	// Validate the date.
-	date = helper.expenseDateChecker(date);
+	// date = helper.expenseDateChecker(date);
 	let goalCollection = await goals();
 	let goal = await goalCollection.findOne({ _id: new ObjectId(goalId) });
 	console.log(goal);
@@ -132,7 +132,7 @@ const editExpense = async (expenseId, description, amount, date) => {
 	amount = helper.limitChecker(amount);
 
 	// Validate the date.
-	date = helper.expenseDateChecker(date);
+	// date = helper.expenseDateChecker(date);
 	const expenseCollection = await expenses();
 	const goalCollection = await goals();
 	let expense = await expenseCollection.findOne({ _id: new ObjectId(expenseId) });

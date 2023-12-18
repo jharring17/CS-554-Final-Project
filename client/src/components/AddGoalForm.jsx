@@ -28,6 +28,11 @@ function AddGoal({closeForm}){
             }
         }
 
+        let currDate = new Date();
+        let month = currDate.getMonth() + 1;
+        let day = currDate.getDate();
+        let year = currDate.getFullYear();
+        alert(year%4)
         if(date[2] != '/' && date[5] != '/') return `Date needs to be in the format 'MM/DD/YYYY'`
         let validMonths = ['01','02','03','04','05','06','07','08', '09', '10', '11', '12'];
         let present = false;
@@ -42,18 +47,20 @@ function AddGoal({closeForm}){
     
         //check to make sure the month lines up with dates
         if(date.substring(0,2) === "04" || date.substring(0,2) === "06" || date.substring(0,2) === "09" || date.substring(0,2) === "11"){
-          if(parseInt(date.substring(3,5)) > 30 || parseInt(date.substring(3,5)) < 0) return `Invalid day for date`;
+          if(parseInt(date.substring(3,5)) > 30 || parseInt(date.substring(3,5)) < 0) return `Invalid day for date 1`;
         }
         else if(date.substring(0,2) === "01" || date.substring(0,2) === "03" || date.substring(0,2) === "05" || date.substring(0,2) === "07" || date.substring(0,2) === "08" || date.substring(0,2) === "10" || date.substring(0,2) === "12"){
-          if(parseInt(date.substring(3,5)) > 31 || parseInt(date.substring(3,5)) < 0) return `Invalid day for date`;
+          if(parseInt(date.substring(3,5)) > 31 || parseInt(date.substring(3,5)) < 0) return `Invalid day for date 2`;
         }
         else{
-          if(parseInt(date.substring(3,5)) > 28 || parseInt(date.substring(3,5)) < 0) return `Invalid day for date`;
+            console.log("what")
+            if(leapYear){
+                if(parseInt(date.substring(3,5)) > 29 || parseInt(date.substring(3,5)) < 0) return `Invalid day for date 3`;
+            }else{
+                if(parseInt(date.substring(3,5)) > 28 || parseInt(date.substring(3,5)) < 0) return `Invalid day for date 4`;
+            }
         }
-        let currDate = new Date();
-        let month = currDate.getMonth() + 1;
-        let day = currDate.getDate();
-        let year = currDate.getFullYear();
+
     
         //now we have to compare to make sure that the goalDate is later than the curr date
         let goalMonth = parseInt(date.substring(0, 2));
@@ -152,11 +159,11 @@ function AddGoal({closeForm}){
             setError("Date Cannot Be An Empty String");
             waiting = true;
         }
-        let result = dateChecker(date);
-        if(result != date){
-            setError(result);
-            waiting = true;
-        }
+        // let result = dateChecker(date);
+        // if(result != date){
+        //     setError(result);
+        //     waiting = true;
+        // }
         if(waiting){
             return;
         }

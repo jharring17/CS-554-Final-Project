@@ -220,7 +220,7 @@ router.route("/:userId/:goalId").post(async (req, res) => {
 		goalId = validate.validId(goalId);
 		description = validate.stringChecker(description);
 		amount = validate.limitChecker(amount);
-		date = validate.expenseDateChecker(date);
+		// date = validate.expenseDateChecker(date);
 	} catch (e) {
 		return res.status(400).json({ error: e });
 	}
@@ -248,7 +248,7 @@ router.route("/:userId/:goalId/:expenseId").put(async (req, res) => {
 		expenseId = validate.validId(expenseId);
 		description = validate.stringChecker(description);
 		amount = validate.limitChecker(amount);
-		date = validate.expenseDateChecker(date);
+		// date = validate.expenseDateChecker(date);
 	} catch (e) {
 		return res.status(400).json({ error: e });
 	}

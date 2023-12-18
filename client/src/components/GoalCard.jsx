@@ -31,7 +31,6 @@ function GoalCard(props) {
 			let currentExpenseObj = await axios.get(`http://54.175.184.234:3000/user/${userId}/${goalId}/${expenseId}`);
 			newExpensesList.push(currentExpenseObj.data.expense);
 		}
-		// console.log(newExpensesList);
 
         const sortedArray = newExpensesList.sort((a, b) => {
             const monthA = parseInt(a.date.substring(0,2));
@@ -62,8 +61,6 @@ function GoalCard(props) {
 			expenseIdList.push(sortedArray[i]._id.toString());
 		}
 		goalObj.expenses = expenseIdList;
-		// console.log(goalObj.expenses);
-		// console.log(goalObj);
         return goalObj;
     }
 
@@ -119,8 +116,6 @@ function GoalCard(props) {
 				let goal = data.data;
 				setGoal(goal);
 
-				// console.log(goal.title);
-				// console.log(goal.expenses);
 				let goalWithSortedExpenses = await sortByDate(goal);
 				setGoal(goalWithSortedExpenses);
 

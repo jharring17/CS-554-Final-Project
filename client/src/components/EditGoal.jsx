@@ -157,11 +157,11 @@ function EditGoal(props){
             setError("Date Cannot Be An Empty String")
             waiting = true;
         }
-        let result = dateChecker(goalDate);
-        if(result != goalDate){
-            setError(result)
-            waiting = true;
-        }
+        // let result = dateChecker(goalDate);
+        // if(result != goalDate){
+        //     setError(result)
+        //     waiting = true;
+        // }
         if(waiting){
             return;
         }
