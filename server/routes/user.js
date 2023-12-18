@@ -23,7 +23,7 @@ router.route("/register").post(async (req, res) => {
 		age = validate.checkAge(age);
 	} catch (e) {
 		console.log(e);
-		return res.status(401).json({ error: e });
+		return res.status(400).json({ error: e });
 	}
 
 	try {
