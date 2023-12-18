@@ -50,9 +50,13 @@ const Friends = () => {
         handleData()
     }, [friendData])
     
+    console.log(renderData)
+
     return (
         <>
-        <p>Your Friends</p>
+        {renderData.length === 0 && 
+            <p>You have no friends yet</p>
+        }
         {renderData}
         </>
     )
