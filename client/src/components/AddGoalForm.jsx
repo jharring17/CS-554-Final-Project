@@ -77,6 +77,13 @@ function AddGoal({closeForm}){
         let category = document.getElementById('category').value.trim();
         let limit = document.getElementById('limit').value.trim();
         let date = document.getElementById('date').value.trim();
+
+        if(title === null || description === null || category === null || limit === null || date === null){
+            setError("No inputs can be empty")
+        }
+        if(title === undefined || description === undefined || category === undefined || limit === undefined || date === undefined){
+            setError("No inputs can be empty")
+        }
         //change the format of the date to check it
         date = date.split('-')
         date = date[1] + '/' + date[2] + '/' + date[0];
@@ -178,7 +185,7 @@ function AddGoal({closeForm}){
                     <label>
                         Title: 
                         <br/>
-                        <input id="title" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
+                        <input id="title" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} />
                     </label>
                     <p className="input-requirements">Min 3 characters, max 50 characters. Cannot include only special characters.</p>
                 </div>
@@ -187,7 +194,7 @@ function AddGoal({closeForm}){
                     <label>
                         Description: 
                         <br/>
-                        <input id="description" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
+                        <input id="description" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} />
                     </label>
                     <p className="input-requirements">Min 5 characters, max 200 characters. Cannot include only special characters.</p>
                 </div>
@@ -211,14 +218,14 @@ function AddGoal({closeForm}){
                         Budget for this Goal:
                         <br/>
                         $
-                        <input id="limit" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
+                        <input id="limit" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} />
                     </label>
                 </div>
                 <div className="form-group">
                     <label>
                         Goal Date: 
                         <br/>
-                        <input id="date" type="date" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} required />
+                        <input id="date" type="date" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} />
                     </label>
                     <p className="input-requirements">Must be in the format MM/DD/YYYY</p>
                 </div>

@@ -24,50 +24,50 @@ function SignUp() {
 
       }
       newDisplayName = newDisplayName.trim();
-      if(newDisplayName.length === 0) throw `Display Name cannot be empty :: SignUp.jsx`;
+      if(newDisplayName.length === 0) throw `Display Name cannot be empty`;
       if (!(/^[a-zA-Z]+(?: [a-zA-Z]+)?$/.test(newDisplayName)) || newDisplayName.length < 8 || newDisplayName.length > 20) {
-        throw `Display Name ${newDisplayName} is invalid :: SignUp.jsx`;
+        throw `Display Name ${newDisplayName} is invalid`;
       }
       //username
       let newUsername = username.value;
-      if(typeof newUsername != 'string') throw `Username must be a string :: SignUp.jsx`;
+      if(typeof newUsername != 'string') throw `Username must be a string`;
       newUsername = newUsername.trim();
-      if(newUsername.length === 0) throw `Username cannot be empty :: SignUp.jsx`;
+      if(newUsername.length === 0) throw `Username cannot be empty`;
       newUsername = newUsername.toLowerCase();
       if (!(/^[a-zA-Z0-9]+$/.test(newUsername)) || newUsername.length < 8 || newUsername.length > 20) {
-        throw `Username ${newUsername} is invalid :: SignUp.jsx`;
+        throw `Username ${newUsername} is invalid`;
       }
       //email
       let newEmail = email.value;
-      if(typeof newEmail != 'string') throw `Email must be a string :: SignUp.jsx`;
+      if(typeof newEmail != 'string') throw `Email must be a string`;
       newEmail = newEmail.trim();
-      if(newEmail.length === 0) throw `Email cannot be empty :: SignUp.jsx`;
+      if(newEmail.length === 0) throw `Email cannot be empty`;
       let isValid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(newEmail);
       if (!isValid) {
-        throw "Invalid email address :: SignUp.jsx";
+        throw "Invalid email address";
       }
       //password 1
       let newPasswordOne = passwordOne.value;
       if (typeof newPasswordOne != 'string') {
-        throw `Password must be a string :: SignUp.jsx`;
+        throw `Password must be a string`;
       }
       if (newPasswordOne.length === 0) {
-        throw `Password cannot be empty :: SignUp.jsx`;
+        throw `Password cannot be empty`;
       }
       if (newPasswordOne.split(" ").length > 1) {
-          throw `Password cannot contain spaces :: SignUp.jsx`;
+          throw `Password cannot contain spaces`;
       }
       if (newPasswordOne.length < 8) {
-          throw `Password length must be at least 8 :: SignUp.jsx`;
+          throw `Password length must be at least 8`;
       }
       if (!/[A-Z]/.test(newPasswordOne)) {
-          throw `Password must contain at least one uppercase character :: SignUp.jsx`;
+          throw `Password must contain at least one uppercase character`;
       }
       if (!/\d/.test(newPasswordOne)) {
-          throw `Password must contain at least one number :: SignUp.jsx`;
+          throw `Password must contain at least one number`;
       }
       if (!/[!@#$%^&*(),.?":{}|<>]/.test(newPasswordOne)) {
-          throw `Password must contain at least one special character :: SignUp.jsx`;
+          throw `Password must contain at least one special character`;
       }
       //password 2
       let newPasswordTwo = passwordTwo.value;
@@ -75,7 +75,7 @@ function SignUp() {
       //age
       let newAge = age.value;
       if (Number.isNaN(Number(newAge)) || newAge < 13) {
-        throw 'Invalid age :: SignUp.jsx';
+        throw 'Invalid age';
       }
       newAge = parseInt(newAge);
 
