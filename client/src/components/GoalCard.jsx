@@ -217,7 +217,7 @@ function GoalCard(props) {
 							</div>
 						)}
 						<br/>
-						<div class='expenses-list'>
+						<div className='expenses-list'>
 							<h4>Expenses:</h4>
 							{!showExpenses && (
 								<h4>You do not have any expenses for this goal yet</h4>
