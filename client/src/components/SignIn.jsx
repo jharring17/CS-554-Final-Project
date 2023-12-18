@@ -29,35 +29,35 @@ function SignIn() {
     try {
       //email
       let newEmail = email.value;
-      if(typeof newEmail != 'string') throw `Input must be a string :: SignIn.jsx`;
+      if(typeof newEmail != 'string') throw `Input must be a string`;
       newEmail = newEmail.trim();
-      if(newEmail.length === 0) throw `String cannot be empty :: SignIn.jsx`;
+      if(newEmail.length === 0) throw `String cannot be empty`;
       let isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail);
       if (!isValid) {
-        throw "Invalid email address :: SignIn.jsx";
+        throw "Invalid email address";
       }
       //password
       let newPassword = password.value;
       if (typeof newPassword != 'string') {
-        throw `Password must be a string :: SignIn.jsx`;
+        throw `Password must be a string`;
       }
       if (newPassword.length === 0) {
-        throw `Password cannot be empty :: SignIn.jsx`;
+        throw `Password cannot be empty`;
       }
       if (newPassword.split(" ").length > 1) {
-          throw `Password cannot contain spaces :: SignIn.jsx`;
+          throw `Password cannot contain spaces`;
       }
       if (newPassword.length < 8) {
-          throw `Password length must be at least 8 :: SignIn.jsx`;
+          throw `Password length must be at least 8`;
       }
       if (!/[A-Z]/.test(newPassword)) {
-          throw `Password must contain at least one uppercase character :: SignIn.jsx`;
+          throw `Password must contain at least one uppercase character`;
       }
       if (!/\d/.test(newPassword)) {
-          throw `Password must contain at least one number :: SignIn.jsx`;
+          throw `Password must contain at least one number`;
       }
       if (!/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)) {
-          throw `Password must contain at least one special character :: SignIn.jsx`;
+          throw `Password must contain at least one special character`;
       }
 
       const createdUser = await doSignInWithEmailAndPassword(email.value, password.value);
@@ -66,22 +66,9 @@ function SignIn() {
     }
     catch (error)
     {
-      // console.log(error);
       setErrorState("Either password or email is invalid");
       return false;
     }
-
-
-    // let fire_id;
-    // try {
-    //   const createdUser = await doSignInWithEmailAndPassword(email.value, password.value);
-    //   console.log(createdUser);
-    //   fire_id = doGetUID();
-    // } catch (error) {
-    //   setErrorState(error);
-    //   return false;
-    // }
-
 
 
     try {
