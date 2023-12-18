@@ -1,6 +1,9 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {AuthContext} from '../context/AuthContext';
-import {doGetUID} from '../firebase/FirebaseFunctions';
+import {
+    doGetUID,
+    doPasswordReset
+  } from '../firebase/FirebaseFunctions';
 import {useNavigate, Link} from 'react-router-dom';
 import '../App.css';
 import axios from 'axios';
@@ -15,6 +18,18 @@ function CategoryForm({closeForm}) {
     const [photo, setPhoto] = useState('');
 
     let displayName, username, email, profilePic;
+    const passwordReset = (event) => {
+        event.preventDefault();
+        let email = document.getElementById('email').value;
+        if (email) {
+          doPasswordReset(email);
+          alert('Password reset email was sent');
+        } else {
+          alert(
+            'Please enter an email address below before you click the forgot password link'
+          );
+        }
+      };
 
     function stringChecker(string) {
         if(typeof string != 'string') throw `Input must be a string`;
@@ -132,7 +147,10 @@ function CategoryForm({closeForm}) {
         return (
             <>
                 {error && <p className='error'>{error}</p>}
-                <Link to='/changePassword'>Change password</Link>
+                {/* <Link to='/changePassword'>Change password</Link> */}
+                <button className='forgotPassword' onClick={passwordReset}>
+                    Forgot Password
+                </button>
                 <p></p>
                 <form onSubmit={handleSubmit}>
                     {errorState && <h4 className='error'>{errorState}</h4>}
