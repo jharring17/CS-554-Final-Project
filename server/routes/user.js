@@ -40,6 +40,19 @@ router.route("/register").post(async (req, res) => {
 	}
 });
 
+
+router.route("/:userId/checkUsernameExists").get(async (req, res) => {
+	//validate the id
+	let id = req.params.userId;
+		try {
+			let bool = await users.usernameExists(id);
+			return res.status(200).json(bool);
+		} 
+		catch (e) {
+			return res.status(400).json({ error: e });
+		}
+});
+
 router.route("/:userId/getUserInfo").get(async (req, res) => {
 	//validate the id
 	let id = req.params.userId;

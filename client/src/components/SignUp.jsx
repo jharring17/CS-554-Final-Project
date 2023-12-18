@@ -12,6 +12,7 @@ function SignUp() {
     e.preventDefault();
     setSignedUp(false);
     const {displayName, email, username, passwordOne, passwordTwo, age} = e.target.elements;
+    let newUsername;
     try {
       if (!displayName.value || !username.value || !email.value || !passwordOne.value || !passwordTwo.value || !age.value) {
         throw 'All input fields must be provided';
@@ -29,7 +30,7 @@ function SignUp() {
         throw `Display Name ${newDisplayName} is invalid`;
       }
       //username
-      let newUsername = username.value;
+      newUsername = username.value;
       if(typeof newUsername != 'string') throw `Username must be a string`;
       newUsername = newUsername.trim();
       if(newUsername.length === 0) throw `Username cannot be empty`;
@@ -91,6 +92,13 @@ function SignUp() {
       return false;
     }
     let fire_id;
+    try {
+      const userExists =  await axios.get(`http://localhost:3000/user/${newUsername}/checkUsernameExists`);
+    }
+    catch (e) {
+      setErrorState("User already exists with this username");
+      return false;
+    }
     try {
       const createdUser = await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, displayName.value);
       console.log(createdUser);

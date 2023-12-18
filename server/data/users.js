@@ -51,6 +51,21 @@ const register = async (fire_id, displayName, username, email, age) => {
     return newUser;
 }
 
+const usernameExists = async (username) => {
+    if (!username) {
+        throw 'All input fields must be provided';
+    }
+    username = helper.checkName(username, "username");
+    const userCollection = await users();
+    const user = await userCollection.findOne({username: username});
+    if (user != null) {
+        throw 'User already exists with this username';
+    }
+    else {
+        return false;
+    }
+}
+
 // aren't using this anymore
 // const login = async (email, password) => {
 //     if (!email || !password) {
@@ -308,4 +323,4 @@ const removeCategory = async (fire_id, category) => {
     return newUser;
 }
 
-export { register, editUserInfo, getUser, getFeed, getHistory, updateHistory, getUserByMongoId, getUserByUsername, addCategory, removeCategory }
+export { register, editUserInfo, usernameExists, getUser, getFeed, getHistory, updateHistory, getUserByMongoId, getUserByUsername, addCategory, removeCategory }
