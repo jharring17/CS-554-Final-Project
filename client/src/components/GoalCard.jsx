@@ -41,15 +41,15 @@ function GoalCard(props) {
             const dayB = parseInt(b.date.substring(3,5));
             const yearB = parseInt(b.date.substring(6));
 
-            if (yearA != yearB)
+            if (yearA !== yearB)
             {
                 return yearB - yearA;
             }
-            if (monthA != monthB)
+            if (monthA !== monthB)
             {
                 return monthB - monthA;
             }
-            if (dayA != dayB)
+            if (dayA !== dayB)
             {
                 return dayB - dayA;
             }
