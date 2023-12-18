@@ -123,7 +123,7 @@ function ExpenseForm(props) {
 				console.log('User ID: ', userId);
 				console.log('Goal ID: ', props.goalId);
 				let expense = await axios.post(
-					`http://http://54.175.184.234:3000//user/${userId}/${props.goalId}`,
+					`http://54.175.184.234:3000//user/${userId}/${props.goalId}`,
 					{
 						description: description,
 						amount: amount,

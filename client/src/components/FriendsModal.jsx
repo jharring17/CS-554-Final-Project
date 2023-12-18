@@ -6,7 +6,7 @@ import axios from "axios"
 import {ToastContainer, toast} from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 
-const backend = axios.create({baseURL: "http://http://54.175.184.234:3000/"})
+const backend = axios.create({baseURL: "http://54.175.184.234:3000/"})
 
 function FriendsModal() {
     const {currentUser} = useContext(AuthContext);

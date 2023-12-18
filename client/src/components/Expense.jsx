@@ -17,7 +17,7 @@ function Expense(props){
     useEffect(()=> {
         async function getExpense(id){
             let uid = doGetUID();
-            let expenseData = await axios.get(`http://http://54.175.184.234:3000//user/${uid}/${props.goal}/${props.expense}`)
+            let expenseData = await axios.get(`http://54.175.184.234:3000//user/${uid}/${props.goal}/${props.expense}`)
             setExpenseInfo(expenseData.data.expense)
         }
         getExpense(props.expense);

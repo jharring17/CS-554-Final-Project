@@ -4,7 +4,7 @@ import '../App.css';
 import axios from "axios"
 import {NavLink} from 'react-router-dom';
 
-const backend = axios.create({baseURL: "http://http://54.175.184.234:3000/"})
+const backend = axios.create({baseURL: "http://54.175.184.234:3000/"})
 
 const Friends = () => {
     const [friendData, setFriendData] = useState([])

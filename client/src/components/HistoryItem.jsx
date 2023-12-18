@@ -7,7 +7,7 @@ import { AuthContext } from "../context/AuthContext";
 import { doGetUID } from "../firebase/FirebaseFunctions";
 import HistoryExpenseList from "./HistoryExpenseList";
 
-const backend = axios.create({baseURL: "http://http://54.175.184.234:3000/"})
+const backend = axios.create({baseURL: "http://54.175.184.234:3000/"})
 
 const HistoryItem = (props) => {
     const {currentUser} = useContext(AuthContext);
@@ -63,7 +63,7 @@ const HistoryItem = (props) => {
             let expenseList = [];
             let uid = doGetUID();
             for(let i = 0; i < itemData.expenses.length; i++){
-                let expenseData2 = await axios.get(`http://http://54.175.184.234:3000//user/${uid}/${goalId}/${itemData.expenses[i]}`);
+                let expenseData2 = await axios.get(`http://54.175.184.234:3000//user/${uid}/${goalId}/${itemData.expenses[i]}`);
                 expenseList.push(expenseData2.data.expense);
                 expenseValues.push(parseFloat(expenseData2.data.expense.amount))
             }
