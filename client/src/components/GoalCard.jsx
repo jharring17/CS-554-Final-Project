@@ -41,15 +41,15 @@ function GoalCard(props) {
             const dayB = parseInt(b.date.substring(3,5));
             const yearB = parseInt(b.date.substring(6));
 
-            if (yearA !== yearB)
+            if (yearA != yearB)
             {
                 return yearB - yearA;
             }
-            if (monthA !== monthB)
+            if (monthA != monthB)
             {
                 return monthB - monthA;
             }
-            if (dayA !== dayB)
+            if (dayA != dayB)
             {
                 return dayB - dayA;
             }
@@ -121,9 +121,9 @@ function GoalCard(props) {
 
 				// console.log(goal.title);
 				// console.log(goal.expenses);
-				// let goalWithSortedExpenses = await sortByDate(goal);
-				// console.log(goalWithSortedExpenses);
-				// setGoal(goalWithSortedExpenses);
+				let goalWithSortedExpenses = await sortByDate(goal);
+				console.log(goalWithSortedExpenses.expenses);
+				setGoal(goalWithSortedExpenses);
 
 				//we need to check if the curr date is past the goal date
 				let curr = new Date();
