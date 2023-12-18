@@ -29,7 +29,7 @@ const addGoal = async (
     title = helper.checkGoalTitle(title);
     description = helper.checkGoalDesc(description);
     category = helper.stringChecker(category);
-    goalDate = helper.stringChecker(goalDate); 
+    // goalDate = helper.stringChecker(goalDate); 
 
     //check to see if the limit is a float
     limit = helper.limitChecker(limit);
@@ -38,10 +38,10 @@ const addGoal = async (
     category = await helper.categoryChecker(userId, category)
 
     //make sure date is in the format mm/dd/yyyy
-    if (!seedingBool)
-    {
-        goalDate = helper.goalDateChecker(goalDate)
-    }
+    // if (!seedingBool)
+    // {
+    //     goalDate = helper.goalDateChecker(goalDate)
+    // }
 
     let newGoal = {
         userId: userId,
@@ -167,10 +167,10 @@ const updateGoal = async (
     category = await helper.categoryChecker(userId, category)
 
     //make sure date is in the format mm/dd/yyyy
-    if (!seedingBool)
-    {
-        goalDate = helper.goalDateChecker(goalDate)
-    }
+    // if (!seedingBool)
+    // {
+    //     goalDate = helper.goalDateChecker(goalDate)
+    // }
 
     //check to make sure successful is a boolean
     successful = helper.isBoolean(successful);
