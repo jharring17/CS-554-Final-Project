@@ -30,7 +30,7 @@ function DeleteCategory(props) {
     useEffect( ()=>{
         async function getUserInfo(){
             let id = doGetUID();
-            let data = await axios.get(`http://localhost:3000/user/${id}/getUserInfo`)
+            let data = await axios.get(`http://http://54.175.184.234:3000//user/${id}/getUserInfo`)
             setCategories(data.data.categories)
             console.log(id)
         }
@@ -54,7 +54,7 @@ function DeleteCategory(props) {
         try {
           const fire_id = doGetUID();
           console.log(category)
-            let deleted = axios.post(`http://localhost:3000/user/${fire_id}/removeCategory`, 
+            let deleted = axios.post(`http://http://54.175.184.234:3000//user/${fire_id}/removeCategory`, 
                             {category: category})
         } 
         catch (error) {

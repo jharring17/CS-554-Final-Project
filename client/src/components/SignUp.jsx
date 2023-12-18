@@ -114,7 +114,7 @@ function SignUp() {
       return false;
     }
     try {
-      await axios.post(`http://localhost:3000/user/register`, 
+      await axios.post(`http://http://54.175.184.234:3000//user/register`, 
                       {fire_id: fire_id,
                       displayName: displayName.value,
                       username: username.value,

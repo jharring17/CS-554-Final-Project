@@ -33,7 +33,7 @@ function CategoryForm({closeForm}) {
         }
         try {
           const fire_id = doGetUID();
-          await axios.post(`http://localhost:3000/user/${fire_id}/addCategory`, 
+          await axios.post(`http://http://54.175.184.234:3000//user/${fire_id}/addCategory`, 
                             {fire_id: fire_id, category: category})
         } 
         catch (error) {

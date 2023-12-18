@@ -6,7 +6,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { AuthContext } from "../context/AuthContext";
 import { doGetUID } from "../firebase/FirebaseFunctions";
 
-const backend = axios.create({baseURL: "http://localhost:3000"})
+const backend = axios.create({baseURL: "http://http://54.175.184.234:3000/"})
 
 const FeedItem = (props) => {
     const {currentUser} = useContext(AuthContext);
@@ -30,7 +30,7 @@ const FeedItem = (props) => {
             let expenseValues = [];
             let uid = doGetUID();
             for(let i = 0; i < itemData.expenses.length; i++){
-                let expenseData = await axios.get(`http://localhost:3000/user/${uid}/${goalId}/${itemData.expenses[i]}`)
+                let expenseData = await axios.get(`http://http://54.175.184.234:3000//user/${uid}/${goalId}/${itemData.expenses[i]}`)
                 expenseValues.push(parseFloat(expenseData.data.expense.amount))
             }
             setExpenses(expenseValues)

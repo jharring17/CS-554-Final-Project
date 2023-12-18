@@ -52,13 +52,13 @@ function Account() {
   useEffect(() => {
     async function getGoals(){
       let id = doGetUID();
-      let data = await axios.get(`http://localhost:3000/userProfile/${id}`)
+      let data = await axios.get(`http://http://54.175.184.234:3000//userProfile/${id}`)
       let sortedData = sortByDate(data.data);
       // setGoals(data.data)
       setGoals(sortedData)
 
 
-      let userData = await axios.get(`http://localhost:3000/user/${id}/getUserInfo`)
+      let userData = await axios.get(`http://http://54.175.184.234:3000//user/${id}/getUserInfo`)
       setUserData(userData.data)
 
     }

@@ -6,7 +6,7 @@ function DeleteGoal(props){
     async function deleteGoal(){
         console.log(props.goalId)
         let id = doGetUID();
-        let data = await axios.delete(`http://localhost:3000/userProfile/${id}/${props.goalId}`)
+        let data = await axios.delete(`http://http://54.175.184.234:3000//userProfile/${id}/${props.goalId}`)
         console.log(data)
         alert("Goal deleted")
         props.close()

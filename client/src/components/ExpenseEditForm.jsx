@@ -19,7 +19,7 @@ function ExpenseEditForm(props) {
 			try {
 				let uid = doGetUID();
 				let expenseData = await axios.get(
-					`http://localhost:3000/user/${uid}/${props.goal}/${props.expense}`
+					`http://http://54.175.184.234:3000//user/${uid}/${props.goal}/${props.expense}`
 				);
 				console.log('This is the fetched expense: ', expenseData);
 				setExpense(expenseData.data.expense);
@@ -144,7 +144,7 @@ function ExpenseEditForm(props) {
 			console.log('Getting Goal Props: ', props.goal);
 			console.log('Getting Expense Props: ', expense._id);
 			let patchedExpense = await axios.put(
-				`http://localhost:3000/user/${uid}/${props.goal}/${expense._id}`,
+				`http://http://54.175.184.234:3000//user/${uid}/${props.goal}/${expense._id}`,
 				{
 					description: description,
 					amount: parseFloat(amount),

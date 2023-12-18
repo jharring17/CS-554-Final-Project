@@ -12,7 +12,7 @@ function AddGoal({closeForm}){
     useEffect( ()=>{
         async function getUserInfo(){
             let id = doGetUID();
-            let data = await axios.get(`http://localhost:3000/user/${id}/getUserInfo`)
+            let data = await axios.get(`http://http://54.175.184.234:3000//user/${id}/getUserInfo`)
             setCategories(data.data.categories)
         }
         getUserInfo()
@@ -154,7 +154,7 @@ function AddGoal({closeForm}){
             return;
         }
 
-        let data = await axios.post(`http://localhost:3000/userProfile/${userId}/newGoal`, 
+        let data = await axios.post(`http://http://54.175.184.234:3000//userProfile/${userId}/newGoal`, 
             {
                 userId: userId,
                 title: title, 

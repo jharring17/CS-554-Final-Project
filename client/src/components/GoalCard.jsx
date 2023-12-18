@@ -28,7 +28,7 @@ function GoalCard(props) {
 		for (let i=0;i<goalObj.expenses.length;i++)
 		{
 			let expenseId = goalObj.expenses[i];
-			let currentExpenseObj = await axios.get(`http://localhost:3000/user/${userId}/${goalId}/${expenseId}`);
+			let currentExpenseObj = await axios.get(`http://http://54.175.184.234:3000//user/${userId}/${goalId}/${expenseId}`);
 			newExpensesList.push(currentExpenseObj.data.expense);
 		}
 		// console.log(newExpensesList);
@@ -72,7 +72,7 @@ function GoalCard(props) {
 			// Delete an expense from a goal.
 			let uid = doGetUID();
 			let deletedExpense = await axios.delete(
-				`http://localhost:3000/user/${uid}/${goalId}/${expenseId}`
+				`http://http://54.175.184.234:3000//user/${uid}/${goalId}/${expenseId}`
 			);
 			console.log(deletedExpense);
 		} catch (e) {
@@ -104,7 +104,7 @@ function GoalCard(props) {
 	}
 	async function deleteGoal(goalId) {
 		let id = doGetUID();
-		let data = await axios.delete(`http://localhost:3000/userProfile/${id}/${goalId}`);
+		let data = await axios.delete(`http://http://54.175.184.234:3000//userProfile/${id}/${goalId}`);
 		handleClose();
 		setShowDeleteGoalForm(false);
 	}
@@ -115,7 +115,7 @@ function GoalCard(props) {
 		async function getGoalInfo() {
 			let id = doGetUID();
 			try {
-				let data = await axios.get(`http://localhost:3000/userProfile/${id}/${props.id}`);
+				let data = await axios.get(`http://http://54.175.184.234:3000//userProfile/${id}/${props.id}`);
 				let goal = data.data;
 				setGoal(goal);
 

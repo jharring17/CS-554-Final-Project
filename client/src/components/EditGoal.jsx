@@ -16,7 +16,7 @@ function EditGoal(props){
         setCategories(null)
         async function getGoalInfo(){
             let id = doGetUID();
-            let data = await axios.get(`http://localhost:3000/userProfile/${id}/${props.goal}`)
+            let data = await axios.get(`http://http://54.175.184.234:3000//userProfile/${id}/${props.goal}`)
             setGoal(data.data)
 
             //change the date to fill the format of the form
@@ -25,7 +25,7 @@ function EditGoal(props){
             currDate = currDate[2] + '-' + currDate[0] + '-' + currDate[1];
             setFillDate(currDate)
 
-            let userData = await axios.get(`http://localhost:3000/user/${id}/getUserInfo`)
+            let userData = await axios.get(`http://http://54.175.184.234:3000//user/${id}/getUserInfo`)
             setCategories(userData.data.categories)
         }
         getGoalInfo();
@@ -166,7 +166,7 @@ function EditGoal(props){
             return;
         }
 
-        await axios.patch(`http://localhost:3000/userProfile/${goal.userId}/${goal._id}`, 
+        await axios.patch(`http://http://54.175.184.234:3000//userProfile/${goal.userId}/${goal._id}`, 
             {
                 id: goal,
                 userId: goal.userId,
