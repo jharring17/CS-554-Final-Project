@@ -150,7 +150,7 @@ function SignUp() {
   return (
     <div className='card'>
       <h1>Sign up</h1>
-      {errorState && <h4 className='error'>{errorState}</h4>}
+      {errorState && <h4 className='error'>{errorState.toString()}</h4>}
       <form onSubmit={handleSignUp}>
         <div className='form-group'>
           <label>
@@ -158,7 +158,7 @@ function SignUp() {
             <br />
             <input
               className='form-control'
-              required
+              // required
               name='displayName'
               type='text'
               placeholder='Name'
@@ -175,9 +175,9 @@ function SignUp() {
             <br />
             <input
               className='form-control'
-              required
+              // required
               name='email'
-              type='email'
+              // type='email'
               placeholder='Email'
             />
           </label>
@@ -188,7 +188,7 @@ function SignUp() {
             <br />
             <input
               className='form-control'
-              required
+              // required
               name='username'
               type='text'
               placeholder='Username'
@@ -209,7 +209,7 @@ function SignUp() {
               type='password'
               placeholder='Password'
               autoComplete='off'
-              required
+              // required
             />
           </label>
           <p className="input-requirements">
@@ -226,7 +226,7 @@ function SignUp() {
               type='password'
               placeholder='Confirm Password'
               autoComplete='off'
-              required
+              // required
             />
           </label>
         </div>
@@ -240,7 +240,7 @@ function SignUp() {
               type='number'
               placeholder='Age'
               autoComplete='off'
-              required
+              // required
             />
           </label>
         </div>
