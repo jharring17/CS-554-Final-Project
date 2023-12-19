@@ -31,15 +31,15 @@ function CategoryForm({closeForm}) {
         }
       };
 
-    function stringChecker(string) {
-        if(typeof string != 'string') throw `Input must be a string`;
+    function stringChecker(string, stringName) {
+        if(typeof string != 'string') throw `${stringName} must be a string`;
         string = string.trim();
-        if(string.length === 0) throw `String cannot be empty`;
+        if(string.length === 0) throw `${stringName} cannot be empty`;
         return string;
     }
 
     function checkName(name, stringName) {
-        name = stringChecker(name);
+        name = stringChecker(name, stringName);
     
         if (stringName.toLowerCase().trim() === "username") {
           name = name.toLowerCase();
@@ -91,11 +91,21 @@ function CategoryForm({closeForm}) {
         if(photo != ''){
             let photoUploading = new FormData();
             //append the file custom key from cloudinary (gp0pimba)
-            photoUploading.append("file", photo);
-            photoUploading.append("upload_preset", "gp0pimba");
-            //upload the photo to cloudinary (djllvfvts is my cloud name)
-            let data = await axios.post('https://api.cloudinary.com/v1_1/djllvfvts/image/upload', photoUploading)
-            newLink = data.data.secure_url;
+            let splitPhotoName = photo.name.split('.');
+            let fileType = splitPhotoName[splitPhotoName.length-1];
+            if (fileType != "img" && fileType != "jpeg" && fileType != "png" && fileType != "jpg")
+            {
+                setError("Profile picture not valid file type");
+                return;
+            }
+            else
+            {
+                photoUploading.append("file", photo);
+                photoUploading.append("upload_preset", "gp0pimba");
+                //upload the photo to cloudinary (djllvfvts is my cloud name)
+                let data = await axios.post('https://api.cloudinary.com/v1_1/djllvfvts/image/upload', photoUploading)
+                newLink = data.data.secure_url;
+            }
         }else{
             newLink = user.profilePic
         }
@@ -232,8 +242,15 @@ function CategoryForm({closeForm}) {
                         accept=".img,.jpeg,.png,.jpg"
                         autoFocus={true}
                         onChange={(e) => {
-                            let currPhoto = e.target.files[0];
-                            setPhoto(currPhoto)
+                            if (e == null || e.target == null || e.target.files == null)
+                            {
+                                setError("Must supply a valid file");
+                            }
+                            else
+                            {
+                                let currPhoto = e.target.files[0];
+                                setPhoto(currPhoto)
+                            }
                         }}
                         />
                     </label>
