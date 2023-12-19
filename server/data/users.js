@@ -18,7 +18,7 @@ const register = async (fire_id, displayName, username, email, age) => {
 	email = helper.checkEmail(email);
 	age = helper.checkAge(age);
 
-    const userCollection = await users();
+    const userCollection = await users();    
     const user2 = await userCollection.findOne({username: username});
     if (user2 != null) {
       throw `User already exists with this username`;
