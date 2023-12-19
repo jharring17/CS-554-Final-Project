@@ -41,54 +41,66 @@ function EditGoal(props){
         if(typeof title != 'string') {
             setError(`Title must be a string`);
             waiting = true;
+            return
         }
         title = title.trim();
         if(title.length === 0) {
             setError(`Title cannot be empty`);
             waiting = true;
+            return
         }
         if (title.length < 3) {
             setError(`Title length must be at least 3`);
             waiting = true;
+            return
         }
         if (title.length > 50) {
             setError(`Title length cannot exceed 50 characters`);
             waiting = true;
+            return
         }
         if (!/[A-Za-z]/.test(title)) {
             setError(`Title must contain at least one letter`);
             waiting = true;
+            return
         }
         if (!/^[A-Za-z0-9:&$%-]/.test(title)) {
             setError(`Title is invalid`);
             waiting = true;
+            return
         }
         if(title.length === 0){
             setError("Title Cannot Be An Empty String")
             waiting = true;
+            return
         }
         //desc
         let description = document.getElementById('description').value.trim();
         if(typeof description != 'string') {
             setError(`Description must be a string`);
             waiting = true;
+            return
         }
         description = description.trim();
         if(description.length === 0) {
             setError(`Description cannot be empty`);
             waiting = true;
+            return
         }
         if (description.length < 5) {
             setError(`Description length must be at least 5`);
             waiting = true;
+            return
         }
         if (description.length > 200) {
             setError(`Description length cannot exceed 200 characters`);
             waiting = true;
+            return
         }
         if (!/[A-Za-z]/.test(description)) {
             setError(`Description must contain at least one letter`);
             waiting = true;
+            return
         }
 
         let limit = document.getElementById('limit').value.trim();
@@ -97,19 +109,23 @@ function EditGoal(props){
         if(temp != 0){
             setError("Limit must be a valid dollar amount")
             waiting = true;
+            return
         }
         if(limit > 1000000){
             setError("Limit cannot exceed $1000000");
             waiting = true;
+            return
         }
         let goalDate = document.getElementById('goalDate').value.trim();
         if(typeof goalDate != 'string'){
             setError("Date Must Be A String")
             waiting = true;
+            return
         }
         if(goalDate.length === 0){
             setError("Date Cannot Be An Empty String")
             waiting = true;
+            return
         }
         let split = goalDate.split("/");
         console.log(split)
@@ -163,7 +179,7 @@ function EditGoal(props){
         return (
             <div>
                 {error && 
-                    <h3 className='error'>Error: {error}</h3>
+                    <h3 className='error'>{error}</h3>
                 }
                 <form id="editGoal" onSubmit={submitGoal}>
                     <label>
