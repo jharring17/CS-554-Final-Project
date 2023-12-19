@@ -1,6 +1,7 @@
 import {React, useState, useEffect} from 'react'
 import axios from 'axios'
 import { doGetUID } from "../firebase/FirebaseFunctions";
+import {isValid, parse, isBefore, startOfDay} from 'date-fns'
 
 function EditGoal(props){
     const [goal, setGoal] = useState(null);
@@ -21,8 +22,8 @@ function EditGoal(props){
 
             //change the date to fill the format of the form
             let currDate = data.data.goalDate;
-            currDate = currDate.split('/')
-            currDate = currDate[2] + '-' + currDate[0] + '-' + currDate[1];
+            // currDate = currDate.split('/')
+            // currDate = currDate[2] + '-' + currDate[0] + '-' + currDate[1];
             setFillDate(currDate)
 
             let userData = await axios.get(`http://localhost:3000/user/${id}/getUserInfo`)
@@ -30,54 +31,6 @@ function EditGoal(props){
         }
         getGoalInfo();
     }, [])
-
-    function dateChecker(date){
-        for(let i = 0; i < date.length; i++){
-            if(date.charCodeAt(i) != 47){
-                if(date.charCodeAt(i) < 48 || date.charCodeAt(i) > 57){
-                    return "Date must be in the MM/DD/YYYY format"
-                }
-            }
-        }
-
-        if(date[2] != '/' && date[5] != '/') return `Date needs to be in the format 'MM/DD/YYYY'`
-        let validMonths = ['01','02','03','04','05','06','07','08', '09', '10', '11', '12'];
-        let present = false;
-        //make sure the month matches 1 valid month
-        for(let i = 0; i < validMonths.length; i++){
-          if(validMonths[i] === date.substring(0,2)){
-            present = true;
-            break;
-          }
-        }
-        if(present === false) return "The month isn't valid for date";
-    
-        //check to make sure the month lines up with dates
-        if(date.substring(0,2) === "04" || date.substring(0,2) === "06" || date.substring(0,2) === "09" || date.substring(0,2) === "11"){
-          if(parseInt(date.substring(3,5)) > 30 || parseInt(date.substring(3,5)) < 0) return `Invalid day for date`;
-        }
-        else if(date.substring(0,2) === "01" || date.substring(0,2) === "03" || date.substring(0,2) === "05" || date.substring(0,2) === "07" || date.substring(0,2) === "08" || date.substring(0,2) === "10" || date.substring(0,2) === "12"){
-          if(parseInt(date.substring(3,5)) > 31 || parseInt(date.substring(3,5)) < 0) return `Invalid day for date`;
-        }
-        else{
-          if(parseInt(date.substring(3,5)) > 28 || parseInt(date.substring(3,5)) < 0) return `Invalid day for date`;
-        }
-        //used this link to get the current date: https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript
-        let currDate = new Date();
-        let month = currDate.getMonth() + 1;
-        let day = currDate.getDate();
-        let year = currDate.getFullYear();
-    
-        //now we have to compare to make sure that the goalDate is later than the curr date
-        let goalMonth = parseInt(date.substring(0, 2));
-        let goalDay = parseInt(date.substring(3,5));
-        let goalYear = parseInt(date.substring(6));
-        if(year > goalYear) return `Goal Date must be a future date (invalid year)`
-        if(year === goalYear && month > goalMonth) return `Goal Date must be a future date (invalid month)`
-        if(year === goalYear && month === goalMonth && day > goalDay) return `Goal Date must be a future date (invalid day)`
-    
-        return date;
-    }
 
     async function submitGoal(e){
         e.preventDefault();
@@ -150,18 +103,33 @@ function EditGoal(props){
             waiting = true;
         }
         let goalDate = document.getElementById('goalDate').value.trim();
-        //change the format of the date to check it
-        goalDate = goalDate.split('-')
-        goalDate = goalDate[1] + '/' + goalDate[2] + '/' + goalDate[0];
+        if(typeof goalDate != 'string'){
+            setError("Date Must Be A String")
+            waiting = true;
+        }
         if(goalDate.length === 0){
             setError("Date Cannot Be An Empty String")
             waiting = true;
         }
-        // let result = dateChecker(goalDate);
-        // if(result != goalDate){
-        //     setError(result)
-        //     waiting = true;
-        // }
+        let split = goalDate.split("/");
+        console.log(split)
+        if (split.length != 3 || split[0].length !== 2 || split[1].length !== 2 || split[2].length != 4) {
+            setError("Date must be in the form MM/DD/YYYY");
+            waiting = true;
+            return
+        }
+        let parsedDate = parse(goalDate, 'MM/dd/yyyy', new Date());
+
+        if (!isValid(parsedDate)) {
+            setError("Date must be a valid date");
+            waiting = true;
+            return
+        }
+        if (isBefore(parsedDate, startOfDay(new Date())) ) {
+            setError("Date must be today's date or a future date");
+            waiting = true;
+            return
+        }
         if(waiting){
             return;
         }
@@ -251,11 +219,7 @@ function EditGoal(props){
                     <label>
                     Date:
                     <br />
-                    <input id="goalDate" type="date" defaultValue={fillDate}
-                    // ref={(node) => {
-                    //     goalDate = node;
-                    // }}
-                    // defaultValue={goal.goalDate}
+                    <input id="goalDate" defaultValue={fillDate}
                     />
                     </label>
                     <br/>
