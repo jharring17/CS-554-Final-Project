@@ -34,7 +34,7 @@ const register = async (fire_id, displayName, username, email, age) => {
         fire_id,
         displayName,
         username, 
-        email,
+        email: email.toLowerCase(),
         age: age,
         friends: [],
         pendingFriends: [],
