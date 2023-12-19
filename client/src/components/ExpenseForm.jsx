@@ -9,16 +9,16 @@ function ExpenseForm(props) {
 	// Define navigate for page redirection.
 	let [error, setError] = useState('');
 
-	useEffect(()=> {
-		setError('')
-	}, [])
+	useEffect(() => {
+		setError('');
+	}, []);
 
 	const handleSubmit = async (e) => {
 		// Prevent default action.
 		e.preventDefault();
 		let waiting = false;
-		setError('')
-		console.log("error: " + error)
+		setError('');
+		console.log('error: ' + error);
 		// Get the values from the form.
 		let userId = firebase.doGetUID();
 		let description = document.getElementById('des').value;
@@ -27,36 +27,61 @@ function ExpenseForm(props) {
 
 		// Error checking for form values.
 		// Check that form values are not empty.
-		if (description.trim() == '') {
-			setError('Description is required.')
+		if (description === undefined || amount === undefined || date === undefined) {
+			setError('No inputs can be empty.');
 			waiting = true;
 		}
+
+		if (description === null || amount === null || date === null) {
+			setError('No inputs can be empty.');
+			waiting = true;
+		}
+
+		if (description.trim() == '') {
+			setError('Description is required.');
+			waiting = true;
+		}
+		description = description.trim();
+
 		if (!/[A-Za-z]/.test(description)) {
-            setError(`Description must contain at least one letter`);
-            waiting = true;
-        }
+			setError(`Description must contain at least one letter`);
+			waiting = true;
+		}
+
+		if (typeof description != 'string') {
+			setError('Description must be a string.');
+		}
+
 		if (amount.trim() == '') {
-			setError('Amount is required.')
+			setError('Amount is required.');
 			waiting = true;
 		}
 		if(typeof date != "string"){
 			setError("Date must be in the form MM/DD/YYYY")
 		}
-		if (date.trim() == '') {
-			setError('Date is required.')
+		amount = amount.trim();
+
+		if (typeof date != 'string') {
+			setError('Date must be a string.');
 			waiting = true;
 		}
+		if (date.trim() == '') {
+			setError('Date is required.');
+			waiting = true;
+		}
+		date = date.trim();
+
 		// Description can only be 200 characters.
 		if (description.length > 200) {
-			console.log(description.length)
-			setError(`Description cannot exceed 200 characters.`)
+			console.log(description.length);
+			setError(`Description cannot exceed 200 characters.`);
 			waiting = true;
 		}
 
 		// Check that the amount field only contains numbers and decimals.
 		if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
-			console.log("here")
-			setError(`Amount field can only contain numbers and decimals.`)
+			console.log('here');
+			setError(`Amount field can only contain numbers and decimals.`);
 			waiting = true;
 		}
 
@@ -69,8 +94,8 @@ function ExpenseForm(props) {
 			setError('Amount must be non-zero.');
 			waiting = true;
 		}
-		if(parseFloat(amount) > 1000000){
-			setError('Amount cannot exceed $1000000')
+		if (parseFloat(amount) > 1000000) {
+			setError('Amount cannot exceed $1000000');
 			waiting = true;
 		}
 
@@ -129,6 +154,7 @@ function ExpenseForm(props) {
 				setError(e)
 				return
 			}
+
 		//}
 	};
 
@@ -138,40 +164,40 @@ function ExpenseForm(props) {
 			<h1>Track an Expense</h1>
 			<p className="error">{error}</p>
 			<form id="addExpense">
-
-				<div className='form-group'>
+				<div className="form-group">
 					<label>
 						Description:
-						<br/>
+						<br />
 						<input id="des" placeholder="I bought..." />
 					</label>
-					<p className="input-requirements">
-						Max 200 characters. Must include letters.
-					</p>
+					<p className="input-requirements">Max 200 characters. Must include letters.</p>
 				</div>
 
-				<div className='form-group'>
+				<div className="form-group">
 					<label>
 						Amount:
-						<br/>
+						<br />
 						<input id="amount" placeholder="$" />
 					</label>
 				</div>
 
-				<div className='form-group'>
+				<div className="form-group">
 					<label>
 						Date:
 						<br/>
 						<input id="date" />
+
 					</label>
 				</div>
 
-				<br/>
-			
-				<button className='button' type="submit" onClick={handleSubmit}>
+				<br />
+
+				<button className="button" type="submit" onClick={handleSubmit}>
 					Add Expense
 				</button>
-				<button className='button' onClick={() => props.close()}>Cancel</button>
+				<button className="button" onClick={() => props.close()}>
+					Cancel
+				</button>
 			</form>
 		</div>
 	);
