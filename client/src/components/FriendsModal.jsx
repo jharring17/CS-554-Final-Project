@@ -55,8 +55,9 @@ function FriendsModal() {
         try {
             if(!(/^[a-zA-Z0-9]+$/.test(username)) || username.length < 8 || username.length > 20) throw {response: {status:400, error: "Bad username"}}
             const {data} = await backend.get(`/getIdByUsername/${username.trim()}`)
-            await backend.post(`/friends/request/SEND`, {user1: userId, user2: data.fire_id})
-            toast(`Request Sent To ${data.displayName}`)
+            const response = await backend.post(`/friends/request/SEND`, {user1: userId, user2: data.fire_id})
+            if(response.data.code == "FRIEND_ACCEPTED") toast("Request Accepted")
+            else (toast(`Request Sent To ${data.displayName}`))
             setRefresh(!refresh)
         } catch (e) {
             if(e.response.data == 'User already in friends list: sendFriendRequest') toast.error("User is already your friend!")
