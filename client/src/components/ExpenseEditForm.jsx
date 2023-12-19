@@ -28,7 +28,7 @@ function ExpenseEditForm(props) {
 				let expenseDate = expenseData.data.expense.date;
 				setFillDate(expenseDate);
 			} catch (e) {
-				`Error: cannot get expense.`;
+				`Cannot get expense`;
 			}
 		}
 		getExpense();
@@ -48,33 +48,33 @@ function ExpenseEditForm(props) {
 		let waiting = false;
 
 		if (description === undefined || amount === undefined || date === undefined) {
-			setError('No inputs can be empty.');
+			setError('No inputs can be empty');
 			waiting = true;
 			return
 		}
 
 		if (description === null || amount === null || date === null) {
-			setError('No inputs can be empty.');
+			setError('No inputs can be empty');
 			waiting = true;
 			return
 		}
 
 		// Check that form values are not empty.
 		if (description.trim() == '') {
-			setError('Description is required.');
+			setError('Description is required');
 			waiting = true;
 			return
 		}
 		description = description.trim();
 
 		if (typeof description != 'string') {
-			setError('Description must be a string.');
+			setError('Description must be a string');
 			waiting = true;
 			return
 		}
 
 		if (typeof date != 'string') {
-			setError('Date must be a string.');
+			setError('Date must be a string');
 			waiting = true;
 			return
 		}
@@ -85,7 +85,7 @@ function ExpenseEditForm(props) {
 			return
 		}
 		if (amount.trim() == '') {
-			setError('Amount is required.');
+			setError('Amount is required');
 			waiting = true;
 			return
 		}
@@ -96,7 +96,7 @@ function ExpenseEditForm(props) {
 		}
 		amount = amount.trim();
 		if (date.trim() == '') {
-			setError('Date is required.');
+			setError('Date is required');
 			waiting = true;
 			return
 		}
@@ -104,31 +104,31 @@ function ExpenseEditForm(props) {
 
 		// Description can only be 200 characters.
 		if (description.length > 200) {
-			setError(`Description cannot exceed 200 characters.`);
+			setError(`Description cannot exceed 200 characters`);
 			waiting = true;
 			return
 		}
 
 		// Check that the amount field only contains numbers and decimals.
 		if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
-			setError(`Amount field can only contain numbers and decimals.`);
+			setError(`Amount field must be valid monetary value`);
 			waiting = true;
 			return
 		}
 
 		// Check that amount is positive, non-zero number.
 		if (parseFloat(amount) < 0) {
-			setError(`Cannot have a negative amount.`);
+			setError(`Cannot have a negative amount`);
 			waiting = true;
 			return
 		}
 		if (parseFloat(amount) === 0) {
-			setError('Amount must be non-zero.');
+			setError('Amount must be non-zero');
 			waiting = true;
 			return
 		}
 		if (parseFloat(amount) > 1000000) {
-			setError('Amount must be non-zero.');
+			setError('Amount must be non-zero');
 			waiting = true;
 			return
 		}
@@ -137,7 +137,7 @@ function ExpenseEditForm(props) {
 			let amountComponents = amount.split('.');
 			if (amountComponents[1].length != 2 && amountComponents[1].length != 1) {
 				console.log('nsklandklas');
-				setError(`Must have one or two numbers trailing a decimal.`);
+				setError(`Must have one or two numbers trailing a decimal`);
 				waiting = true;
 				return
 			}
