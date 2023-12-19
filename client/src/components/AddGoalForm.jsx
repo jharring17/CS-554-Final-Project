@@ -44,49 +44,60 @@ function AddGoal({closeForm}){
         if(typeof title != 'string') {
             setError(`Title must be a string`);
             waiting = true;
+            return
         }
         title = title.trim();
         if(title.length === 0) {
             setError(`Title cannot be empty`);
             waiting = true;
+            return
         }
         if (title.length < 3) {
             setError(`Title length must be at least 3`);
             waiting = true;
+            return
         }
         if (title.length > 50) {
             setError(`Title length cannot exceed 50 characters`);
             waiting = true;
+            return
         }
         if (!/[A-Za-z]/.test(title)) {
             setError(`Title must contain at least one letter`);
             waiting = true;
+            return
         }
         if (!/^[A-Za-z0-9:&$%-]/.test(title)) {
             setError(`Title is invalid`);
             waiting = true;
+            return
         }
         //desc
         if(typeof description != 'string') {
             setError(`Description must be a string`);
             waiting = true;
+            return
         }
         description = description.trim();
         if(description.length === 0) {
             setError(`Description cannot be empty`);
             waiting = true;
+            return
         }
         if (description.length < 5) {
             setError(`Description length must be at least 5`);
             waiting = true;
+            return
         }
         if (description.length > 200) {
             setError(`Description length cannot exceed 200 characters`);
             waiting = true;
+            return
         }
         if (!/[A-Za-z]/.test(description)) {
             setError(`Description must contain at least one letter`);
             waiting = true;
+            return
         }
 
         limit = parseFloat(limit);
@@ -94,18 +105,22 @@ function AddGoal({closeForm}){
         if(temp != 0){
             setError("Limit must be a valid dollar amount");
             waiting = true;
+            return
         }
         if(limit > 1000000){
             setError("Limit cannot exceed $1000000");
             waiting = true;
+            return
         }
         if(typeof date != "string"){
             setError("Date must be in the form MM/DD/YYYY");
             waiting = true;
+            return
         }
         if(date.length === 0){
             setError("Date Cannot Be An Empty String");
             waiting = true;
+            return
         }
         let split = date.split("/");
         if (split.length != 3 || split[0].length !== 2 || split[1].length !== 2 || split[2].length != 4) {

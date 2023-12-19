@@ -50,45 +50,55 @@ function ExpenseEditForm(props) {
 		if (description === undefined || amount === undefined || date === undefined) {
 			setError('No inputs can be empty.');
 			waiting = true;
+			return
 		}
 
 		if (description === null || amount === null || date === null) {
 			setError('No inputs can be empty.');
 			waiting = true;
+			return
 		}
 
 		// Check that form values are not empty.
 		if (description.trim() == '') {
 			setError('Description is required.');
 			waiting = true;
+			return
 		}
 		description = description.trim();
 
 		if (typeof description != 'string') {
 			setError('Description must be a string.');
 			waiting = true;
+			return
 		}
 
 		if (typeof date != 'string') {
 			setError('Date must be a string.');
 			waiting = true;
+			return
 		}
 
 		if (!/[A-Za-z]/.test(description)) {
 			setError(`Description must contain at least one letter`);
 			waiting = true;
+			return
 		}
 		if (amount.trim() == '') {
 			setError('Amount is required.');
 			waiting = true;
+			return
 		}
 		if(typeof date != 'string'){
 			setError("Date must be in the format MM/DD/YYYY")
+			waiting = true;
+			return
 		}
 		amount = amount.trim();
 		if (date.trim() == '') {
 			setError('Date is required.');
 			waiting = true;
+			return
 		}
 		date = date.trim();
 
@@ -96,26 +106,31 @@ function ExpenseEditForm(props) {
 		if (description.length > 200) {
 			setError(`Description cannot exceed 200 characters.`);
 			waiting = true;
+			return
 		}
 
 		// Check that the amount field only contains numbers and decimals.
 		if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
 			setError(`Amount field can only contain numbers and decimals.`);
 			waiting = true;
+			return
 		}
 
 		// Check that amount is positive, non-zero number.
 		if (parseFloat(amount) < 0) {
 			setError(`Cannot have a negative amount.`);
 			waiting = true;
+			return
 		}
 		if (parseFloat(amount) === 0) {
 			setError('Amount must be non-zero.');
 			waiting = true;
+			return
 		}
 		if (parseFloat(amount) > 1000000) {
 			setError('Amount must be non-zero.');
 			waiting = true;
+			return
 		}
 		// If the amount contains a decimal, check for two decimal places.
 		if (amount.includes('.')) {
@@ -124,6 +139,7 @@ function ExpenseEditForm(props) {
 				console.log('nsklandklas');
 				setError(`Must have one or two numbers trailing a decimal.`);
 				waiting = true;
+				return
 			}
 		}
 		let split = date.split("/");

@@ -30,44 +30,55 @@ function ExpenseForm(props) {
 		if (description === undefined || amount === undefined || date === undefined) {
 			setError('No inputs can be empty.');
 			waiting = true;
+			return
 		}
 
 		if (description === null || amount === null || date === null) {
 			setError('No inputs can be empty.');
 			waiting = true;
+			return
 		}
 
 		if (description.trim() == '') {
 			setError('Description is required.');
 			waiting = true;
+			return
 		}
 		description = description.trim();
 
 		if (!/[A-Za-z]/.test(description)) {
 			setError(`Description must contain at least one letter`);
 			waiting = true;
+			return
 		}
 
 		if (typeof description != 'string') {
 			setError('Description must be a string.');
+			waiting = true
+			return
 		}
 
 		if (amount.trim() == '') {
 			setError('Amount is required.');
 			waiting = true;
+			return
 		}
 		if(typeof date != "string"){
 			setError("Date must be in the form MM/DD/YYYY")
+			waiting = true
+			return
 		}
 		amount = amount.trim();
 
 		if (typeof date != 'string') {
 			setError('Date must be a string.');
 			waiting = true;
+			return
 		}
 		if (date.trim() == '') {
 			setError('Date is required.');
 			waiting = true;
+			return
 		}
 		date = date.trim();
 
@@ -76,6 +87,7 @@ function ExpenseForm(props) {
 			console.log(description.length);
 			setError(`Description cannot exceed 200 characters.`);
 			waiting = true;
+			return
 		}
 
 		// Check that the amount field only contains numbers and decimals.
@@ -83,20 +95,24 @@ function ExpenseForm(props) {
 			console.log('here');
 			setError(`Amount field can only contain numbers and decimals.`);
 			waiting = true;
+			return
 		}
 
 		// Check that amount is positive, non-zero number.
 		if (parseFloat(amount) < 0) {
 			setError(`Cannot have a negative amount.`);
 			waiting = true;
+			return
 		}
 		if (parseFloat(amount) === 0) {
 			setError('Amount must be non-zero.');
 			waiting = true;
+			return
 		}
 		if (parseFloat(amount) > 1000000) {
 			setError('Amount cannot exceed $1000000');
 			waiting = true;
+			return
 		}
 
 		// If the amount contains a decimal, check for two decimal places.
@@ -105,6 +121,7 @@ function ExpenseForm(props) {
 			if (amountComponents[1].length !== 2 && amountComponents[1].length != 1) {
 				setError(`Must have one or two numbers trailing a decimal.`);
 				waiting = true;
+				return
 			}
 		}
         let split = date.split("/");
