@@ -8,6 +8,7 @@ import {useNavigate, Link} from 'react-router-dom';
 import '../App.css';
 import axios from 'axios';
 import ChangePassword from './ChangePassword';
+import { getAuth, updateEmail, updateProfile, verifyBeforeUpdateEmail } from 'firebase/auth';
 
 function CategoryForm({closeForm}) {
     // const navigate = useNavigate();
@@ -124,6 +125,18 @@ function CategoryForm({closeForm}) {
             hasErrors = true;
             return;
           }
+        //   //updating the data in firebase before updating the database
+        //   const auth = getAuth();
+        //   if(user.email != email.trim()){
+        //     try{
+        //         await updateEmail(auth.currentUser, email.trim())
+        //     }catch(e){
+        //         alert(e)
+        //         setError("Email could not be updated");
+        //         hasErrors = true;
+        //         return
+        //     }
+        //   }
           await axios.post(`http://localhost:3000/userProfile/${fire_id}/editProfile`, 
                             {displayName: displayName.trim(),
                             username: username.trim(),
@@ -132,8 +145,8 @@ function CategoryForm({closeForm}) {
                         })
         } 
         catch (error) {
-          console.log(error);
-          alert(error);
+            setError(error)
+            return
         }
         closeForm()
     };

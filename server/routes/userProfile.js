@@ -2,6 +2,7 @@ import * as goals from "../data/goals.js";
 import * as users from "../data/users.js"
 import * as validate from "../../validation.js";
 import * as friends from "../data/friends.js";
+import {isValid, parse, isBefore, startOfDay} from 'date-fns'
 import { Router } from "express";
 const router = Router();
 import redis from 'redis';
@@ -105,11 +106,22 @@ router
             req.body.description = validate.checkGoalDesc(req.body.description);
             req.body.category = validate.stringChecker(req.body.category);
             req.body.goalDate = validate.stringChecker(req.body.goalDate); 
+            req.body.limit = parseFloat(req.body.limit)
             req.body.limit = validate.limitChecker(req.body.limit);
-            // req.body.goalDate = validate.goalDateChecker(req.body.goalDate);
         }catch(e){
             console.log(e)
             return res.status(400).json({error: e})
+        }
+        let split = req.body.goalDate.split("/");
+        if (split.length != 3 || split[0].length !== 2 || split[1].length !== 2 || split[2].length != 4) {
+            return res.status(400).json({error: "Date must be in the form MM/DD/YYYY"}) 
+        }
+        let parsedDate = parse(req.body.goalDate, 'MM/dd/yyyy', new Date());
+        if (!isValid(parsedDate)) {
+            return res.status(400).json({error: "Date must be a valid date"}) 
+        }
+        if (isBefore(parsedDate, startOfDay(new Date())) ) {
+            return res.status(400).json({error: "Date must be today's date or a future date"}) 
         }
         try {
             req.body.category = await validate.categoryChecker(id, req.body.category);
@@ -242,6 +254,7 @@ router
             req.body.category = goal.category;
         }
         if(req.body.limit){
+            req.body.limit = parseFloat(req.body.limit)
             try{
                 req.body.limit = validate.limitChecker(req.body.limit)
             }catch(e){
@@ -253,9 +266,19 @@ router
         if(req.body.goalDate){
             try{
                 req.body.goalDate = validate.stringChecker(req.body.goalDate);
-                // req.body.goalDate = validate.goalDateChecker(req.body.goalDate);         
             }catch(e){
                 return res.status(400).json({error: e})
+            }
+            let split = req.body.goalDate.split("/");
+            if (split.length != 3 || split[0].length !== 2 || split[1].length !== 2 || split[2].length != 4) {
+                return res.status(400).json({error: "Date must be in the form MM/DD/YYYY"}) 
+            }
+            let parsedDate = parse(req.body.goalDate, 'MM/dd/yyyy', new Date());
+            if (!isValid(parsedDate)) {
+                return res.status(400).json({error: "Date must be a valid date"}) 
+            }
+            if (isBefore(parsedDate, startOfDay(new Date())) ) {
+                return res.status(400).json({error: "Date must be today's date or a future date"}) 
             }
         }else{
             req.body.goalDate = goal.goalDate;
