@@ -44,7 +44,6 @@ router.route('/:userId').get(async (req, res) => {
 router.route('/:userId/editProfile').post(async (req, res) => {
 	let displayName = req.body.displayName;
 	let username = req.body.username;
-	let email = req.body.email;
 	let photo = req.body.photo;
 	// let password = req.body.password;
 
@@ -57,21 +56,18 @@ router.route('/:userId/editProfile').post(async (req, res) => {
 	if (!username) {
 		username = user.username;
 	}
-	if (!email) {
-		email = user.email;
-	}
+	
 
 	//error check
 	try {
 		displayName = validate.checkName(displayName, 'displayName');
 		username = validate.checkName(username, 'username');
-		email = validate.checkEmail(email);
 	} catch (e) {
 		return res.status(400).json({ error: e });
 	}
 
         try {
-            let newUser = await users.editUserInfo(req.params.userId, displayName, username, email, photo);
+            let newUser = await users.editUserInfo(req.params.userId, displayName, username, photo);
             let removeFromCache = await client.del(`goals-for-user-${req.params.userId}`)
             let removeFriendFromCache = await client.del(`friend-${req.params.userId}`)
             return res.status(200).json(newUser)

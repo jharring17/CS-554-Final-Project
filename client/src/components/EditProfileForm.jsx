@@ -18,7 +18,7 @@ function CategoryForm({closeForm}) {
     const [error, setError] = useState(null);
     const [photo, setPhoto] = useState('');
 
-    let displayName, username, email, profilePic;
+    let displayName, username, profilePic;
     const passwordReset = (event) => {
         event.preventDefault();
         let email = document.getElementById('email').value;
@@ -60,20 +60,20 @@ function CategoryForm({closeForm}) {
         return name;
     }
 
-    function checkEmail(emailVal) {
-        let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (!emailVal) throw `You must supply an email`;
-        if (typeof emailVal !== 'string')
-            throw `Email should be a string`;
-        emailVal = emailVal.trim();
-        if (emailVal.length === 0)
-            throw `Email cannot be an empty string or string with just spaces`;
-        if (!emailVal.includes('@'))
-            throw `Email is not a valid email`;
-        if (!emailVal.match(mailformat))
-            throw `Email is not a valid email`;
-        return emailVal;
-    }
+    // function checkEmail(emailVal) {
+    //     let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    //     if (!emailVal) throw `You must supply an email`;
+    //     if (typeof emailVal !== 'string')
+    //         throw `Email should be a string`;
+    //     emailVal = emailVal.trim();
+    //     if (emailVal.length === 0)
+    //         throw `Email cannot be an empty string or string with just spaces`;
+    //     if (!emailVal.includes('@'))
+    //         throw `Email is not a valid email`;
+    //     if (!emailVal.match(mailformat))
+    //         throw `Email is not a valid email`;
+    //     return emailVal;
+    // }
     
     useEffect( () => {
         setUser(null)
@@ -114,12 +114,12 @@ function CategoryForm({closeForm}) {
         let hasErrors = false;
         let displayName = document.getElementById('displayName').value;
         let username = document.getElementById('username').value;
-        let email = document.getElementById('email').value;
+        // let email = document.getElementById('email').value;
         
         try {
             displayName = checkName(displayName, "displayName");
             username = checkName(username, "username");
-            email = checkEmail(email);
+            // email = checkEmail(email);
         }
         catch (e) {
             setError(e);
@@ -130,7 +130,7 @@ function CategoryForm({closeForm}) {
         try {
           const fire_id = doGetUID();
           if (user.displayName === displayName.trim() && user.username === username.trim() 
-              && user.email === email.trim() && photo === "") {
+             && photo === "") {
             setError("Must update at least one field to submit form");
             hasErrors = true;
             return;
@@ -150,7 +150,6 @@ function CategoryForm({closeForm}) {
           await axios.post(`http://localhost:3000/userProfile/${fire_id}/editProfile`, 
                             {displayName: displayName.trim(),
                             username: username.trim(),
-                            email: email.trim(),
                             photo: newLink.trim()
                         })
         } 
@@ -225,7 +224,7 @@ function CategoryForm({closeForm}) {
                     </div>
         
                     <div className='form-group'>
-                    <label>
+                    {/* <label>
                         Email:
                         <br />
                         <input style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}
@@ -241,7 +240,7 @@ function CategoryForm({closeForm}) {
                         }}
                         defaultValue={user.email}
                         />
-                    </label>
+                    </label> */}
                     </div>
                     <div className='form-group'>
                     <label >
@@ -272,22 +271,6 @@ function CategoryForm({closeForm}) {
                     </p>
                     </div>
 
-                    {/* <div className='form-group'>
-                    <label>
-                        Age:
-                        <br />
-                        <input
-                        className='form-control'
-                        required
-                        name='age'
-                        id='age'
-                        type='number'
-                        placeholder='age'
-                        autoFocus={true}
-                        />
-                    </label>
-                    </div> */}
-        
                     <button
                     className='button'
                     id='submitButton'

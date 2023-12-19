@@ -85,15 +85,14 @@ const usernameExists = async (username) => {
 //     }
 // }
 
-const editUserInfo = async (fire_id, displayName, username, email, photo) => {
-	if (!displayName || !username || !email) {
+const editUserInfo = async (fire_id, displayName, username, photo) => {
+	if (!displayName || !username) {
 		throw 'All input fields must be provided :: editUserInfo';
 	}
 
 	fire_id = helper.checkFireId(fire_id);
 	displayName = helper.checkName(displayName, 'display name');
 	username = helper.checkName(username, 'username');
-	email = helper.checkEmail(email);
 
 	const userCollection = await users();
 	const currentUser = await userCollection.findOne({ fire_id: fire_id });
@@ -102,7 +101,7 @@ const editUserInfo = async (fire_id, displayName, username, email, photo) => {
 	const updatedUser = {
 		displayName,
 		username,
-		email,
+		email: currentUser.email,
 		friends: currentUser.friends,
 		pendingFriends: currentUser.pendingFriends,
 		incomingFriends: currentUser.incomingFriends,
@@ -121,9 +120,9 @@ const editUserInfo = async (fire_id, displayName, username, email, photo) => {
 		}
 
 		// Check if the query email is already taken.
-		if (user.email === updatedUser.email && user.fire_id != fire_id) {
-			throw 'Email already taken.';
-		}
+		// if (user.email === updatedUser.email && user.fire_id != fire_id) {
+		// 	throw 'Email already taken.';
+		// }
 	});
 
 	// console.log(userId)
