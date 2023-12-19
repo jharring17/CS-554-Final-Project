@@ -3,6 +3,7 @@ import '../App.css';
 import axios from 'axios';
 import * as firebase from '../firebase/FirebaseFunctions.js';
 import { useThemeProps } from '@mui/material';
+import {isValid, parse, isBefore, startOfDay} from 'date-fns'
 
 function ExpenseForm(props) {
 	// Define navigate for page redirection.
@@ -55,13 +56,15 @@ function ExpenseForm(props) {
 			setError('Amount is required.');
 			waiting = true;
 		}
+		if(typeof date != "string"){
+			setError("Date must be in the form MM/DD/YYYY")
+		}
 		amount = amount.trim();
 
 		if (typeof date != 'string') {
 			setError('Date must be a string.');
 			waiting = true;
 		}
-
 		if (date.trim() == '') {
 			setError('Date is required.');
 			waiting = true;
@@ -104,61 +107,54 @@ function ExpenseForm(props) {
 				waiting = true;
 			}
 		}
-		date = date.split('-');
-		let curr = new Date();
-		let currDay = curr.getDate();
-		if (currDay < 10) {
-			currDay = `0${currDay}`;
-		}
-		let currMonth = curr.getMonth() + 1;
-		if (currMonth < 10) {
-			currMonth = `0${currMonth}`;
-		}
-		let currYear = curr.getFullYear();
-		if (currYear < parseInt(date[0])) {
-			//if the expense year is past the current year
-			setError('The date cannot be a future date');
-			waiting = true;
-		} else if (currYear === parseInt(date[0]) && currMonth < parseInt(date[1])) {
-			//if the year is the same, expense month is past the current month
-			setError('The date cannot be a future date');
-			waiting = true;
-		} else if (
-			currYear === parseInt(date[0]) &&
-			currMonth === parseInt(date[1]) &&
-			currDay < parseInt(date[2])
-		) {
-			//if the year and month are the same, but the curr day is past the expense day
-			setError('The date cannot be a future date');
-			waiting = true;
-		}
-		if (waiting) {
-			return;
-		}
-		//format the date
-		date = date[1] + '/' + date[2] + '/' + date[0];
+        let split = date.split("/");
+        if (split.length != 3 || split[0].length !== 2 || split[1].length !== 2 || split[2].length != 4) {
+            setError("Date must be in the form MM/DD/YYYY");
+            waiting = true;
+            return
+        }
+        let parsedDate = parse(date, 'MM/dd/yyyy', new Date());
 
+        if (!isValid(parsedDate)) {
+            setError("Date must be a valid date");
+            waiting = true;
+            return
+        }
+        if (isBefore(startOfDay(new Date()), parsedDate)) {
+            setError("Date must be today's date or a past date");
+            waiting = true;
+            return
+        }
+		if(waiting){
+			return
+		}
+		
 		// If there are no errors, perform the request.
 		// if (error === '') {
-		// Format the amount value from form for submission.
-		amount = parseFloat(amount);
-		console.log('Amount: ', amount);
+			// Format the amount value from form for submission.
+			amount = parseFloat(amount);
+			console.log('Amount: ', amount);
 
-		// Call the route to add an expense with the form data.
-		try {
-			console.log('User ID: ', userId);
-			console.log('Goal ID: ', props.goalId);
-			let expense = await axios.post(`http://localhost:3000/user/${userId}/${props.goalId}`, {
-				description: description,
-				amount: amount,
-				date: date,
-			});
-			console.log('Posted expense: ', expense);
-			document.getElementById('addExpense').reset();
-			props.close();
-		} catch (e) {
-			console.log(e);
-		}
+			// Call the route to add an expense with the form data.
+			try {
+				console.log('User ID: ', userId);
+				console.log('Goal ID: ', props.goalId);
+				let expense = await axios.post(
+					`http://localhost:3000/user/${userId}/${props.goalId}`,
+					{
+						description: description,
+						amount: amount,
+						date: date,
+					}
+				);
+				console.log('Posted expense: ', expense);
+				document.getElementById('addExpense').reset()
+				props.close()
+			} catch (e) {
+				setError(e)
+				return
+			}
+
 		//}
 	};
 
@@ -188,8 +184,9 @@ function ExpenseForm(props) {
 				<div className="form-group">
 					<label>
 						Date:
-						<br />
-						<input type="date" id="date" />
+						<br/>
+						<input id="date" />
+
 					</label>
 				</div>
 

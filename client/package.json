@@ -16,6 +16,7 @@
     "@mui/styled-engine": "^5.14.20",
     "aws-sdk": "^2.1498.0",
     "axios": "^1.6.2",
+    "date-fns": "^3.0.0",
     "firebase": "^10.6.0",
     "mock-aws-s3": "^4.0.2",
     "nock": "^13.3.8",
