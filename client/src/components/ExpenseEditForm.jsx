@@ -55,23 +55,49 @@ function ExpenseEditForm(props) {
 		// Error checking for form values.
 		let waiting = false;
 
+		if (description === undefined || amount === undefined || date === undefined) {
+			setError('No inputs can be empty.');
+			waiting = true;
+		}
+
+		if (description === null || amount === null || date === null) {
+			setError('No inputs can be empty.');
+			waiting = true;
+		}
+
 		// Check that form values are not empty.
 		if (description.trim() == '') {
 			setError('Description is required.');
 			waiting = true;
 		}
+		description = description.trim();
+
+		if (typeof description != 'string') {
+			setError('Description must be a string.');
+			waiting = true;
+		}
+
+		if (typeof date != 'string') {
+			setError('Date must be a string.');
+			waiting = true;
+		}
+
 		if (!/[A-Za-z]/.test(description)) {
-            setError(`Description must contain at least one letter`);
-            waiting = true;
-        }
+			setError(`Description must contain at least one letter`);
+			waiting = true;
+		}
 		if (amount.trim() == '') {
 			setError('Amount is required.');
 			waiting = true;
 		}
+		amount = amount.trim();
+
 		if (date.trim() == '') {
 			setError('Date is required.');
 			waiting = true;
 		}
+		date = date.trim();
+
 		// Description can only be 200 characters.
 		if (description.length > 200) {
 			setError(`Description cannot exceed 200 characters.`);
@@ -101,7 +127,7 @@ function ExpenseEditForm(props) {
 		if (amount.includes('.')) {
 			let amountComponents = amount.split('.');
 			if (amountComponents[1].length != 2 && amountComponents[1].length != 1) {
-				console.log("nsklandklas")
+				console.log('nsklandklas');
 				setError(`Must have one or two numbers trailing a decimal.`);
 				waiting = true;
 			}
@@ -188,10 +214,12 @@ function ExpenseEditForm(props) {
 					</label>
 					<br />
 					<br />
-					<button className='button' type="submit" onClick={editExpense}>
+					<button className="button" type="submit" onClick={editExpense}>
 						Submit
 					</button>
-					<button className='button' onClick={() => props.close()}>Cancel</button>
+					<button className="button" onClick={() => props.close()}>
+						Cancel
+					</button>
 				</form>
 			</div>
 		);
