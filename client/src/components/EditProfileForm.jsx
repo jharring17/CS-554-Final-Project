@@ -130,12 +130,12 @@ function CategoryForm({closeForm}) {
 
         try {
           const fire_id = doGetUID();
-          if (user.displayName === displayName.trim() && user.username === username.trim() 
-             && photo === "") {
-            setError("Must update at least one field to submit form");
-            hasErrors = true;
-            return;
-          }
+        //   if (user.displayName === displayName.trim() && user.username === username.trim() 
+        //      && photo === "") {
+        //     setError("Must update at least one field to submit form");
+        //     hasErrors = true;
+        //     return;
+        //   }
         //   //updating the data in firebase before updating the database
         //   const auth = getAuth();
         //   if(user.email != email.trim()){
