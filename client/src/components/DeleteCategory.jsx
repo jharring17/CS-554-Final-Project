@@ -5,6 +5,7 @@ import axios from "axios";
 
 function DeleteCategory(props) {
     const [categories, setCategories] = useState([]);
+    const [error, setError] = useState(null);
 
     function stringChecker(string) {
         if(typeof string != 'string') throw `Input must be a string`;
@@ -40,6 +41,7 @@ function DeleteCategory(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError(null)
         
         let category = document.getElementById('category').value;
         
@@ -47,24 +49,38 @@ function DeleteCategory(props) {
             category = checkCategory(category);
         }
         catch (e) {
-            alert(e); //shouldn't reach this bc dropdown
+            setError(e.toString());
+            // alert(e.toString()); //shouldn't reach this bc dropdown
             return;
         }
 
         try {
-          const fire_id = doGetUID();
-          console.log(category)
-            let deleted = axios.post(`http://localhost:3000/user/${fire_id}/removeCategory`, 
+            const fire_id = doGetUID();
+            console.log(category)
+            let deleted = await axios.post(`http://localhost:3000/user/${fire_id}/removeCategory`, 
                             {category: category})
         } 
         catch (error) {
-          alert(error); //shouldn't reach this bc dropdown
+            let errorStr = error.response.data.error;
+            if (errorStr)
+            {
+                setError(errorStr);
+            }
+            else
+            {
+                setError(error.toString());
+            }
+        //   alert(errorStr); //shouldn't reach this bc dropdown
           return;
         }
         props.closeForm();
     };
 
   return (
+    <div>
+       {error && 
+        <p className='error'>{error}</p>
+        }
     <div >
         {categories.length > 3 ? 
             <form onSubmit={handleSubmit}>
@@ -86,6 +102,7 @@ function DeleteCategory(props) {
         :
         <p>You have no custom categories to delete</p>
         }
+    </div>
     </div>
   );
 }

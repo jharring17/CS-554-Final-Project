@@ -156,7 +156,7 @@ function CategoryForm({closeForm}) {
         } 
         catch (error) {
             setError(error.response.data.error);
-            console.log(error.response.data.error)
+            // console.log(error.response.data.error)
             return;
         }
         closeForm()

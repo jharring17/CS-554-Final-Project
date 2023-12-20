@@ -191,9 +191,8 @@ function ExpenseEditForm(props) {
 			);
 			// console.log('Patched Expense: ', patchedExpense);
 		} catch (e) {
-			setError(e.toString())
+			setError(e.response.data.error)
 			return
-			// console.log(e);
 		}
 		props.close();
 	}

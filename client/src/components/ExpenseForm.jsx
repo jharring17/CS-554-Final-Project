@@ -160,8 +160,8 @@ function ExpenseForm(props) {
 
 			// Call the route to add an expense with the form data.
 			try {
-				console.log('User ID: ', userId);
-				console.log('Goal ID: ', props.goalId);
+				// console.log('User ID: ', userId);
+				// console.log('Goal ID: ', props.goalId);
 				let expense = await axios.post(
 					`http://localhost:3000/user/${userId}/${props.goalId}`,
 					{
@@ -170,11 +170,11 @@ function ExpenseForm(props) {
 						date: date,
 					}
 				);
-				console.log('Posted expense: ', expense);
+				// console.log('Posted expense: ', expense);
 				document.getElementById('addExpense').reset()
 				props.close()
 			} catch (e) {
-				setError(e)
+				setError(e.response.data.error)
 				return
 			}
 
