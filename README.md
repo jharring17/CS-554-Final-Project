@@ -43,6 +43,7 @@ This can be ran using Concurrently or as 2 seperate servers. Follow one of these
 4. Cd into the server folder `cd ../server` from the client directory or `cd server` from the root
 5. Install the server dependencies using `npm i`
 6. Cd back to the root of the project
+7. Install the root dependencies with `npm i`
 7. Run the start script for concurrently `npm start`
 
 ### Option 2: Using Seperate Terminals (Used for Deployment)
@@ -55,7 +56,7 @@ This can be ran using Concurrently or as 2 seperate servers. Follow one of these
 #### Server (Express.js):
 1. Cd into the server folder `cd server` from the root directory
 2. Install the dependencies using `npm i`
-3. Run the React.js server `npm run dev`
+3. Run the Express.js server `npm start`
 
 ## Deployment
 The app is deployed on EC2 Micro using tmux. Tmux is a multiplexer for terminals which allows multiple terminals to be accessed and stored in the background. This allows the server to be continuously running even when a terminal isn't openned.
@@ -73,7 +74,7 @@ In EC2, the following inbound rules are required (if all servers are on this ins
 
 Once connected to the server (EC2 Instance Connect / SSH Client):
 * All actions should be done as a super-user `sudo su`
-* Git, Node Package Manager, Redis, and Tmux are installed
+* Git, Node.js / Node Package Manager, Redis, and Tmux are installed
 * The repository is pulled to the EC2 server and cd'ed into
 * In each tmux terminal, a server is ran respectively using Option 2 above. The following tmux commands help accomplish this.
     ```bash
@@ -81,7 +82,7 @@ Once connected to the server (EC2 Instance Connect / SSH Client):
     tmux list-sessions # Lists currently running sessions
     tmux attach-session -t (title) # Opens currently running session with title
     *Keyboard Ctrl+B D* # Exits currently running terminal without terminating
-    *Keyboard Ctrl+D # Kills current terminal
+    *Keyboard Ctrl+D* # Kills current terminal
     ```
 * Without CI/CD, updates occur by running `git pull` inside the directory then restarting each server by attaching and rerunning. 
     * It is important to run `npm i` if there are any dependency changes in the server/client.
