@@ -92,7 +92,6 @@ function ExpenseForm(props) {
 
 		// Check that the amount field only contains numbers and decimals.
 		if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
-			console.log('here');
 			setError(`Amount field can only contain numbers and decimals.`);
 			waiting = true;
 			return
@@ -130,6 +129,11 @@ function ExpenseForm(props) {
             waiting = true;
             return
         }
+		if(parseInt(split[2]) < 1900){
+			setError("Years not accepted before 1900");
+            waiting = true;
+            return	
+		}
         let parsedDate = parse(date, 'MM/dd/yyyy', new Date());
 
         if (!isValid(parsedDate)) {
