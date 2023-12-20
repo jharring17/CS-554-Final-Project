@@ -109,6 +109,13 @@ function ExpenseEditForm(props) {
 			return
 		}
 
+        // Description cannot be less than 3 characters.
+		if (description.length < 3) {
+			setError(`Description must include at least 3 characters.`);
+			waiting = true;
+			return
+		}
+
 		// Check that the amount field only contains numbers and decimals.
 		if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
 			setError(`Amount field must be valid monetary value`);
