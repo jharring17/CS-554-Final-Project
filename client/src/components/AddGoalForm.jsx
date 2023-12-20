@@ -155,7 +155,7 @@ function AddGoal({closeForm}){
             )
             closeForm()
         }catch(e){
-            setError(e)
+            setError(e.response.data.error)
             return
         }
 
