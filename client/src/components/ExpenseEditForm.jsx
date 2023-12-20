@@ -165,9 +165,10 @@ function ExpenseEditForm(props) {
 		}
 		try {
 			// After all data is validated, try to update the expense.
-			console.log('Getting Expense UserId: ', uid);
-			console.log('Getting Goal Props: ', props.goal);
-			console.log('Getting Expense Props: ', expense._id);
+			// if (user.displayName === displayName.trim() && user.username === username.trim()) {
+			// 	setError("Must update at least one field to submit form");
+			// 	return;
+			// }
 			let patchedExpense = await axios.put(
 				`http://localhost:3000/user/${uid}/${props.goal}/${expense._id}`,
 				{
@@ -176,9 +177,9 @@ function ExpenseEditForm(props) {
 					date: date,
 				}
 			);
-			console.log('Patched Expense: ', patchedExpense);
+			// console.log('Patched Expense: ', patchedExpense);
 		} catch (e) {
-			setError(e)
+			setError(e.toString())
 			return
 			// console.log(e);
 		}

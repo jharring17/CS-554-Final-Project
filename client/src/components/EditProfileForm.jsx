@@ -21,7 +21,7 @@ function CategoryForm({closeForm}) {
     let displayName, username, profilePic;
     const passwordReset = (event) => {
         event.preventDefault();
-        console.log(user.email);
+        // console.log(user.email);
         // let email = document.getElementById('email').value;
         if (user.email) {
           doPasswordReset(user.email);
