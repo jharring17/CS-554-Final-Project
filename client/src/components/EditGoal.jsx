@@ -34,6 +34,7 @@ function EditGoal(props){
 
     async function submitGoal(e){
         e.preventDefault();
+        setError(null)
 
         let waiting = false;
         let title = document.getElementById('title').value.trim();
@@ -165,8 +166,9 @@ function EditGoal(props){
         if(waiting){
             return;
         }
-
-        await axios.patch(`http://localhost:3000/userProfile/${goal.userId}/${goal._id}`, 
+        try
+        {
+            let patched = await axios.patch(`http://localhost:3000/userProfile/${goal.userId}/${goal._id}`, 
             {
                 id: goal,
                 userId: goal.userId,
@@ -179,8 +181,23 @@ function EditGoal(props){
                 expenses: goal.expenses,
                 likes: goal.likes,
                 seedingBool: goal.seedingBool
+            })
+        }
+        catch(error)
+        {
+            let errorStr = error.response.data.error;
+            if (errorStr)
+            {
+                setError(errorStr);
             }
-        )
+            else
+            {
+                setError(error.toString());
+            }
+            waiting = true;
+            return;
+        }
+        
         document.getElementById('editGoal').reset()
         props.close()
 
