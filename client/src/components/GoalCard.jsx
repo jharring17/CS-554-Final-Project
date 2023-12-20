@@ -204,8 +204,8 @@ function GoalCard(props) {
 							)}					
 						{showDeleteGoalForm && (
 							// <DeleteGoal isOpen={openDeleteGoal} close={handleClose} goalId={goal._id} />
-							<div>
-								<p>Are you sure you want to delete?</p>
+							<div className="sure">
+								<p>Are you sure you want to delete this goal?</p>
 								<button className='button' onClick={() => deleteGoal(goal._id)}>Yes</button>
 								<button className='button' onClick={() => handleClose()}>No</button>
 							</div>

@@ -190,7 +190,7 @@ function ExpenseEditForm(props) {
 	} else {
 		return (
 			<div className="editExpenseForm">
-				<h1>Track an Expense</h1>
+				<h1>Edit Expense</h1>
 				<p className="error">{error}</p>
 				<form id="addExpense">
 					<label>
@@ -221,6 +221,7 @@ function ExpenseEditForm(props) {
 					<button className="button" onClick={() => props.close()}>
 						Cancel
 					</button>
+					<br/>
 				</form>
 			</div>
 		);
