@@ -218,6 +218,7 @@ function ExpenseForm(props) {
 						<input id="date" />
 
 					</label>
+                    <p className="input-requirements">Must be in the format MM/DD/YYYY</p>
 				</div>
 
 				<br />
