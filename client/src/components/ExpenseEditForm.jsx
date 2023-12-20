@@ -206,7 +206,7 @@ function ExpenseEditForm(props) {
 							defaultValue={expense.description}
 						/>
 					</label>
-					<br />
+					<p className="input-requirements">Max 200 characters. Must include letters.</p>
 					<br />
 					<label>
 						Amount
@@ -218,6 +218,7 @@ function ExpenseEditForm(props) {
 						Date
 						<input id="date" defaultValue={fillDate} />
 					</label>
+					<p className="input-requirements">Must be in the format MM/DD/YYYY</p>
 					<br />
 					<br />
 					<button className="button" type="submit" onClick={editExpense}>
