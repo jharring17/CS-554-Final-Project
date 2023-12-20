@@ -200,7 +200,7 @@ function ExpenseForm(props) {
 						<br />
 						<input id="des" placeholder="I bought..." />
 					</label>
-					<p className="input-requirements">Max 200 characters. Must include letters.</p>
+					<p className="input-requirements">Min 3 characters. Max 200 characters. Must include letters.</p>
 				</div>
 
 				<div className="form-group">
