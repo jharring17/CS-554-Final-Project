@@ -136,6 +136,13 @@ function ExpenseForm(props) {
             waiting = true;
             return
         }
+
+		if(parseInt(split[2]) < 1900){
+			setError("Years not accepted before 1900");
+            waiting = true;
+            return	
+		}
+		
         let parsedDate = parse(date, 'MM/dd/yyyy', new Date());
 
         if (!isValid(parsedDate)) {
