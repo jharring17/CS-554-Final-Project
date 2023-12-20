@@ -242,6 +242,9 @@ router.route("/:userId/:goalId").post(async (req, res) => {
 	if (split.length != 3 || split[0].length !== 2 || split[1].length !== 2 || split[2].length != 4) {
 		return res.status(400).json({ error: "Date must be in the form MM/DD/YYYY" });
 	}
+	if(parseInt(split[2]) < 1900){
+		return res.status(400).json({ error: "Year cannot be prior to 1900" })
+	}
 	let parsedDate = parse(date, 'MM/dd/yyyy', new Date());
 
 	if (!isValid(parsedDate)) {
@@ -282,6 +285,9 @@ router.route("/:userId/:goalId/:expenseId").put(async (req, res) => {
 	let split = date.split("/");
 	if (split.length != 3 || split[0].length !== 2 || split[1].length !== 2 || split[2].length != 4) {
 		return res.status(400).json({ error: "Date must be in the form MM/DD/YYYY" });
+	}
+	if(parseInt(split[2]) < 1900){
+		return res.status(400).json({ error: "Year cannot be prior to 1900" })
 	}
 	let parsedDate = parse(date, 'MM/dd/yyyy', new Date());
 
