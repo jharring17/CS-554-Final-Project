@@ -19,11 +19,11 @@ function DeleteCategory(props) {
         category = stringChecker(category);
         category = category.toLowerCase();
         if (category.length > 30) {
-          throw 'category name too long: checkCategory';
+          throw 'Category name too long: checkCategory';
         }
         if (!/^[a-zA-Z0-9_.-]*[a-zA-Z][a-zA-Z0-9_. -]*$/.test(category)) { 
           //rn this takes multi word categories with numbers and _.-
-          throw 'invalid category';
+          throw 'Invalid category';
         }
         return category;
     }
