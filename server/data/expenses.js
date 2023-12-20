@@ -149,7 +149,7 @@ const editExpense = async (expenseId, description, amount, date) => {
 	);
 
 	// Check if an expense was found.
-	if (updateInfo.modifiedCount === 0) throw 'Could not update expense: editExpense';
+	// if (updateInfo.modifiedCount === 0) throw 'Could not update expense: editExpense';
 
 	// Return the updated expense.
 	console.log('Updated Information: ', updateInfo);
