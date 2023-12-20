@@ -5,6 +5,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { AuthContext } from "../context/AuthContext";
 import { doGetUID } from "../firebase/FirebaseFunctions";
+import {Link} from 'react-router-dom';
 
 const backend = axios.create({baseURL: "http://localhost:3000"})
 
@@ -49,7 +50,7 @@ const FeedItem = (props) => {
         <div className="card" style={{position: "relative", overflow: "hidden"}}>
             <div className="user-feed-card" style={{display:"flex", gap:"15px", alignItems: "center", position: "absolute", top: 0, left: 0, boxSizing:"border-box", width: "100%", paddingLeft: "20px", paddingRight: "20px", paddingTop: "5px"}}>
                 <img alt={"profile picture"} src={user.profilePic} style={{width:"45px", height:"45px", borderRadius: "100%" }}/>
-                <a>{user.displayName}</a>
+                <Link to={`/friends/userprofile/${user.fire_id}`}>{user.displayName}</Link>
                 <p style={{marginLeft:"auto", marginRight: 0}}>{itemData.goalDate}</p>
             </div>
             <div style={{marginTop: 50, marginBottom: 25, borderBottom: "2px solid black", borderTop: "2px solid black", paddingBottom: "5px", paddingTop: "15px"}}>
