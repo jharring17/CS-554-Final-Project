@@ -1,6 +1,10 @@
 import { Router } from "express";
 const router = Router();
 import {sendFriendRequest, acceptRequest, declineRequest, cancelRequest, removeFriend, getPendingRequests, getIncomingRequests, getAllFriends} from "../data/friends.js"
+import redis from 'redis';
+const client = redis.createClient();
+client.connect().then(()=>{})
+
 
 router.post("/request/:func", async (req, res) => {
     let func = req.params.func
@@ -11,6 +15,8 @@ router.post("/request/:func", async (req, res) => {
     if(!funcList.includes(func)) return res.status(400).json({error: "Invalid Function"})
     try {
     if(!user1 || !user2 || typeof user1 != "string" || typeof user2 != "string") throw "Invalid User Id(s)"
+    await client.del(`friend-${user1}`)
+    await client.del(`friend-${user2}`)
     switch (func.toUpperCase()){
         case "SEND":
             data = await sendFriendRequest(user1, user2)

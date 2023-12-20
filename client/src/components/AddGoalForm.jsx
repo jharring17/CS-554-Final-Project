@@ -3,6 +3,7 @@ import {AuthContext} from '../context/AuthContext';
 import { doGetUID } from "../firebase/FirebaseFunctions";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import {isValid, parse, isBefore, startOfDay} from 'date-fns'
 
 function AddGoal({closeForm}){
     const [categories, setCategories] = useState([]);
@@ -18,60 +19,6 @@ function AddGoal({closeForm}){
         getUserInfo()
         }, []
     )
-
-    function dateChecker(date){
-        for(let i = 0; i < date.length; i++){
-            if(date.charCodeAt(i) != 47){
-                if(date.charCodeAt(i) < 48 || date.charCodeAt(i) > 57){
-                    return "Date must be in the MM/DD/YYYY format"
-                }
-            }
-        }
-
-        let currDate = new Date();
-        let month = currDate.getMonth() + 1;
-        let day = currDate.getDate();
-        let year = currDate.getFullYear();
-        alert(year%4)
-        if(date[2] != '/' && date[5] != '/') return `Date needs to be in the format 'MM/DD/YYYY'`
-        let validMonths = ['01','02','03','04','05','06','07','08', '09', '10', '11', '12'];
-        let present = false;
-        //make sure the month matches 1 valid month
-        for(let i = 0; i < validMonths.length; i++){
-          if(validMonths[i] === date.substring(0,2)){
-            present = true;
-            break;
-          }
-        }
-        if(present === false) return "The month isn't valid for date";
-    
-        //check to make sure the month lines up with dates
-        if(date.substring(0,2) === "04" || date.substring(0,2) === "06" || date.substring(0,2) === "09" || date.substring(0,2) === "11"){
-          if(parseInt(date.substring(3,5)) > 30 || parseInt(date.substring(3,5)) < 0) return `Invalid day for date 1`;
-        }
-        else if(date.substring(0,2) === "01" || date.substring(0,2) === "03" || date.substring(0,2) === "05" || date.substring(0,2) === "07" || date.substring(0,2) === "08" || date.substring(0,2) === "10" || date.substring(0,2) === "12"){
-          if(parseInt(date.substring(3,5)) > 31 || parseInt(date.substring(3,5)) < 0) return `Invalid day for date 2`;
-        }
-        else{
-            console.log("what")
-            if(leapYear){
-                if(parseInt(date.substring(3,5)) > 29 || parseInt(date.substring(3,5)) < 0) return `Invalid day for date 3`;
-            }else{
-                if(parseInt(date.substring(3,5)) > 28 || parseInt(date.substring(3,5)) < 0) return `Invalid day for date 4`;
-            }
-        }
-
-    
-        //now we have to compare to make sure that the goalDate is later than the curr date
-        let goalMonth = parseInt(date.substring(0, 2));
-        let goalDay = parseInt(date.substring(3,5));
-        let goalYear = parseInt(date.substring(6));
-        if(year > goalYear) return `Goal Date must be a future date (invalid year)`
-        if(year === goalYear && month > goalMonth) return `Goal Date must be a future date (invalid month)`
-        if(year === goalYear && month === goalMonth && day > goalDay) return `Goal Date must be a future date (invalid day)`
-    
-        return date;
-    }
 
     async function submitGoal(e){
         setError(null)
@@ -91,58 +38,66 @@ function AddGoal({closeForm}){
         if(title === undefined || description === undefined || category === undefined || limit === undefined || date === undefined){
             setError("No inputs can be empty")
         }
-        //change the format of the date to check it
-        date = date.split('-')
-        date = date[1] + '/' + date[2] + '/' + date[0];
 
         //checking input
         //title
         if(typeof title != 'string') {
             setError(`Title must be a string`);
             waiting = true;
+            return
         }
         title = title.trim();
         if(title.length === 0) {
             setError(`Title cannot be empty`);
             waiting = true;
+            return
         }
         if (title.length < 3) {
             setError(`Title length must be at least 3`);
             waiting = true;
+            return
         }
         if (title.length > 50) {
             setError(`Title length cannot exceed 50 characters`);
             waiting = true;
+            return
         }
         if (!/[A-Za-z]/.test(title)) {
             setError(`Title must contain at least one letter`);
             waiting = true;
+            return
         }
         if (!/^[A-Za-z0-9:&$%-]/.test(title)) {
             setError(`Title is invalid`);
             waiting = true;
+            return
         }
         //desc
         if(typeof description != 'string') {
             setError(`Description must be a string`);
             waiting = true;
+            return
         }
         description = description.trim();
         if(description.length === 0) {
             setError(`Description cannot be empty`);
             waiting = true;
+            return
         }
         if (description.length < 5) {
             setError(`Description length must be at least 5`);
             waiting = true;
+            return
         }
         if (description.length > 200) {
             setError(`Description length cannot exceed 200 characters`);
             waiting = true;
+            return
         }
         if (!/[A-Za-z]/.test(description)) {
             setError(`Description must contain at least one letter`);
             waiting = true;
+            return
         }
 
         limit = parseFloat(limit);
@@ -150,25 +105,45 @@ function AddGoal({closeForm}){
         if(temp != 0){
             setError("Limit must be a valid dollar amount");
             waiting = true;
+            return
         }
         if(limit > 1000000){
             setError("Limit cannot exceed $1000000");
             waiting = true;
+            return
+        }
+        if(typeof date != "string"){
+            setError("Date must be in the form MM/DD/YYYY");
+            waiting = true;
+            return
         }
         if(date.length === 0){
             setError("Date Cannot Be An Empty String");
             waiting = true;
+            return
         }
-        // let result = dateChecker(date);
-        // if(result != date){
-        //     setError(result);
-        //     waiting = true;
-        // }
+        let split = date.split("/");
+        if (split.length != 3 || split[0].length !== 2 || split[1].length !== 2 || split[2].length != 4) {
+            setError("Date must be in the form MM/DD/YYYY");
+            waiting = true;
+            return
+        }
+        let parsedDate = parse(date, 'MM/dd/yyyy', new Date());
+        if (!isValid(parsedDate)) {
+            setError("Date must be a valid date");
+            waiting = true;
+            return
+        }
+        if (isBefore(parsedDate, startOfDay(new Date())) ) {
+            setError("Date must be today's date or a future date");
+            waiting = true;
+            return
+        }
         if(waiting){
             return;
         }
-
-        let data = await axios.post(`http://54.175.184.234:3000/userProfile/${userId}/newGoal`, 
+        try{
+            let data = await axios.post(`http://localhost:3000/userProfile/${userId}/newGoal`, 
             {
                 userId: userId,
                 title: title, 
@@ -176,9 +151,14 @@ function AddGoal({closeForm}){
                 category: category,
                 limit: parseFloat(limit), 
                 goalDate: date
-            }
-        )
-        closeForm()
+                }
+            )
+            closeForm()
+        }catch(e){
+            setError(e)
+            return
+        }
+
     } 
     return(
         <div>
@@ -232,7 +212,7 @@ function AddGoal({closeForm}){
                     <label>
                         Goal Date: 
                         <br/>
-                        <input id="date" type="date" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} />
+                        <input id="date" type='text' style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} />
                     </label>
                     <p className="input-requirements">Must be in the format MM/DD/YYYY</p>
                 </div>

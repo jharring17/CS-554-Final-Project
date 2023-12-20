@@ -25,17 +25,38 @@ function SignIn() {
     setSignedIn(false);
     let {email, password} = event.target.elements;
 
-    let fire_id;
+    try {
+      if (!email.value || email.value.trim().length === 0) {
+        throw 'Email field cannot be empty';
+      }
+      if (!password.value || password.value.trim().length === 0) {
+        throw 'Password field cannot be empty';
+      }
+    }
+    catch (e) {
+      setErrorState(e);
+      return false;
+    }
+
     try {
       //email
       let newEmail = email.value;
       if(typeof newEmail != 'string') throw `Input must be a string`;
       newEmail = newEmail.trim();
       if(newEmail.length === 0) throw `String cannot be empty`;
-      let isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail);
+      let isValid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(newEmail);
       if (!isValid) {
         throw "Invalid email address";
       }
+    }
+    catch (e) {
+      setErrorState(e);
+      return false;
+    }
+
+    let fire_id;
+    try {
+      
       //password
       let newPassword = password.value;
       if (typeof newPassword != 'string') {
@@ -60,8 +81,7 @@ function SignIn() {
           throw `Password must contain at least one special character`;
       }
 
-      const createdUser = await doSignInWithEmailAndPassword(email.value, password.value);
-      console.log(createdUser);
+      const createdUser = await doSignInWithEmailAndPassword(email.value.toLowerCase().trim(), password.value);
       fire_id = doGetUID();
     }
     catch (error)
@@ -114,9 +134,9 @@ function SignIn() {
               <input
                 name='email'
                 id='email'
-                type='email'
+                // type='email'
                 placeholder='Email'
-                required
+                // required
                 autoFocus={true}
               />
             </label>
@@ -131,7 +151,7 @@ function SignIn() {
                 type='password'
                 placeholder='Password'
                 autoComplete='off'
-                required
+                // required
               />
             </label>
           </div>

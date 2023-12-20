@@ -8,17 +8,20 @@ function FriendProfile() {
     const [user, setUser] = useState(null);
     const [goalsCompleted, setGoalsCompleted] = useState(0);
     const [goalsExpired, setGoalsExpired] = useState(0);
+    const [notFriended, setNotFriended] = useState(false);
     const {fireId} = useParams();
 
     async function getGoalInfo(goal){
-        let goalData = await axios.get(`http://54.175.184.234:3000/userProfile/${fireId}/${goal}`);
+        let goalData = await axios.get(`http://localhost:3000/userProfile/${fireId}/${goal}`);
         return goalData.data
     }
     
     useEffect( () => {
         setUser(null);
         async function getUserInfo(){
-            let userData = await axios.get(`http://54.175.184.234:3000/user/${fireId}/getFriendInfo`)
+            let userData = await axios.get(`http://localhost:3000/user/${fireId}/getFriendInfo`)
+            let currUser = doGetUID()
+            if(currUser != fireId && !userData.data.friends.includes(currUser)) {setNotFriended(true); return}
             setUser(userData.data);
             if(userData.data.goals.length === 0){
                 return
@@ -50,7 +53,9 @@ function FriendProfile() {
         }
         getUserInfo();
     }, [])
-    if(user === null || fireId === undefined ){
+
+    if (notFriended) return <div>You must be friends to see this page!</div>
+    else if(user === null || fireId === undefined ){
         return (
             <div>Loading...</div>
         )

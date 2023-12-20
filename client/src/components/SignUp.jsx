@@ -12,15 +12,16 @@ function SignUp() {
     e.preventDefault();
     setSignedUp(false);
     const {displayName, email, username, passwordOne, passwordTwo, age} = e.target.elements;
+    let newUsername;
     try {
       if (!displayName.value || !username.value || !email.value || !passwordOne.value || !passwordTwo.value || !age.value) {
-        throw 'All input fields must be provided :: SignUp.jsx';
+        throw 'All input fields must be provided';
       }
       //Variable checks
       //display name
       let newDisplayName = displayName.value;
       if(typeof newDisplayName != 'string'){
-        throw `Display Name must be a string :: SignUp.jsx`;
+        throw `Display Name must be a string`;
 
       }
       newDisplayName = newDisplayName.trim();
@@ -29,7 +30,7 @@ function SignUp() {
         throw `Display Name ${newDisplayName} is invalid`;
       }
       //username
-      let newUsername = username.value;
+      newUsername = username.value;
       if(typeof newUsername != 'string') throw `Username must be a string`;
       newUsername = newUsername.trim();
       if(newUsername.length === 0) throw `Username cannot be empty`;
@@ -87,25 +88,39 @@ function SignUp() {
     }
     catch (error)
     {
-      console.log(error);
       setErrorState(error.toString());
       return false;
     }
     let fire_id;
     try {
-      console.log("Firebase call")
+      const userExists =  await axios.get(`http://localhost:3000/user/${newUsername}/checkUsernameExists`);
+    }
+    catch (e) {
+      setErrorState("User already exists with this username");
+      return false;
+    }
+    try {
       const createdUser = await doCreateUserWithEmailAndPassword(email.value, passwordOne.value, displayName.value);
       console.log(createdUser);
       fire_id = doGetUID();
     }
     catch (error) {
-      setErrorState(error.toString());
-      return false;
+      let errorString = error.toString();
+      if (errorString.includes("auth/email-already-in-use"))
+      {
+        setErrorState("Account already exists with this email");
+        return false;
+      }
+      else
+      {
+        setErrorState(errorString);
+        return false;
+      }
     }
     try {
       let isFireId = /^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*$/.test(fire_id);
       if (!isFireId) {
-        throw 'Not valid fire_id: Signup.jsx';
+        throw 'Not valid fire_id';
       }
     }
     catch (error) {
@@ -123,8 +138,7 @@ function SignUp() {
       setSignedUp(true);
     } 
     catch (error) {
-      console.log(error);
-      setErrorState(error.toString());
+      setErrorState(error.response.data.e.toString());
       setSignedUp(false);
     }
   };
@@ -136,7 +150,7 @@ function SignUp() {
   return (
     <div className='card'>
       <h1>Sign up</h1>
-      {errorState && <h4 className='error'>{errorState}</h4>}
+      {errorState && <h4 className='error'>{errorState.toString()}</h4>}
       <form onSubmit={handleSignUp}>
         <div className='form-group'>
           <label>
@@ -144,7 +158,7 @@ function SignUp() {
             <br />
             <input
               className='form-control'
-              required
+              // required
               name='displayName'
               type='text'
               placeholder='Name'
@@ -161,9 +175,9 @@ function SignUp() {
             <br />
             <input
               className='form-control'
-              required
+              // required
               name='email'
-              type='email'
+              // type='email'
               placeholder='Email'
             />
           </label>
@@ -174,7 +188,7 @@ function SignUp() {
             <br />
             <input
               className='form-control'
-              required
+              // required
               name='username'
               type='text'
               placeholder='Username'
@@ -195,7 +209,7 @@ function SignUp() {
               type='password'
               placeholder='Password'
               autoComplete='off'
-              required
+              // required
             />
           </label>
           <p className="input-requirements">
@@ -212,7 +226,7 @@ function SignUp() {
               type='password'
               placeholder='Confirm Password'
               autoComplete='off'
-              required
+              // required
             />
           </label>
         </div>
@@ -226,7 +240,7 @@ function SignUp() {
               type='number'
               placeholder='Age'
               autoComplete='off'
-              required
+              // required
             />
           </label>
         </div>

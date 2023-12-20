@@ -1,10 +1,14 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {AuthContext} from '../context/AuthContext';
-import {doGetUID} from '../firebase/FirebaseFunctions';
+import {
+    doGetUID,
+    doPasswordReset
+  } from '../firebase/FirebaseFunctions';
 import {useNavigate, Link} from 'react-router-dom';
 import '../App.css';
 import axios from 'axios';
 import ChangePassword from './ChangePassword';
+import { getAuth, updateEmail, updateProfile, verifyBeforeUpdateEmail } from 'firebase/auth';
 
 function CategoryForm({closeForm}) {
     // const navigate = useNavigate();
@@ -14,17 +18,30 @@ function CategoryForm({closeForm}) {
     const [error, setError] = useState(null);
     const [photo, setPhoto] = useState('');
 
-    let displayName, username, email, profilePic;
+    let displayName, username, profilePic;
+    const passwordReset = (event) => {
+        event.preventDefault();
+        console.log(user.email);
+        // let email = document.getElementById('email').value;
+        if (user.email) {
+          doPasswordReset(user.email);
+          alert('Password reset email was sent');
+        } else {
+          alert(
+            'Please enter an email address below before you click the forgot password link'
+          );
+        }
+      };
 
-    function stringChecker(string) {
-        if(typeof string != 'string') throw `Input must be a string`;
+    function stringChecker(string, stringName) {
+        if(typeof string != 'string') throw `${stringName} must be a string`;
         string = string.trim();
-        if(string.length === 0) throw `String cannot be empty`;
+        if(string.length === 0) throw `${stringName} cannot be empty`;
         return string;
     }
 
     function checkName(name, stringName) {
-        name = stringChecker(name);
+        name = stringChecker(name, stringName);
     
         if (stringName.toLowerCase().trim() === "username") {
           name = name.toLowerCase();
@@ -44,26 +61,26 @@ function CategoryForm({closeForm}) {
         return name;
     }
 
-    function checkEmail(emailVal) {
-        let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (!emailVal) throw `You must supply an email`;
-        if (typeof emailVal !== 'string')
-            throw `Email should be a string`;
-        emailVal = emailVal.trim();
-        if (emailVal.length === 0)
-            throw `Email cannot be an empty string or string with just spaces`;
-        if (!emailVal.includes('@'))
-            throw `Email is not a valid email`;
-        if (!emailVal.match(mailformat))
-            throw `Email is not a valid email`;
-        return emailVal;
-    }
+    // function checkEmail(emailVal) {
+    //     let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    //     if (!emailVal) throw `You must supply an email`;
+    //     if (typeof emailVal !== 'string')
+    //         throw `Email should be a string`;
+    //     emailVal = emailVal.trim();
+    //     if (emailVal.length === 0)
+    //         throw `Email cannot be an empty string or string with just spaces`;
+    //     if (!emailVal.includes('@'))
+    //         throw `Email is not a valid email`;
+    //     if (!emailVal.match(mailformat))
+    //         throw `Email is not a valid email`;
+    //     return emailVal;
+    // }
     
     useEffect( () => {
         setUser(null)
         async function getUserInfo(){
             let id = doGetUID();
-            let userData = await axios.get(`http://54.175.184.234:3000/user/${id}/getUserInfo`)
+            let userData = await axios.get(`http://localhost:3000/user/${id}/getUserInfo`)
             setUser(userData.data);
         }
         getUserInfo();
@@ -76,11 +93,21 @@ function CategoryForm({closeForm}) {
         if(photo != ''){
             let photoUploading = new FormData();
             //append the file custom key from cloudinary (gp0pimba)
-            photoUploading.append("file", photo);
-            photoUploading.append("upload_preset", "gp0pimba");
-            //upload the photo to cloudinary (djllvfvts is my cloud name)
-            let data = await axios.post('https://api.cloudinary.com/v1_1/djllvfvts/image/upload', photoUploading)
-            newLink = data.data.secure_url;
+            let splitPhotoName = photo.name.split('.');
+            let fileType = splitPhotoName[splitPhotoName.length-1];
+            if (fileType != "img" && fileType != "jpeg" && fileType != "png" && fileType != "jpg")
+            {
+                setError("Profile picture not valid file type");
+                return;
+            }
+            else
+            {
+                photoUploading.append("file", photo);
+                photoUploading.append("upload_preset", "gp0pimba");
+                //upload the photo to cloudinary (djllvfvts is my cloud name)
+                let data = await axios.post('https://api.cloudinary.com/v1_1/djllvfvts/image/upload', photoUploading)
+                newLink = data.data.secure_url;
+            }
         }else{
             newLink = user.profilePic
         }
@@ -88,12 +115,12 @@ function CategoryForm({closeForm}) {
         let hasErrors = false;
         let displayName = document.getElementById('displayName').value;
         let username = document.getElementById('username').value;
-        let email = document.getElementById('email').value;
+        // let email = document.getElementById('email').value;
         
         try {
             displayName = checkName(displayName, "displayName");
             username = checkName(username, "username");
-            email = checkEmail(email);
+            // email = checkEmail(email);
         }
         catch (e) {
             setError(e);
@@ -104,21 +131,33 @@ function CategoryForm({closeForm}) {
         try {
           const fire_id = doGetUID();
           if (user.displayName === displayName.trim() && user.username === username.trim() 
-              && user.email === email.trim() && photo === "") {
+             && photo === "") {
             setError("Must update at least one field to submit form");
             hasErrors = true;
             return;
           }
-          await axios.post(`http://54.175.184.234:3000/userProfile/${fire_id}/editProfile`, 
+        //   //updating the data in firebase before updating the database
+        //   const auth = getAuth();
+        //   if(user.email != email.trim()){
+        //     try{
+        //         await updateEmail(auth.currentUser, email.trim())
+        //     }catch(e){
+        //         alert(e)
+        //         setError("Email could not be updated");
+        //         hasErrors = true;
+        //         return
+        //     }
+        //   }
+          await axios.post(`http://localhost:3000/userProfile/${fire_id}/editProfile`, 
                             {displayName: displayName.trim(),
                             username: username.trim(),
-                            email: email.trim(),
                             photo: newLink.trim()
                         })
         } 
         catch (error) {
-          console.log(error);
-          alert(error);
+            setError(error.response.data.error);
+            console.log(error.response.data.error)
+            return;
         }
         closeForm()
     };
@@ -132,7 +171,10 @@ function CategoryForm({closeForm}) {
         return (
             <>
                 {error && <p className='error'>{error}</p>}
-                <Link to='/changePassword'>Change password</Link>
+                {/* <Link to='/changePassword'>Change password</Link> */}
+                <button className='forgotPassword' onClick={passwordReset}>
+                    Change Password
+                </button>
                 <p></p>
                 <form onSubmit={handleSubmit}>
                     {errorState && <h4 className='error'>{errorState}</h4>}
@@ -183,7 +225,7 @@ function CategoryForm({closeForm}) {
                     </div>
         
                     <div className='form-group'>
-                    <label>
+                    {/* <label>
                         Email:
                         <br />
                         <input style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}}
@@ -199,7 +241,7 @@ function CategoryForm({closeForm}) {
                         }}
                         defaultValue={user.email}
                         />
-                    </label>
+                    </label> */}
                     </div>
                     <div className='form-group'>
                     <label >
@@ -213,8 +255,15 @@ function CategoryForm({closeForm}) {
                         accept=".img,.jpeg,.png,.jpg"
                         autoFocus={true}
                         onChange={(e) => {
-                            let currPhoto = e.target.files[0];
-                            setPhoto(currPhoto)
+                            if (e == null || e.target == null || e.target.files == null)
+                            {
+                                setError("Must supply a valid file");
+                            }
+                            else
+                            {
+                                let currPhoto = e.target.files[0];
+                                setPhoto(currPhoto)
+                            }
                         }}
                         />
                     </label>
@@ -223,22 +272,6 @@ function CategoryForm({closeForm}) {
                     </p>
                     </div>
 
-                    {/* <div className='form-group'>
-                    <label>
-                        Age:
-                        <br />
-                        <input
-                        className='form-control'
-                        required
-                        name='age'
-                        id='age'
-                        type='number'
-                        placeholder='age'
-                        autoFocus={true}
-                        />
-                    </label>
-                    </div> */}
-        
                     <button
                     className='button'
                     id='submitButton'

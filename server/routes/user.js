@@ -2,6 +2,7 @@ import * as goals from "../data/goals.js";
 import * as users from "../data/users.js";
 import * as expenses from "../data/expenses.js";
 import * as validate from "../../validation.js";
+import {isValid, parse, isBefore, startOfDay} from 'date-fns'
 import { Router } from "express";
 const router = Router();
 import redis from 'redis';
@@ -36,9 +37,21 @@ router.route("/register").post(async (req, res) => {
 		);
 		return res.status(200).json(newUser);
 	} catch (e) {
-		console.log(e);
-		return res.status(500).json({ error: e });
+		return res.status(400).json({ e });
 	}
+});
+
+
+router.route("/:userId/checkUsernameExists").get(async (req, res) => {
+	//validate the id
+	let id = req.params.userId;
+		try {
+			let bool = await users.usernameExists(id);
+			return res.status(200).json(bool);
+		} 
+		catch (e) {
+			return res.status(400).json({ error: e });
+		}
 });
 
 router.route("/:userId/getUserInfo").get(async (req, res) => {
@@ -214,15 +227,28 @@ router.route("/:userId/:goalId").post(async (req, res) => {
 	let goalId = req.params.goalId;
 	let description = req.body.description;
 	let amount = req.body.amount;
+	amount = parseFloat(amount)
 	let date = req.body.date;
 	try {
 		userId = validate.checkFireId(userId);
 		goalId = validate.validId(goalId);
 		description = validate.stringChecker(description);
 		amount = validate.limitChecker(amount);
-		// date = validate.expenseDateChecker(date);
 	} catch (e) {
 		return res.status(400).json({ error: e });
+	}
+	//check all of the date data 
+	let split = date.split("/");
+	if (split.length != 3 || split[0].length !== 2 || split[1].length !== 2 || split[2].length != 4) {
+		return res.status(400).json({ error: "Date must be in the form MM/DD/YYYY" });
+	}
+	let parsedDate = parse(date, 'MM/dd/yyyy', new Date());
+
+	if (!isValid(parsedDate)) {
+		return res.status(400).json({ error: "Date must be a valid date"});
+	}
+	if (isBefore(startOfDay(new Date()), parsedDate)) {
+		return res.status(400).json({ error: "Date must be today's date or a past date"});
 	}
 	try {
 		let expense = await expenses.addExpense(goalId, description, amount, date);
@@ -241,6 +267,7 @@ router.route("/:userId/:goalId/:expenseId").put(async (req, res) => {
 	let expenseId = req.params.expenseId;
 	let description = req.body.description;
 	let amount = req.body.amount;
+	amount = parseFloat(amount)
 	let date = req.body.date;
 	try {
 		userId = validate.checkFireId(userId);
@@ -248,9 +275,21 @@ router.route("/:userId/:goalId/:expenseId").put(async (req, res) => {
 		expenseId = validate.validId(expenseId);
 		description = validate.stringChecker(description);
 		amount = validate.limitChecker(amount);
-		// date = validate.expenseDateChecker(date);
 	} catch (e) {
 		return res.status(400).json({ error: e });
+	}
+	//check all of the date data 
+	let split = date.split("/");
+	if (split.length != 3 || split[0].length !== 2 || split[1].length !== 2 || split[2].length != 4) {
+		return res.status(400).json({ error: "Date must be in the form MM/DD/YYYY" });
+	}
+	let parsedDate = parse(date, 'MM/dd/yyyy', new Date());
+
+	if (!isValid(parsedDate)) {
+		return res.status(400).json({ error: "Date must be a valid date"});
+	}
+	if (isBefore(startOfDay(new Date()), parsedDate)) {
+		return res.status(400).json({ error: "Date must be today's date or a past date"});
 	}
 	try {
 		let expense = await expenses.editExpense(
