@@ -247,7 +247,7 @@ function EditGoal(props){
                     defaultValue={goal.limit}
                     />
                     </label>
-                    <br/>
+                    <p className="input-requirements">Enter monetary value without any commas or dollar signs.</p>
                     <label>
                     Date:
                     <br />

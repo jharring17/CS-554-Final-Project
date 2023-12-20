@@ -209,13 +209,14 @@ function ExpenseForm(props) {
 						<br />
 						<input id="amount" placeholder="$" />
 					</label>
+					<p className="input-requirements">Enter monetary value without any commas or dollar signs.</p>
 				</div>
 
 				<div className="form-group">
 					<label>
 						Date:
 						<br/>
-						<input id="date" />
+						<input id="date" placeholder="MM/DD/YYYY" />
 
 					</label>
                     <p className="input-requirements">Must be in the format MM/DD/YYYY</p>

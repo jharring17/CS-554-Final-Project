@@ -218,15 +218,15 @@ function ExpenseEditForm(props) {
 					<label>
 						Amount:
 						<br/>
-						<input id="amount" placeholder="$$$" defaultValue={expense.amount} />
+						<input id="amount" placeholder="$" defaultValue={expense.amount} />
 					</label>
-					<br />
+					<p className="input-requirements">Enter monetary value without any commas or dollar signs.</p>
 					<label>
 						Date:
 						<br/>
 						<input id="date" defaultValue={fillDate} />
 					</label>
-					<p className="input-requirements">Must be in the format MM/DD/YYYY</p>
+					<p className="input-requirements" >Must be in the format MM/DD/YYYY</p>
 					<br />
 					<button className="button" type="submit" onClick={editExpense}>
 						Submit

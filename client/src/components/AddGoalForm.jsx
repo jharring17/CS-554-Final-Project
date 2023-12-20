@@ -218,15 +218,16 @@ function AddGoal({closeForm}){
                     <label>
                         Budget for this Goal:
                         <br/>
-                        $
-                        <input id="limit" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} />
+                        
+                        <input id="limit" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} placeholder="$" />
                     </label>
+                    <p className="input-requirements">Enter monetary value without any commas or dollar signs.</p>
                 </div>
                 <div className="form-group">
                     <label>
                         Goal Date: 
                         <br/>
-                        <input id="date" type='text' style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} />
+                        <input id="date" type='text' placeholder="MM/DD/YYYY" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} />
                     </label>
                     <p className="input-requirements">Must be in the format MM/DD/YYYY</p>
                 </div>
