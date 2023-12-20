@@ -21,9 +21,10 @@ function CategoryForm({closeForm}) {
     let displayName, username, profilePic;
     const passwordReset = (event) => {
         event.preventDefault();
-        let email = document.getElementById('email').value;
-        if (email) {
-          doPasswordReset(email);
+        console.log(user.email);
+        // let email = document.getElementById('email').value;
+        if (user.email) {
+          doPasswordReset(user.email);
           alert('Password reset email was sent');
         } else {
           alert(
@@ -172,7 +173,7 @@ function CategoryForm({closeForm}) {
                 {error && <p className='error'>{error}</p>}
                 {/* <Link to='/changePassword'>Change password</Link> */}
                 <button className='forgotPassword' onClick={passwordReset}>
-                    Forgot Password
+                    Change Password
                 </button>
                 <p></p>
                 <form onSubmit={handleSubmit}>
