@@ -93,7 +93,7 @@ function SignUp() {
     }
     let fire_id;
     try {
-      const userExists =  await axios.get(`http://localhost:3000/user/${newUsername}/checkUsernameExists`);
+      const userExists =  await axios.get(`http://54.175.184.234:3000/user/${newUsername}/checkUsernameExists`);
     }
     catch (e) {
       setErrorState("User already exists with this username");

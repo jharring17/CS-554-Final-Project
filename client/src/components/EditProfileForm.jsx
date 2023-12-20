@@ -80,7 +80,7 @@ function CategoryForm({closeForm}) {
         setUser(null)
         async function getUserInfo(){
             let id = doGetUID();
-            let userData = await axios.get(`http://localhost:3000/user/${id}/getUserInfo`)
+            let userData = await axios.get(`http://54.175.184.234:3000/user/${id}/getUserInfo`)
             setUser(userData.data);
         }
         getUserInfo();
@@ -148,7 +148,7 @@ function CategoryForm({closeForm}) {
         //         return
         //     }
         //   }
-          await axios.post(`http://localhost:3000/userProfile/${fire_id}/editProfile`, 
+          await axios.post(`http://54.175.184.234:3000/userProfile/${fire_id}/editProfile`, 
                             {displayName: displayName.trim(),
                             username: username.trim(),
                             photo: newLink.trim()

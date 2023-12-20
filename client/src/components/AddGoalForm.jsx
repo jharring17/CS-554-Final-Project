@@ -143,7 +143,7 @@ function AddGoal({closeForm}){
             return;
         }
         try{
-            let data = await axios.post(`http://localhost:3000/userProfile/${userId}/newGoal`, 
+            let data = await axios.post(`http://54.175.184.234:3000/userProfile/${userId}/newGoal`, 
             {
                 userId: userId,
                 title: title, 

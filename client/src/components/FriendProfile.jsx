@@ -12,14 +12,14 @@ function FriendProfile() {
     const {fireId} = useParams();
 
     async function getGoalInfo(goal){
-        let goalData = await axios.get(`http://localhost:3000/userProfile/${fireId}/${goal}`);
+        let goalData = await axios.get(`http://54.175.184.234:3000/userProfile/${fireId}/${goal}`);
         return goalData.data
     }
     
     useEffect( () => {
         setUser(null);
         async function getUserInfo(){
-            let userData = await axios.get(`http://localhost:3000/user/${fireId}/getFriendInfo`)
+            let userData = await axios.get(`http://54.175.184.234:3000/user/${fireId}/getFriendInfo`)
             let currUser = doGetUID()
             if(currUser != fireId && !userData.data.friends.includes(currUser)) {setNotFriended(true); return}
             setUser(userData.data);
