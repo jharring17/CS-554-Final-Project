@@ -109,6 +109,13 @@ function ExpenseEditForm(props) {
 			return
 		}
 
+        // Description cannot be less than 3 characters.
+		if (description.length < 3) {
+			setError(`Description must include at least 3 characters.`);
+			waiting = true;
+			return
+		}
+
 		// Check that the amount field only contains numbers and decimals.
 		if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
 			setError(`Amount field can only contain numbers and decimals.`);
@@ -206,7 +213,7 @@ function ExpenseEditForm(props) {
 							defaultValue={expense.description}
 						/>
 					</label>
-					<br />
+					<p className="input-requirements">Max 200 characters. Must include letters.</p>
 					<br />
 					<label>
 						Amount
@@ -218,6 +225,7 @@ function ExpenseEditForm(props) {
 						Date
 						<input id="date" defaultValue={fillDate} />
 					</label>
+					<p className="input-requirements">Must be in the format MM/DD/YYYY</p>
 					<br />
 					<br />
 					<button className="button" type="submit" onClick={editExpense}>
