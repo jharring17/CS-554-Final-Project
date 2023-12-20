@@ -105,7 +105,7 @@ function EditGoal(props){
 
         let limit = document.getElementById('limit').value.trim();
         if (!/^[0-9]+(\.[0-9]+)?$/.test(limit)) {
-			setError(`Amount field can only contain numbers and decimals.`);
+			setError(`Amount field not in proper format`);
 			waiting = true;
 			return
 		}
