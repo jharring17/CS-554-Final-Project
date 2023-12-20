@@ -104,6 +104,12 @@ function EditGoal(props){
         }
 
         let limit = document.getElementById('limit').value.trim();
+        if (!/^[0-9]+(\.[0-9]+)?$/.test(limit)) {
+			setError(`Amount field can only contain numbers and decimals.`);
+			waiting = true;
+			return
+		}
+
         limit = parseFloat(limit);
         let temp = (limit * 1000)%10;
         if(temp != 0){
@@ -113,6 +119,11 @@ function EditGoal(props){
         }
         if(limit > 1000000){
             setError("Limit cannot exceed $1000000");
+            waiting = true;
+            return
+        }
+        if(limit <= 0){
+            setError("Limit cannot be less than or equal to 0");
             waiting = true;
             return
         }
@@ -134,6 +145,11 @@ function EditGoal(props){
             waiting = true;
             return
         }
+        if(parseInt(split[2]) > 2050){
+			setError("Years not accepted past 2050");
+            waiting = true;
+            return	
+		}
         let parsedDate = parse(goalDate, 'MM/dd/yyyy', new Date());
 
         if (!isValid(parsedDate)) {
