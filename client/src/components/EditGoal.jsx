@@ -199,7 +199,7 @@ function EditGoal(props){
                 }
                 <form id="editGoal" onSubmit={submitGoal}>
                     <label>
-                    Title of Goal:
+                    Title:
                     <br />
                     <input id="title" 
                     ref={(node) => {
@@ -208,9 +208,9 @@ function EditGoal(props){
                     defaultValue={goal.title}
                     />
                     </label>
-                    <br/>
+                    <p className="input-requirements">Min 3 characters, max 50 characters. Cannot include only special characters.</p>
                     <label>
-                    Goal Description:
+                    Description:
                     <br />
                     <input id="description" 
                     ref={(node) => {
@@ -219,7 +219,7 @@ function EditGoal(props){
                     defaultValue={goal.description}
                     />
                     </label>
-                    <br/>                    
+                    <p className="input-requirements">Min 5 characters, max 200 characters. Cannot include only special characters.</p>
                     <label>
                     Category:
                     <br />
@@ -254,6 +254,7 @@ function EditGoal(props){
                     <input id="goalDate" defaultValue={fillDate}
                     />
                     </label>
+                    <p className="input-requirements">Must be in the format MM/DD/YYYY</p>
                     <br/>
                     <button className='button' type='submit'>Update Goal</button>
                     <button className='button' onClick={()=>props.close()}>Cancel</button>
