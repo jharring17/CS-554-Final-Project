@@ -128,7 +128,7 @@ function ExpenseEditForm(props) {
 			return
 		}
 		if (parseFloat(amount) > 1000000) {
-			setError('Amount must be non-zero');
+			setError('Amount is too large');
 			waiting = true;
 			return
 		}
