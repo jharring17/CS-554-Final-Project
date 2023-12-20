@@ -118,7 +118,7 @@ function ExpenseEditForm(props) {
 
 		// Check that the amount field only contains numbers and decimals.
 		if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
-			setError(`Amount field can only contain numbers and decimals.`);
+			setError(`Amount field not in proper format`);
 			waiting = true;
 			return
 		}
