@@ -130,6 +130,7 @@ router
         try{
             let added = await goals.addGoal(id, req.body.title, req.body.description, req.body.category, req.body.limit, req.body.goalDate);
             let removeFromCache = await client.del(`goals-for-user-${id}`);
+            let removeFriend = await client.del(`friend-${id}`);
             return res.status(200).json(added)
         }catch(e){
             console.log(e);
