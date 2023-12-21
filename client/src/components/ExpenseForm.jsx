@@ -28,19 +28,19 @@ function ExpenseForm(props) {
 		// Error checking for form values.
 		// Check that form values are not empty.
 		if (description === undefined || amount === undefined || date === undefined) {
-			setError('No inputs can be empty.');
+			setError('No inputs can be empty');
 			waiting = true;
 			return
 		}
 
 		if (description === null || amount === null || date === null) {
-			setError('No inputs can be empty.');
+			setError('No inputs can be empty');
 			waiting = true;
 			return
 		}
 
 		if (description.trim() == '') {
-			setError('Description is required.');
+			setError('Description is required');
 			waiting = true;
 			return
 		}
@@ -53,13 +53,13 @@ function ExpenseForm(props) {
 		}
 
 		if (typeof description != 'string') {
-			setError('Description must be a string.');
+			setError('Description must be a string');
 			waiting = true
 			return
 		}
 
 		if (amount.trim() == '') {
-			setError('Amount is required.');
+			setError('Amount is required');
 			waiting = true;
 			return
 		}
@@ -71,12 +71,12 @@ function ExpenseForm(props) {
 		amount = amount.trim();
 
 		if (typeof date != 'string') {
-			setError('Date must be a string.');
+			setError('Date must be a string');
 			waiting = true;
 			return
 		}
 		if (date.trim() == '') {
-			setError('Date is required.');
+			setError('Date is required');
 			waiting = true;
 			return
 		}
@@ -84,8 +84,14 @@ function ExpenseForm(props) {
 
 		// Description can only be 200 characters.
 		if (description.length > 200) {
-			console.log(description.length);
-			setError(`Description cannot exceed 200 characters.`);
+			setError(`Description cannot exceed 200 characters`);
+			waiting = true;
+			return
+		}
+
+		// Description cannot be less than 3 characters.
+		if (description.length < 3) {
+			setError(`Description must include at least 3 characters`);
 			waiting = true;
 			return
 		}
@@ -93,14 +99,14 @@ function ExpenseForm(props) {
 		// Check that the amount field only contains numbers and decimals.
 		if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
 			console.log('here');
-			setError(`Amount field can only contain numbers and decimals.`);
+			setError(`Amount field not in proper format`);
 			waiting = true;
 			return
 		}
 
 		// Check that amount is positive, non-zero number.
 		if (parseFloat(amount) < 0) {
-			setError(`Cannot have a negative amount.`);
+			setError(`Cannot have a negative amount`);
 			waiting = true;
 			return
 		}
@@ -130,6 +136,13 @@ function ExpenseForm(props) {
             waiting = true;
             return
         }
+
+		if(parseInt(split[2]) < 1900){
+			setError("Years not accepted before 1900");
+            waiting = true;
+            return	
+		}
+		
         let parsedDate = parse(date, 'MM/dd/yyyy', new Date());
 
         if (!isValid(parsedDate)) {
@@ -154,8 +167,8 @@ function ExpenseForm(props) {
 
 			// Call the route to add an expense with the form data.
 			try {
-				console.log('User ID: ', userId);
-				console.log('Goal ID: ', props.goalId);
+				// console.log('User ID: ', userId);
+				// console.log('Goal ID: ', props.goalId);
 				let expense = await axios.post(
 					`http://54.175.184.234:3000/user/${userId}/${props.goalId}`,
 					{
@@ -164,11 +177,11 @@ function ExpenseForm(props) {
 						date: date,
 					}
 				);
-				console.log('Posted expense: ', expense);
+				// console.log('Posted expense: ', expense);
 				document.getElementById('addExpense').reset()
 				props.close()
 			} catch (e) {
-				setError(e)
+				setError(e.response.data.error)
 				return
 			}
 
@@ -187,7 +200,7 @@ function ExpenseForm(props) {
 						<br />
 						<input id="des" placeholder="I bought..." />
 					</label>
-					<p className="input-requirements">Max 200 characters. Must include letters.</p>
+					<p className="input-requirements">Min 3 characters. Max 200 characters. Must include letters.</p>
 				</div>
 
 				<div className="form-group">
@@ -196,15 +209,17 @@ function ExpenseForm(props) {
 						<br />
 						<input id="amount" placeholder="$" />
 					</label>
+					<p className="input-requirements">Enter monetary value without any commas or dollar signs.</p>
 				</div>
 
 				<div className="form-group">
 					<label>
 						Date:
 						<br/>
-						<input id="date" />
+						<input id="date" placeholder="MM/DD/YYYY" />
 
 					</label>
+                    <p className="input-requirements">Must be in the format MM/DD/YYYY</p>
 				</div>
 
 				<br />

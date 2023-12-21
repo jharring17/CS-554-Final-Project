@@ -34,6 +34,7 @@ function EditGoal(props){
 
     async function submitGoal(e){
         e.preventDefault();
+        setError(null)
 
         let waiting = false;
         let title = document.getElementById('title').value.trim();
@@ -104,6 +105,12 @@ function EditGoal(props){
         }
 
         let limit = document.getElementById('limit').value.trim();
+        if (!/^[0-9]+(\.[0-9]+)?$/.test(limit)) {
+			setError(`Amount field not in proper format`);
+			waiting = true;
+			return
+		}
+
         limit = parseFloat(limit);
         let temp = (limit * 1000)%10;
         if(temp != 0){
@@ -113,6 +120,11 @@ function EditGoal(props){
         }
         if(limit > 1000000){
             setError("Limit cannot exceed $1000000");
+            waiting = true;
+            return
+        }
+        if(limit <= 0){
+            setError("Limit cannot be less than or equal to 0");
             waiting = true;
             return
         }
@@ -134,6 +146,11 @@ function EditGoal(props){
             waiting = true;
             return
         }
+        if(parseInt(split[2]) > 2050){
+			setError("Years not accepted past 2050");
+            waiting = true;
+            return	
+		}
         let parsedDate = parse(goalDate, 'MM/dd/yyyy', new Date());
 
         if (!isValid(parsedDate)) {
@@ -163,8 +180,23 @@ function EditGoal(props){
                 expenses: goal.expenses,
                 likes: goal.likes,
                 seedingBool: goal.seedingBool
+            })
+        }
+        catch(error)
+        {
+            let errorStr = error.response.data.error;
+            if (errorStr)
+            {
+                setError(errorStr);
             }
-        )
+            else
+            {
+                setError(error.toString());
+            }
+            waiting = true;
+            return;
+        }
+        
         document.getElementById('editGoal').reset()
         props.close()
 
@@ -183,7 +215,7 @@ function EditGoal(props){
                 }
                 <form id="editGoal" onSubmit={submitGoal}>
                     <label>
-                    Title of Goal:
+                    Title:
                     <br />
                     <input id="title" 
                     ref={(node) => {
@@ -192,9 +224,9 @@ function EditGoal(props){
                     defaultValue={goal.title}
                     />
                     </label>
-                    <br/>
+                    <p className="input-requirements">Min 3 characters, max 50 characters. Cannot include only special characters.</p>
                     <label>
-                    Goal Description:
+                    Description:
                     <br />
                     <input id="description" 
                     ref={(node) => {
@@ -203,7 +235,7 @@ function EditGoal(props){
                     defaultValue={goal.description}
                     />
                     </label>
-                    <br/>                    
+                    <p className="input-requirements">Min 5 characters, max 200 characters. Cannot include only special characters.</p>
                     <label>
                     Category:
                     <br />
@@ -231,13 +263,14 @@ function EditGoal(props){
                     defaultValue={goal.limit}
                     />
                     </label>
-                    <br/>
+                    <p className="input-requirements">Enter monetary value without any commas or dollar signs.</p>
                     <label>
                     Date:
                     <br />
                     <input id="goalDate" defaultValue={fillDate}
                     />
                     </label>
+                    <p className="input-requirements">Must be in the format MM/DD/YYYY</p>
                     <br/>
                     <button className='button' type='submit'>Update Goal</button>
                     <button className='button' onClick={()=>props.close()}>Cancel</button>

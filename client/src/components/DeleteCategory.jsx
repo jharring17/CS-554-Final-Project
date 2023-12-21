@@ -5,6 +5,7 @@ import axios from "axios";
 
 function DeleteCategory(props) {
     const [categories, setCategories] = useState([]);
+    const [error, setError] = useState(null);
 
     function stringChecker(string) {
         if(typeof string != 'string') throw `Input must be a string`;
@@ -18,11 +19,11 @@ function DeleteCategory(props) {
         category = stringChecker(category);
         category = category.toLowerCase();
         if (category.length > 30) {
-          throw 'category name too long: checkCategory';
+          throw 'Category name too long: checkCategory';
         }
         if (!/^[a-zA-Z0-9_.-]*[a-zA-Z][a-zA-Z0-9_. -]*$/.test(category)) { 
           //rn this takes multi word categories with numbers and _.-
-          throw 'invalid category';
+          throw 'Invalid category';
         }
         return category;
     }
@@ -40,6 +41,7 @@ function DeleteCategory(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError(null)
         
         let category = document.getElementById('category').value;
         
@@ -47,7 +49,8 @@ function DeleteCategory(props) {
             category = checkCategory(category);
         }
         catch (e) {
-            alert(e); //shouldn't reach this bc dropdown
+            setError(e.toString());
+            // alert(e.toString()); //shouldn't reach this bc dropdown
             return;
         }
 
@@ -58,13 +61,26 @@ function DeleteCategory(props) {
                             {category: category})
         } 
         catch (error) {
-          alert(error); //shouldn't reach this bc dropdown
+            let errorStr = error.response.data.error;
+            if (errorStr)
+            {
+                setError(errorStr);
+            }
+            else
+            {
+                setError(error.toString());
+            }
+        //   alert(errorStr); //shouldn't reach this bc dropdown
           return;
         }
         props.closeForm();
     };
 
   return (
+    <div>
+       {error && 
+        <p className='error'>{error}</p>
+        }
     <div >
         {categories.length > 3 ? 
             <form onSubmit={handleSubmit}>
@@ -86,6 +102,7 @@ function DeleteCategory(props) {
         :
         <p>You have no custom categories to delete</p>
         }
+    </div>
     </div>
   );
 }

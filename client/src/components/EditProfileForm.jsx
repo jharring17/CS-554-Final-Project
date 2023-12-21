@@ -21,7 +21,7 @@ function CategoryForm({closeForm}) {
     let displayName, username, profilePic;
     const passwordReset = (event) => {
         event.preventDefault();
-        console.log(user.email);
+        // console.log(user.email);
         // let email = document.getElementById('email').value;
         if (user.email) {
           doPasswordReset(user.email);
@@ -130,12 +130,12 @@ function CategoryForm({closeForm}) {
 
         try {
           const fire_id = doGetUID();
-          if (user.displayName === displayName.trim() && user.username === username.trim() 
-             && photo === "") {
-            setError("Must update at least one field to submit form");
-            hasErrors = true;
-            return;
-          }
+        //   if (user.displayName === displayName.trim() && user.username === username.trim() 
+        //      && photo === "") {
+        //     setError("Must update at least one field to submit form");
+        //     hasErrors = true;
+        //     return;
+        //   }
         //   //updating the data in firebase before updating the database
         //   const auth = getAuth();
         //   if(user.email != email.trim()){
@@ -156,7 +156,7 @@ function CategoryForm({closeForm}) {
         } 
         catch (error) {
             setError(error.response.data.error);
-            console.log(error.response.data.error)
+            // console.log(error.response.data.error)
             return;
         }
         closeForm()

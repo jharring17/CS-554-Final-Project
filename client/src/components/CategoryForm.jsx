@@ -54,7 +54,7 @@ function CategoryForm({closeForm}) {
               <br />
               <input style={{marginTop: "3px", marginBottom: "8px", padding: "10px"}}
                 className='form-control'
-                required
+                // required
                 name='category'
                 id='category'
                 type='text'

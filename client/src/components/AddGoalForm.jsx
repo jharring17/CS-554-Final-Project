@@ -99,7 +99,11 @@ function AddGoal({closeForm}){
             waiting = true;
             return
         }
-
+        if (!/^[0-9]+(\.[0-9]+)?$/.test(limit)) {
+			setError(`Amount field not in proper format`);
+			waiting = true;
+			return
+		}
         limit = parseFloat(limit);
         let temp = (limit * 1000)%10;
         if(temp != 0){
@@ -109,6 +113,11 @@ function AddGoal({closeForm}){
         }
         if(limit > 1000000){
             setError("Limit cannot exceed $1000000");
+            waiting = true;
+            return
+        }
+        if(limit <= 0){
+            setError("Limit cannot be less than or equal to 0");
             waiting = true;
             return
         }
@@ -128,6 +137,11 @@ function AddGoal({closeForm}){
             waiting = true;
             return
         }
+        if(parseInt(split[2]) > 2050){
+			setError("Years not accepted past 2050");
+            waiting = true;
+            return	
+		}
         let parsedDate = parse(date, 'MM/dd/yyyy', new Date());
         if (!isValid(parsedDate)) {
             setError("Date must be a valid date");
@@ -155,7 +169,7 @@ function AddGoal({closeForm}){
             )
             closeForm()
         }catch(e){
-            setError(e)
+            setError(e.response.data.error)
             return
         }
 
@@ -204,15 +218,16 @@ function AddGoal({closeForm}){
                     <label>
                         Budget for this Goal:
                         <br/>
-                        $
-                        <input id="limit" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} />
+                        
+                        <input id="limit" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} placeholder="$" />
                     </label>
+                    <p className="input-requirements">Enter monetary value without any commas or dollar signs.</p>
                 </div>
                 <div className="form-group">
                     <label>
                         Goal Date: 
                         <br/>
-                        <input id="date" type='text' style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} />
+                        <input id="date" type='text' placeholder="MM/DD/YYYY" style={{marginTop: "3px", marginBottom: "8px", padding: "5px 10px"}} />
                     </label>
                     <p className="input-requirements">Must be in the format MM/DD/YYYY</p>
                 </div>

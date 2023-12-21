@@ -1,6 +1,8 @@
 import {React, useState, useEffect} from 'react'
 import axios from 'axios'
 import { doGetUID } from "../firebase/FirebaseFunctions";
+import '../App.css';
+
 function DeleteGoal(props){
 
     async function deleteGoal(){
@@ -13,7 +15,7 @@ function DeleteGoal(props){
     }
 
     return(
-        <div>
+        <div className='sure'>
             <p>Are you sure you want to delete?</p>
             <button onClick={()=> deleteGoal()}>Yes</button>
             <button onClick={()=>props.close()}>No</button>

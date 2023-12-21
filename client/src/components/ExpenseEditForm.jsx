@@ -109,9 +109,16 @@ function ExpenseEditForm(props) {
 			return
 		}
 
+        // Description cannot be less than 3 characters.
+		if (description.length < 3) {
+			setError(`Description must include at least 3 characters.`);
+			waiting = true;
+			return
+		}
+
 		// Check that the amount field only contains numbers and decimals.
 		if (!/^[0-9]+(\.[0-9]+)?$/.test(amount)) {
-			setError(`Amount field must be valid monetary value`);
+			setError(`Amount field not in proper format`);
 			waiting = true;
 			return
 		}
@@ -148,6 +155,11 @@ function ExpenseEditForm(props) {
             waiting = true;
             return
         }
+		if(parseInt(split[2]) < 1900){
+			setError("Years not accepted before 1900");
+            waiting = true;
+            return	
+		}
         let parsedDate = parse(date, 'MM/dd/yyyy', new Date());
 
         if (!isValid(parsedDate)) {
@@ -165,9 +177,10 @@ function ExpenseEditForm(props) {
 		}
 		try {
 			// After all data is validated, try to update the expense.
-			console.log('Getting Expense UserId: ', uid);
-			console.log('Getting Goal Props: ', props.goal);
-			console.log('Getting Expense Props: ', expense._id);
+			// if (user.displayName === displayName.trim() && user.username === username.trim()) {
+			// 	setError("Must update at least one field to submit form");
+			// 	return;
+			// }
 			let patchedExpense = await axios.put(
 				`http://54.175.184.234:3000/user/${uid}/${props.goal}/${expense._id}`,
 				{
@@ -176,11 +189,10 @@ function ExpenseEditForm(props) {
 					date: date,
 				}
 			);
-			console.log('Patched Expense: ', patchedExpense);
+			// console.log('Patched Expense: ', patchedExpense);
 		} catch (e) {
-			setError(e)
+			setError(e.response.data.error)
 			return
-			// console.log(e);
 		}
 		props.close();
 	}
@@ -190,30 +202,31 @@ function ExpenseEditForm(props) {
 	} else {
 		return (
 			<div className="editExpenseForm">
-				<h1>Track an Expense</h1>
+				<h1>Edit Expense</h1>
 				<p className="error">{error}</p>
 				<form id="addExpense">
 					<label>
-						Description
+						Description:
+						<br/>
 						<input
 							id="des"
 							placeholder="I bought..."
 							defaultValue={expense.description}
 						/>
 					</label>
-					<br />
-					<br />
+					<p className="input-requirements">Min 3 characters. Max 200 characters. Must include letters.</p>
 					<label>
-						Amount
-						<input id="amount" placeholder="$$$" defaultValue={expense.amount} />
+						Amount:
+						<br/>
+						<input id="amount" placeholder="$" defaultValue={expense.amount} />
 					</label>
-					<br />
-					<br />
+					<p className="input-requirements">Enter monetary value without any commas or dollar signs.</p>
 					<label>
-						Date
+						Date:
+						<br/>
 						<input id="date" defaultValue={fillDate} />
 					</label>
-					<br />
+					<p className="input-requirements" >Must be in the format MM/DD/YYYY</p>
 					<br />
 					<button className="button" type="submit" onClick={editExpense}>
 						Submit
@@ -221,6 +234,7 @@ function ExpenseEditForm(props) {
 					<button className="button" onClick={() => props.close()}>
 						Cancel
 					</button>
+					<br/>
 				</form>
 			</div>
 		);

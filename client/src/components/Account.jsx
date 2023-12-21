@@ -86,7 +86,7 @@ function Account() {
               component='img'
               image={userData.profilePic}
               title='profile picture'
-              style={{ maxWidth: '200px', height: '200px', marginLeft: 'auto', marginRight: 'auto' }}
+              style={{ maxWidth: '200px', height: '200px', marginLeft: 'auto', marginRight: 'auto', borderRadius: '50%'}}
           />
 
         <h2 style={{margin: "10px 0"}}>{userData.displayName}</h2>

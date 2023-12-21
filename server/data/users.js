@@ -308,10 +308,10 @@ const removeCategory = async (fire_id, category) => {
 		if (originalUser.categories.length != updatedUser.categories.length) {
 			console.log(`Removed ${category} from user`);
 		} else {
-			throw `user does not have the category ${category}`;
+			throw `User does not have the category ${category}`;
 		}
 	} else {
-		throw `user does not have category ${category}`;
+		throw `User does not have category ${category}`;
 	}
 	let newUser = await userCollection.findOne({ fire_id: fire_id });
 

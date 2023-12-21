@@ -64,7 +64,7 @@ The app is deployed on EC2 Micro using tmux. Tmux is a multiplexer for terminals
 
 The servers can be split from each other as long as the URLs are updated in the React server to reach the back-end server and the back-end server to reach Redis.
 
-Here is the deployed application (DNS not currently handled): http://54.175.184.234:5173/
+Here is the deployed application (DNS not currently handled): http://54.175.184.234/
 
 ### How it works:
 
