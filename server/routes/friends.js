@@ -15,6 +15,7 @@ router.post("/request/:func", async (req, res) => {
     if(!funcList.includes(func)) return res.status(400).json({error: "Invalid Function"})
     try {
     if(!user1 || !user2 || typeof user1 != "string" || typeof user2 != "string") throw "Invalid User Id(s)"
+    if(user1.trim() == user2.trim()) throw "Cannot friend yourself"
     await client.del(`friend-${user1}`)
     await client.del(`friend-${user2}`)
     switch (func.toUpperCase()){

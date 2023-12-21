@@ -3,6 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import "../App.css";
 import axios from "axios";
 import FeedItem from "./FeedItem";
+import { useOutletContext } from "react-router-dom";
 
 const backend = axios.create({ baseURL: "http://54.175.184.234:3000/" });
 
@@ -11,6 +12,7 @@ function Home() {
 	const [loadingFeed, setLoadingFeed] = useState(true);
 	const [loadingItems, setLoadingItems] = useState(true);
 	const [feedData, setFeedData] = useState([]);
+	const [friendRefresh, setFriendRefresh] = useOutletContext()
 
 	function sortByDate(list) {
         const sortedArray = list.sort((a, b) => {
@@ -46,7 +48,7 @@ function Home() {
 			setLoadingFeed(false);
 		};
 		if (currentUser.uid != "") getData();
-	}, []);
+	}, [friendRefresh]);
 
 	console.log(feedData);
 
@@ -86,7 +88,7 @@ function Home() {
         Home page used to show your feed
       </h2>
     </div> */}
-			<p>View your friends' successful goals from the past week:</p>
+			<p>View your friends' successful goals from the past 7 days:</p>
 			{feed}
 		</>
 	);
