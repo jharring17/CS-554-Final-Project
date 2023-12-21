@@ -54,7 +54,7 @@ function FriendProfile() {
                 <img src={user.profilePic} alt={`${user.username} profile pic`} style={{width:"120px", height:"120px", borderRadius: "100%" }}/>
                 <p>{user.username}</p>
                 <p>{user.displayName} has created a total of {user.goals.length} goals</p>
-                <p> {user.displayName} has {(user.goals.length - history.length)} goals in progress</p>
+                <p> {(user.goals.length === 1) ? `${(user.goals.length - history.length)} goals in progress` : `${(user.goals.length - history.length)} goals in progress`}</p>
                 <p>Sucessfully completed {(historySucceeded / history.length * 100).toFixed(0)}% of past goals</p>
                 </div>
                 <br/>
