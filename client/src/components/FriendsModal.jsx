@@ -6,7 +6,7 @@ import axios from "axios"
 import {ToastContainer, toast} from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 
-const backend = axios.create({baseURL: "http://localhost:3000"})
+const backend = axios.create({baseURL: "http://54.175.184.234:3000/"})
 
 function FriendsModal() {
     const {currentUser} = useContext(AuthContext);
@@ -53,6 +53,7 @@ function FriendsModal() {
     const sendRequest = async (username) => {
         username = username.trim()
         try {
+            if(username.trim().length == 0) throw {response: {status:400, error: "Must not be whitespace"}}
             if(!(/^[a-zA-Z0-9]+$/.test(username)) || username.length < 8 || username.length > 20) throw {response: {status:400, error: "Bad username"}}
             const {data} = await backend.get(`/getIdByUsername/${username.trim()}`)
             const response = await backend.post(`/friends/request/SEND`, {user1: userId, user2: data.fire_id})
@@ -61,8 +62,9 @@ function FriendsModal() {
             setRefresh(!refresh)
         } catch (e) {
             if(e.response.data == 'User already in friends list: sendFriendRequest') toast.error("User is already your friend!")
+            if(e.response.error == 'Must not be whitespace') toast.error("Please Enter a Username!")
             else if(e.response.status == 404) toast.error("User Not Found")
-            else if(e.response.status == 400) toast.error("Bad Username")
+            else if(e.response.status == 400) toast.error("Invalid Username")
         }
     }
 
