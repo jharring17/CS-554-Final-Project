@@ -86,7 +86,7 @@ function Home() {
         Home page used to show your feed
       </h2>
     </div> */}
-			<p>View your friends' successful goals from the past week:</p>
+			<p>View your friends' successful goals from the past 7 days:</p>
 			{feed}
 		</>
 	);
