@@ -115,7 +115,7 @@ router
         if (!isValid(parsedDate)) {
             return res.status(400).json({error: "Date must be a valid date"}) 
         }
-        if (isBefore(parsedDate, startOfDay(new Date())) ) {
+        if (isBefore(startOfDay(parsedDate), startOfDay(new Date())) ) {
             return res.status(400).json({error: "Date must be today's date or a future date"}) 
         }
         try {
@@ -357,7 +357,7 @@ router
             if (!isValid(parsedDate)) {
                 return res.status(400).json({error: "Date must be a valid date"}) 
             }
-            if (isBefore(parsedDate, startOfDay(new Date())) ) {
+            if (isBefore(startOfDay(parsedDate), startOfDay(new Date())) ) {
                 return res.status(400).json({error: "Date must be today's date or a future date"}) 
             }
         }else{
