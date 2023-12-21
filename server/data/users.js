@@ -5,6 +5,7 @@ import { getGoalsByUserId } from './goals.js';
 import { getAllFriends } from './friends.js';
 import * as helper from '../../validation.js';
 import bcrypt from 'bcrypt';
+import { getExpensesByGoalId } from './expenses.js';
 const saltRounds = 2;
 
 const register = async (fire_id, displayName, username, email, age) => {
@@ -240,12 +241,18 @@ const updateHistory = async (fire_id) => {
 	let pastGoalsArr = [];
 
 	const goalCollection = await goals();
-	let allGoals = await goalCollection.find().toArray({});
+	let allGoals = await goalCollection.find({userId: fire_id}).toArray({});
 	for (let i = 0; i < allGoals.length; i++) {
 		if (
-			allGoals[i].userId.toString() === fire_id.toString() &&
 			helper.dateIsInThePast(allGoals[i].goalDate)
 		) {
+			const data = await getExpensesByGoalId(allGoals[i]._id.toString())
+			let total = data.reduce((total, curr)=>total += curr.amount, 0)
+			if(allGoals[i].successful == false && allGoals[i].limit > total) {
+				allGoals[i].successful = true
+				const goalsCollection = await goals();
+				await goalsCollection.findOneAndUpdate({_id: allGoals[i]._id}, {$set: {successful: true}})
+			}
 			pastGoalsArr.push(allGoals[i]);
 		}
 	}
