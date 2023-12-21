@@ -3,18 +3,21 @@ import {useParams, Link} from 'react-router-dom';
 import {doGetUID} from '../firebase/FirebaseFunctions';
 import '../App.css';
 import axios from 'axios';
+import {AuthContext} from '../context/AuthContext';
 
 function FriendProfile() {
+    const {currentUser} = useContext(AuthContext);
     const [user, setUser] = useState(null);
     const [goalsCompleted, setGoalsCompleted] = useState(0);
-    const [goalsExpired, setGoalsExpired] = useState(0);
+    // const [goalsExpired, setGoalsExpired] = useState(0);
     const [notFriended, setNotFriended] = useState(false);
     const {fireId} = useParams();
+    const [history, setHistory] = useState();
 
-    async function getGoalInfo(goal){
-        let goalData = await axios.get(`http://localhost:3000/userProfile/${fireId}/${goal}`);
-        return goalData.data
-    }
+    // async function getGoalInfo(goal){
+    //     let goalData = await axios.get(`http://localhost:3000/userProfile/${fireId}/${goal}`);
+    //     return goalData.data
+    // }
     
     useEffect( () => {
         setUser(null);
@@ -26,43 +29,24 @@ function FriendProfile() {
             if(userData.data.goals.length === 0){
                 return
             }else{
-                for(let i = 0; i < userData.data.goals.length; i++){
-                    let currGoal = await getGoalInfo(userData.data.goals[i])
-                    if(currGoal.successful === true){
-                        let tempCompleted = goalsCompleted;
-                        tempCompleted += 1;
-                        setGoalsCompleted(tempCompleted)
-                    }
-
-                    let date = currGoal.goalDate
-                    let dateArr = date.split('/')     
-                    console.log(dateArr)               
-                    let currDate = new Date();
-                    let month = currDate.getMonth() + 1;
-                    let day = currDate.getDate();
-                    let year = currDate.getFullYear();
-                    if(year > dateArr[2]){
-                        setGoalsExpired(goalsExpired + 1);
-                    }else if(year <= dateArr[2] && month > dateArr[0]){
-                        setGoalsExpired(goalsExpired + 1);
-                    }else if(year <= dateArr[2] && month <= dateArr[0] && day > dateArr[1]){
-                        setGoalsExpired(goalsExpired + 1)
-                    }
-                }
+                // let fire_id = currentUser.uid;
+                const {data: userData} = await axios.get(`http://localhost:3000/getUserByFireAuth/${fireId}`)
+                setUser(userData)
+                const {data: historyData} = await axios.get(`http://localhost:3000/userProfile/${fireId}/history`)
+                setHistory(historyData.history);
             }
         }
         getUserInfo();
     }, [])
 
     if (notFriended) return <div>You must be friends to see this page!</div>
-    else if(user === null || fireId === undefined ){
+    else if(user === null || fireId === undefined || history === undefined){
         return (
             <div>Loading...</div>
         )
     }
     else {
-        console.log(goalsCompleted)
-        
+        const historySucceeded = history.reduce((total, item) => {if(item.successful == true) return total+1; else return total}, 0)
         return (
             <>
                 <div className='card'>
@@ -70,8 +54,8 @@ function FriendProfile() {
                 <img src={user.profilePic} alt={`${user.username} profile pic`} style={{width:"120px", height:"120px", borderRadius: "100%" }}/>
                 <p>{user.username}</p>
                 <p>{user.displayName} has created a total of {user.goals.length} goals</p>
-                <p> {user.displayName} has {(user.goals.length - goalsExpired)} goals in progress</p>
-                {(goalsCompleted) ? <p>{user.displayName} has completed {((goalsCompleted/goalsExpired)*100).toFixed(0)}% of past goals</p> : <></>}
+                <p> {user.displayName} has {(user.goals.length - history.length)} goals in progress</p>
+                <p>Sucessfully completed {(historySucceeded / history.length * 100).toFixed(0)}% of past goals</p>
                 </div>
                 <br/>
                 <Link to='/friends'>Back to Friends</Link>
