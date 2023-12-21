@@ -115,7 +115,7 @@ router
         if (!isValid(parsedDate)) {
             return res.status(400).json({error: "Date must be a valid date"}) 
         }
-        if (isBefore(parsedDate, startOfDay(new Date())) ) {
+        if (isBefore(startOfDay(parsedDate), startOfDay(new Date())) ) {
             return res.status(400).json({error: "Date must be today's date or a future date"}) 
         }
         try {
@@ -130,6 +130,7 @@ router
         try{
             let added = await goals.addGoal(id, req.body.title, req.body.description, req.body.category, req.body.limit, req.body.goalDate);
             let removeFromCache = await client.del(`goals-for-user-${id}`);
+            let removeFriend = await client.del(`friend-${id}`);
             return res.status(200).json(added)
         }catch(e){
             console.log(e);
@@ -356,7 +357,7 @@ router
             if (!isValid(parsedDate)) {
                 return res.status(400).json({error: "Date must be a valid date"}) 
             }
-            if (isBefore(parsedDate, startOfDay(new Date())) ) {
+            if (isBefore(startOfDay(parsedDate), startOfDay(new Date())) ) {
                 return res.status(400).json({error: "Date must be today's date or a future date"}) 
             }
         }else{

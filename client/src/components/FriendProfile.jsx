@@ -27,7 +27,7 @@ function FriendProfile() {
             if(currUser != fireId && !userData.data.friends.includes(currUser)) {setNotFriended(true); return}
             setUser(userData.data);
             if(userData.data.goals.length === 0){
-                return
+                setHistory([])
             }else{
                 // let fire_id = currentUser.uid;
                 const {data: userData} = await axios.get(`http://localhost:3000/getUserByFireAuth/${fireId}`)
@@ -54,8 +54,8 @@ function FriendProfile() {
                 <img src={user.profilePic} alt={`${user.username} profile pic`} style={{width:"120px", height:"120px", borderRadius: "100%" }}/>
                 <p>{user.username}</p>
                 <p>{user.displayName} has created a total of {user.goals.length} goals</p>
-                <p> {(user.goals.length === 1) ? `${(user.goals.length - history.length)} goals in progress` : `${(user.goals.length - history.length)} goals in progress`}</p>
-                <p>Sucessfully completed {(historySucceeded / history.length * 100).toFixed(0)}% of past goals</p>
+                <p> {(user.goals.length === 1) ? `${(user.goals.length - history.length)} goal in progress` : `${(user.goals.length - history.length)} goals in progress`}</p>
+                <p> {(history.length === 0) ? `This user has no goal history data` : `Sucessfully completed ${(historySucceeded / history.length * 100).toFixed(0)}% of past goals`}</p>
                 </div>
                 <br/>
                 <Link to='/friends'>Back to Friends</Link>
