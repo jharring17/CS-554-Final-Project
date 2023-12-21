@@ -76,7 +76,7 @@ const History = (props) => {
 
 	return (
 		<>
-            {/* <h2>Sucessfully completed {(historySucceeded / historyList.length * 100).toFixed(0)}% of past goals</h2> */}
+            <h2>Sucessfully completed {(historySucceeded / historyList.length * 100).toFixed(0)}% of past goals</h2>
 			{feed}
 		</>
 	);
