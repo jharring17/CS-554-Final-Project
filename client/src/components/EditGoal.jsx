@@ -166,7 +166,7 @@ function EditGoal(props){
         if(waiting){
             return;
         }
-
+        try{
         await axios.patch(`http://54.175.184.234:3000/userProfile/${goal.userId}/${goal._id}`, 
             {
                 id: goal,
