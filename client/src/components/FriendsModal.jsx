@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const backend = axios.create({baseURL: "http://54.175.184.234:3000/"})
 
-function FriendsModal() {
+function FriendsModal({friendRefresh, setFriendRefresh}) {
     const {currentUser} = useContext(AuthContext);
     const [modalOpened, setModalOpened] = useState(false)
     const [tab, setTab] = useState(0)
@@ -24,6 +24,7 @@ function FriendsModal() {
         try {
             await backend.post(`/friends/request/ACCEPT`, {user1: userId, user2: id})
             setRefresh(!refresh)
+            setFriendRefresh(!friendRefresh)
             toast("Request Accepted")
         } catch (error) {
             toast("Accept Failed")
