@@ -248,7 +248,7 @@ const updateHistory = async (fire_id) => {
 		) {
 			const data = await getExpensesByGoalId(allGoals[i]._id.toString())
 			let total = data.reduce((total, curr)=>total += curr.amount, 0)
-			if(allGoals[i].successful == false && allGoals[i].limit > total) {
+			if(allGoals[i].successful == false && allGoals[i].limit >= total) {
 				allGoals[i].successful = true
 				const goalsCollection = await goals();
 				await goalsCollection.findOneAndUpdate({_id: allGoals[i]._id}, {$set: {successful: true}})
