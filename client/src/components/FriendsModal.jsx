@@ -64,8 +64,8 @@ function FriendsModal({friendRefresh, setFriendRefresh}) {
             setRefresh(!refresh)
         } catch (e) {
             if(e.response.data == 'User already in friends list: sendFriendRequest') toast.error("User is already your friend!")
-            if(e.response.error == 'Must not be whitespace') toast.error("Please Enter a Username!")
-            if(e.response.error == 'Cannot friend yourself') toast.error("Cannot friend yourself!")
+            else if(e.response.error == 'Must not be whitespace') toast.error("Please Enter a Username!")
+            else if(e.response.error == 'Cannot friend yourself') toast.error("Cannot friend yourself!")
             else if(e.response.status == 404) toast.error("User Not Found")
             else if(e.response.status == 400) toast.error("Invalid Username")
         }
