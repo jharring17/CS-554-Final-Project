@@ -2,7 +2,7 @@ import {useContext, useEffect, useState} from 'react';
 import {AuthContext} from '../context/AuthContext';
 import '../App.css';
 import axios from "axios"
-import {NavLink} from 'react-router-dom';
+import {NavLink, useOutletContext} from 'react-router-dom';
 
 const backend = axios.create({baseURL: "http://localhost:3000"})
 
@@ -12,6 +12,7 @@ const Friends = () => {
     const [refresh, setRefresh] = useState(false)
     const [loading, setLoading] = useState(true)
     const {currentUser} = useContext(AuthContext);
+    const [friendRefresh, setFriendRefresh] = useOutletContext()
 
     const removeFriend = async (id) => {
         const confirm = window.confirm("Are you sure?")
@@ -28,7 +29,7 @@ const Friends = () => {
             setLoading(false)
         }
         if(currentUser) getData()
-    },[refresh])
+    },[refresh, friendRefresh])
 
     useEffect(()=>{
         const handleData = async () => {
